@@ -4,7 +4,7 @@
    [datascript.core :as d]
    [clojure.spec.alpha :as spec]
    ;;[clojure.edn :as edn]
-   ;;[clojure.string :as cstring]
+   [clojure.string :as cstring]
    ;;[grotesque.core :as grot]
    ;;["js-xxhash" :as xx :refer (xxHash32)]
 
@@ -93,10 +93,10 @@
    ;(spec/every #(>= 0 % 255) :count 6)
    ))
 
-(spec/def :seed/data-array
-  (spec/and
+;; (spec/def :seed/data-array
+;;   (spec/and
    
-   ))
+;;    ))
 
 (defn make-seed [seed-vals]
   {:pre  [(spec/valid? :seed/specifier seed-vals)]
@@ -107,35 +107,52 @@
   (. view setUint16 0 (nth seed-vals 0) true)    
   (. view setUint16 2 (nth seed-vals 1) true)    
   (. view setUint16 4 (nth seed-vals 2) true) 
-  view
-  ))
+  view))
 
 (defn get-seed-bytes [seed]
-  (into [] (map #(. seed getUint8 %) (range 5) ))
-  ;; [(. seed getUint8 0 )
-  ;;  (. seed getUint8 1 )
-  ;;  (. seed getUint8 2 )
-  ;;  (. seed getUint8 3 )
-  ;;  (. seed getUint8 4 )
-  ;;  (. seed getUint8 5 )
-  ;;  ]
+  (into [] (map #(. seed getUint8 %) (range 6) )))
+
+(get-seed-bytes (make-seed [65535 65535 65535]))
+
+(defn byte-to-bin [dec]
+  (let [byte-length 8
+        num-vec (vec (. (bit-shift-right dec 0) toString 2))
+        extra (- byte-length (count num-vec))
+        left-pad (take extra (repeat 0))
+        byte-vec (concat left-pad num-vec)
+        ]
+    (map #(js/parseInt % 2) byte-vec
+         )))
+
+(map byte-to-bin (get-seed-bytes (make-seed [9991494 14 98])))
+
+(defn get-seed-bits [seed byte-index start-index count-index]
+  (subvec (into [] (nth (map byte-to-bin (get-seed-bytes seed)) byte-index))
+          start-index
+          (+ start-index count-index))
+  ;;(nth (byte-to-bin seed) bit-index)
   )
+
+(subvec
+ (into []
+       (nth 
+        (map byte-to-bin (get-seed-bytes (make-seed [1494 14 98])))
+        0))
+ 0
+ )
+
 
 (get-seed-bytes (make-seed [1494 14 98]))
 
-(defn dec2bin [dec]
-  (map #(js/parseInt % 2)
-       (vec
-        (. (bit-shift-right dec 0) toString 2))))
+(byte-to-bin (make-seed [1494 14 98]))
+(get-seed-bits (make-seed [1494 14 98]) 0 1 2)
 
-(dec2bin 6)
+(defn get-value-from-seed [seed byte-index start-index count-index]
+  (let [array-of-bits (get-seed-bits seed byte-index start-index count-index)]
+    (js/parseInt (cstring/join "" array-of-bits))
+    ))
 
-(map dec2bin (get-seed-bytes (make-seed [1494 14 98]))
-)
-
-(defn get-seed-bits [seed bit-index]
-  
-               )
+(get-value-from-seed (make-seed [14499 14 98]) 0 1 5)
 
 
 
