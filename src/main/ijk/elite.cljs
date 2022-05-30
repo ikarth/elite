@@ -9,6 +9,12 @@
   ))
 
 
+(egrammar/goat-soup 0 "Lave")
+
+
+
+
+
 
 (defn run []
   (.log js/console "Hello")

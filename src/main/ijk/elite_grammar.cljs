@@ -30,8 +30,8 @@
 :TKN1_2 "\nWHICH DRIVE?"
 :TKN1_3 "COMPETITION NUMBER:"
 :TKN1_4 "{clear screen}{draw box around title}{all caps}{tab 6}DRIVE {drive number} CATALOGUE{crlf}"
-:TKN1_5 "#TKN1_176##EQUB_86##TKN1_202##EQUB_140#.\n" ; "{lower case}{justify}{single cap}#EQUB_86# IS #EQUB_140#.\n{left align}"
-:TKN1_6 "  LOAD NEW {single cap}COMMANDER {all caps}(Y/N)?{sentence case}\n\n"
+:TKN1_5 "#TKN1_176##EQUB_86##TKN1_202##EQUB_140#.\n" ; "#lower-case#{justify}{single cap}#EQUB_86# IS #EQUB_140#.\n{left align}"
+:TKN1_6 "  LOAD NEW {single cap}COMMANDER {all caps}(Y/N)?#sentence-case#\n\n"
 :TKN1_7 "PRESS SPACE OR FIRE,{single cap}COMMANDER.\n\n"
 :TKN1_8 "{single cap}COMMANDER'S NAME? "
 :TKN1_9 "{clear bottom of screen}FILE TO DELETE?"
@@ -56,7 +56,7 @@
 :TKN1_28 "GREAT"
 :TKN1_29 "VAST"
 :TKN1_30 "PINK"
-:TKN1_31 "{sentence case}#EQUB_190# #EQUB_185# {lower case} PLANTATIONS"
+:TKN1_31 "#sentence-case##EQUB_190# #EQUB_185# #lower-case# PLANTATIONS"
 :TKN1_32 "MOUNTAINS"
 :TKN1_33 "#EQUB_180#"
 :TKN1_34 "#EQUB_125# FORESTS"
@@ -87,9 +87,9 @@
 :TKN1_59 "#EQUB_135# EARTHQUAKES"
 :TKN1_60 "#EQUB_135# SOLAR ACTIVITY"
 :TKN1_61 "ITS #EQUB_26# #EQUB_31#"
-:TKN1_62 "THE {system name adjective} #EQUB_155# #EQUB_160#"
+:TKN1_62 "THE #system-adjective# #EQUB_155# #EQUB_160#"
 :TKN1_63 "ITS INHABITANTS' #EQUB_165# #EQUB_36#"
-:TKN1_64 "{sentence case}#EQUB_235#{lower case}"
+:TKN1_64 "#sentence-case##EQUB_235##lower-case#"
 :TKN1_65 "ITS #EQUB_76# #EQUB_81#"
 :TKN1_66 "JUICE"
 :TKN1_67 "BRANDY"
@@ -97,9 +97,9 @@
 :TKN1_69 "BREW"
 :TKN1_70 "GARGLE BLASTERS"
 :TKN1_71 "{random 1-8 letter word}"
-:TKN1_72 "{system name adjective} #EQUB_160#"
-:TKN1_73 "{system name adjective} {random 1-8 letter word}"
-:TKN1_74 "{system name adjective} #EQUB_170#" ; "{17}"
+:TKN1_72 "#system-adjective# #EQUB_160#"
+:TKN1_73 "#system-adjective# {random 1-8 letter word}"
+:TKN1_74 "#system-adjective# #EQUB_170#" ; "{17}"
 :TKN1_75 "#EQUB_170# {random 1-8 letter word}"
 :TKN1_76 "FABULOUS"
 :TKN1_77 "EXOTIC"
@@ -110,7 +110,7 @@
 :TKN1_82 "NIGHT LIFE"
 :TKN1_83 "CASINOS"
 :TKN1_84 "SIT COMS"
-:TKN1_85 "{sentence case}#EQUB_235#{lower case}"
+:TKN1_85 "#sentence-case##EQUB_235##lower-case#"
 :TKN1_86 "#system-name#"
 :TKN1_87 "THE PLANET #system-name#"
 :TKN1_88 "THE WORLD #system-name#"
@@ -200,7 +200,7 @@
 :TKN1_173 "LETHAL"
 :TKN1_174 "VICIOUS"
 :TKN1_175 "ITS "
-:TKN1_176 "" ;"{lower case}{justify}{single cap}"
+:TKN1_176 "#lower-case##justify##single-cap#"
 :TKN1_177 ".\n{left align}"
 :TKN1_178 " AND "
 :TKN1_179 "YOU"
@@ -215,8 +215,8 @@
 :TKN1_188 "CORN"
 :TKN1_189 "{random 1-8 letter word}WEED"
 :TKN1_190 "{random 1-8 letter word}"
-:TKN1_191 "{system name adjective} {random 1-8 letter word}"
-:TKN1_192 "{system name adjective} #EQUB_170#"
+:TKN1_191 "#system-adjective# {random 1-8 letter word}"
+:TKN1_192 "#system-adjective# #EQUB_170#"
 :TKN1_193 "INHABITANT"
 :TKN1_194  "#TKN1_191#"
 :TKN1_195 "ING "
@@ -235,9 +235,9 @@
 :TKN1_208 " A "
 :TKN1_209 " ERRIUS"
 :TKN1_210 " NEW "
-:TKN1_211 "{sentence case} HER MAJESTY'S SPACE NAVY{lower case}"
+:TKN1_211 "#sentence-case# HER MAJESTY'S SPACE NAVY#lower-case#"
 :TKN1_212 ".\n{left align}{tab 6}{all caps}  MESSAGE ENDS"
-:TKN1_213 " {single cap}COMMANDER {commander name}, I {lower case}AM{sentence case} CAPTAIN {mission captain's name} {lower case}OF{sentence case} HER MAJESTY'S SPACE NAVY{lower case}"
+:TKN1_213 " {single cap}COMMANDER {commander name}, I #lower-case#AM#sentence-case# CAPTAIN {mission captain's name} #lower-case#OF#sentence-case# HER MAJESTY'S SPACE NAVY#lower-case#"
 :TKN1_214 ""
 :TKN1_215 "{left align} UNKNOWN PLANET"
 :TKN1_216 "{clear screen}{tab 6}{move to row 10, white, lower case}{white}{all caps}INCOMING MESSAGE"
@@ -246,8 +246,8 @@
 :TKN1_219 "FORTESQUE"
 :TKN1_220 "WAS LAST SEEN AT {single cap}REESDICE"
 :TKN1_221 "IS BELIEVED TO HAVE JUMPED TO THIS GALAXY"
-:TKN1_222 "{incoming message screen, wait 2s}{clear screen}{white}{tab 6, white, lower case in words}{justify}{sentence case}GOOD DAY {single cap}COMMANDER{commander name}.\n{single cap}I{lower case} AM {singlecap}AGENT{single cap}BLAKE OF {singlecap}NAVAL {single cap}INTELLEGENCE.\n{single cap}AS YOU KNOW, THE {singlecap}NAVY HAVE BEEN KEEPING THE {singlecap}THARGOIDS OFF YOUR ASS OUT IN DEEPSPACE FOR MANY YEARS NOW. {single cap}WELL THE SITUATION HAS CHANGED.\n{single cap}OUR BOYS ARE READY FOR A PUSH RIGHT TO THE HOME SYSTEM OF THOSEMOTHERS.\n{single cap}{wait for key press}{clear screen}{white}{tab 6, white, lower case in words}I{lower case} HAVE OBTAINED THE DEFENCE PLANS FOR THEIR {single cap}HIVE{single cap}WORLDS.\n {single cap}THE BEETLES KNOW WE'VE GOT SOMETHING BUT NOT WHAT.\n {single cap}IF {singlecap}I TRANSMIT THE PLANS TO OUR BASE ON {single cap}BIRERA THEY'LL INTERCEPT THE TRANSMISSION. {single cap}I NEED A SHIP TO MAKE THE RUN.\n {single cap}YOU'RE ELECTED.\n {single cap}THE PLANS ARE UNIPULSE CODED WITHIN THIS TRANSMISSION.\n{single cap}{tab 6}YOU WILL BE PAID.\n{single cap}{single cap}GOOD LUCK {single cap}COMMANDER.\n{left align}{tab 6}{all caps}  MESSAGE ENDS{wait for key press}"
-:TKN1_223 "{incoming message screen, wait 2s}{clear screen}{tab 6, white, lower case in words}{white}{tab 6}{justify}{lower case}{single cap}WELL DONE  {single cap}COMMANDER.\n {single cap}YOU HAVE SERVED US WELL AND WE SHALL REMEMBER.\n{single cap}WE DID NOT EXPECT THE {single cap}THARGOIDS TO FIND OUT ABOUT YOU.\n{single cap}FOR THE MOMENT PLEASE ACCEPT THIS {single cap}NAVY {standard tokens, sentence case}EXTRA ENERGY UNIT{extended tokens} AS PAYMENT.\n{left align}{tab 6}{all caps}  MESSAGE ENDS{wait for key press}"
+:TKN1_222 "{incoming message screen, wait 2s}{clear screen}{white}{tab 6, white, lower case in words}{justify}#sentence-case#GOOD DAY {single cap}COMMANDER{commander name}.\n{single cap}I#lower-case# AM {singlecap}AGENT{single cap}BLAKE OF {singlecap}NAVAL {single cap}INTELLEGENCE.\n{single cap}AS YOU KNOW, THE {singlecap}NAVY HAVE BEEN KEEPING THE {singlecap}THARGOIDS OFF YOUR ASS OUT IN DEEPSPACE FOR MANY YEARS NOW. {single cap}WELL THE SITUATION HAS CHANGED.\n{single cap}OUR BOYS ARE READY FOR A PUSH RIGHT TO THE HOME SYSTEM OF THOSEMOTHERS.\n{single cap}{wait for key press}{clear screen}{white}{tab 6, white, lower case in words}I#lower-case# HAVE OBTAINED THE DEFENCE PLANS FOR THEIR {single cap}HIVE{single cap}WORLDS.\n {single cap}THE BEETLES KNOW WE'VE GOT SOMETHING BUT NOT WHAT.\n {single cap}IF {singlecap}I TRANSMIT THE PLANS TO OUR BASE ON {single cap}BIRERA THEY'LL INTERCEPT THE TRANSMISSION. {single cap}I NEED A SHIP TO MAKE THE RUN.\n {single cap}YOU'RE ELECTED.\n {single cap}THE PLANS ARE UNIPULSE CODED WITHIN THIS TRANSMISSION.\n{single cap}{tab 6}YOU WILL BE PAID.\n{single cap}{single cap}GOOD LUCK {single cap}COMMANDER.\n{left align}{tab 6}{all caps}  MESSAGE ENDS{wait for key press}"
+:TKN1_223 "{incoming message screen, wait 2s}{clear screen}{tab 6, white, lower case in words}{white}{tab 6}{justify}#lower-case#{single cap}WELL DONE  {single cap}COMMANDER.\n {single cap}YOU HAVE SERVED US WELL AND WE SHALL REMEMBER.\n{single cap}WE DID NOT EXPECT THE {single cap}THARGOIDS TO FIND OUT ABOUT YOU.\n{single cap}FOR THE MOMENT PLEASE ACCEPT THIS {single cap}NAVY {standard tokens, sentence case}EXTRA ENERGY UNIT{extended tokens} AS PAYMENT.\n{left align}{tab 6}{all caps}  MESSAGE ENDS{wait for key press}"
 :TKN1_224 ""
 :TKN1_225 "SHREW"
 :TKN1_226 "BEAST"
@@ -260,7 +260,7 @@
 :TKN1_233 "GOAT"
 :TKN1_234 "FISH"
 :TKN1_235 "#EQUB_71# #EQUB_66#"
-:TKN1_236 "{system name adjective} #EQUB_225# #EQUB_240#"
+:TKN1_236 "#system-adjective# #EQUB_225# #EQUB_240#"
 :TKN1_237 "ITS #EQUB_76# #EQUB_230# #EQUB_240#"
 :TKN1_238 "#EQUB_245# #EQUB_250#"
 :TKN1_239 "#EQUB_71# #EQUB_66#"
@@ -271,9 +271,9 @@
 :TKN1_244 "SOUP"
 :TKN1_245 "ICE"
 :TKN1_246 "MUD"
-:TKN1_247 "ZERO-{single cap}G"
+:TKN1_247 "ZERO-#single-cap#G"
 :TKN1_248 "VACUUM"
-:TKN1_249 "{system name adjective} ULTRA"
+:TKN1_249 "#system-adjective# ULTRA"
 :TKN1_250 "HOCKEY"
 :TKN1_251 "CRICKET"
 :TKN1_252 "KARATE"
@@ -317,7 +317,11 @@
 :EQUB_250  (equb-range 250) ; 34
 :EQUB_115  (equb-range 115) ; 35
 :EQUB_120  (equb-range 120) ; 36
-:EQUB_125  (equb-range 125) ; 37
+ :EQUB_125  (equb-range 125) ; 37
+ :sentence-case "" ;; just ignore the case specifications for now...
+ :lower-case ""
+ :single-cap ""
+ :justify ""
  })
 
 (defn handler-fn [grammar rule-id [_ attribute value]]
@@ -329,6 +333,16 @@
 (defn translate-grammar-rules
   [m f]
   (into (empty m) (for [[k v] m] [k (f v)])))
+
+(def vowels #{\a \e \i \o \u})
+
+(defn name-to-adjective [name]
+  (let [base-name (if (some vowels (take-last 1 name)) (clojure.string/join "" (drop-last name)) name)]
+    (clojure.string/join "" (concat base-name "ian"))))
+
+;; (name-to-adjective "Lave")
+
+;; (clojure.string/join "" (drop-last "test"))
 
 ;; (defn deterministic-shuffle
 ;;   [^java.util.Collection coll seed]
@@ -345,21 +359,27 @@
                                         ;(clj->js)
                                         ;prng-hash
           (hash bodies)
-          uniseed (+ seed (hash bodies) (hash head))
+          gen-count (get-in grammar [:generation-count] 0)
+          uniseed (+ seed (hash bodies) (hash head) gen-count)
           myrng (rng/rng uniseed)
           ]
-      (.log js/console uniseed)
-      
+      ;;(.log js/console uniseed)
+      ;;(println uniseed)
+      ;;(println gen-count)
+      ;;(println bodies)
       ;;(.log js/console rnum)
       ;;(.log js/console seed)
       ;;(.log js/console (+ rnum seed))
       ;;(.log js/console (determanistic-shuffle bodies (+ seed rnum)))
-                                         ;(.log js/console (js-str seed))
-      (assoc-in grammar [:selected] ;;(first bodies)
-                (doall (first (rng/shuffle myrng bodies)))
-                ))))
+                                        ;(.log js/console (js-str seed))
+      (-> grammar
+          (update-in [:generation-count] inc)
+          (assoc-in [:selected] ;;(first bodies)
+                    (doall (first (rng/shuffle myrng bodies)))
+                    )))))
 
-(hash ["ahwe"])
+;;; 
+;; (hash ["ahwe"])
 
 ;; (defn obj->clj
 ;;   [obj]
@@ -377,10 +397,10 @@
 ;;  (xxHash32. "a" 0))
 ;; 16
 
-((make-determanistic-selector 9)
- {}
- []
- ["a" "b" "c"])
+;; ((make-determanistic-selector 9)
+;;  {}
+;;  []
+;;  ["a" "b" "c"])
 
 ;; (defn determanistic-selector
 ;;   [grammar head bodies]
@@ -400,6 +420,7 @@
     (-> text-tokens-extended
         (assoc-in [:elite-seed] seed)
         (assoc-in [:system-name] system-name)
+        (assoc-in [:system-adjective] (name-to-adjective system-name))
         (translate-grammar-rules #(if (string? %1) [%1] %1))
         (grot/create-grammar)
         (grot/set-handler :set handler-fn)
@@ -424,11 +445,15 @@
 
 ;(doc sample)
 ;(keys)
-(goat-soup 5090 "Lave")
-(:TKN1_5 (:rules (goat-soup 0 "Lave")))
+;; (goat-soup 5090 "Lave")
+;; (:TKN1_5 (:rules (goat-soup 0 "Lave")))
 
 
 ;;(sample (range 5) :seed 7)
 
-(frequencies 
- (map #(goat-soup % "Lave") (range 20)))
+
+;; (goat-soup 1 "Test")
+
+;; (println
+;;  (frequencies 
+;;   (map #(goat-soup % "Lave") (range 200))))
