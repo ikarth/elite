@@ -7,6 +7,8 @@
   },
   "dependencies": {
     "js-xxhash": "^1.0.4",
-    "seedrandom": "^3.0.5"
+    "seedrandom": "^3.0.5",
+    "tracery-grammar": "^2.7.4",
+    "xxhash": "^0.3.0"
   }
 }
