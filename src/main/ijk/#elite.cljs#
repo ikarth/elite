@@ -123,14 +123,19 @@
 
 (get-seed-bytes (make-seed [1494 14 98]))
 
-(defn dec2bin [dec]
-  (map #(js/parseInt % 2)
-       (vec
-        (. (bit-shift-right dec 0) toString 2))))
+(defn byte-to-bin [dec]
+  (let [byte-length 8
+        num-vec (vec (. (bit-shift-right dec 0) toString 2))
+        extra (- byte-length (count num-vec))
+        left-pad (take extra (repeat 0))
+        byte-(concat left-pad num-vec)
+        ]
+    (map #(js/parseInt % 2) byte-vec
+         )))
 
-(dec2bin 6)
+;;(dec2bin 6)
 
-(map dec2bin (get-seed-bytes (make-seed [1494 14 98]))
+(map byte-to-bin (get-seed-bytes (make-seed [1494 14 98]))
 )
 
 (defn get-seed-bits [seed bit-index]
