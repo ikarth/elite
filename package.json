@@ -1,0 +1,12 @@
+{
+  "name": "elite",
+  "version": "0.0.1",
+  "private": true,
+  "devDependencies": {
+    "shadow-cljs": "2.19.0"
+  },
+  "dependencies": {
+    "js-xxhash": "^1.0.4",
+    "seedrandom": "^3.0.5"
+  }
+}
