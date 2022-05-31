@@ -12,7 +12,11 @@
 (egrammar/goat-soup 0 "Lave")
 
 
-
+(defn twist-seed
+  "Takes a random seed and twists it using Elite's 'tribonocci' method."
+  [old-seed]
+  old-seed
+  )
 
 (defn run []
   (.log js/console "Hello")
