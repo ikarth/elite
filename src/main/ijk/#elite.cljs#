@@ -303,13 +303,15 @@
   "Given a number, break it down to its bit representation, invert the bits, and return it as a number."
   [number-byte]
   (-> number-byte
+      byte-to-bin
       left-trim
       invert-bits
       bin-to-byte
       ))
 
+(invert-byte 9)
 
-(byte-to-bin 7)
+(byte-to-bin 9)
 
 (defn planet-economy
   "Generate the economic level and type of the planet.
@@ -328,9 +330,10 @@
         ;; resources, in contrast with how our more-modular reconstruction needs to
         ;; separate the values. I could avoid this if I just kept it as the bytes
         ;; (or if I had a byte-flipping function)
-        flipped-economy (bin-to-byte (invert-bits adjusted)) 
+        ;;flipped-economy (bin-to-byte (invert-bits adjusted))
+        ;; ...on second thought, I wrote the byte-flipping function.
         ]
-    [type prosperity flipped-economy]))
+    [type prosperity]))
 
 
 
