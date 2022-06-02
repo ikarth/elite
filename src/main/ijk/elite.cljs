@@ -5,6 +5,7 @@
    [clojure.spec.alpha :as spec]
    ;;[clojure.edn :as edn]
    [clojure.string :as cstring]
+   [clojure.math]
    ;;[grotesque.core :as grot]
    ;;["js-xxhash" :as xx :refer (xxHash32)]
 
@@ -20,6 +21,13 @@
 
 
 
+(defn positions
+  "https://stackoverflow.com/a/4831131/5562922"
+  [pred coll]
+  (keep-indexed (fn [idx x]
+                  (when (pred x)
+                    idx))
+                coll))
 
 (def database-records
   {})
@@ -131,7 +139,7 @@
                (map vector bin 
                     (rseq (into [] (map #(Math/pow 2 %) (range (count bin)))))))))
 
-(= (bin-to-byte [1 1 0 1 1 1 1 1]) 223)
+;;(= (bin-to-byte [1 1 0 1 1 1 1 1]) 223)
 
 ;;(map bin-to-byte(map byte-to-bin (get-seed-bytes (make-seed [9991494 14 98]))))
 
@@ -139,6 +147,13 @@
   (subvec (into [] (nth (map byte-to-bin (get-seed-bytes seed)) byte-index))
           start-index
           (+ start-index count-index)))
+
+(defn get-seed-byte-8 [seed byte-index]
+  (. seed getUint8 byte-index))
+
+(defn get-seed-byte-16 [seed byte-index]
+  (. seed getUint16 byte-index))
+
 
 (defn get-value-from-seed [seed byte-index start-index count-index]
   (let [array-of-bits (get-seed-bits seed byte-index start-index count-index)]
@@ -269,11 +284,70 @@
                     twist-seed
                     twist-seed))
 
-(defn planet-government [planet-seed]
+
+(defn twist-to-next-planet [planet-seed]
+  (-> planet-seed
+      twist-seed
+      twist-seed
+      twist-seed
+      twist-seed))
+
+
+(def planet-seed-list
+  (reduce (fn [current next-id] (concat current [(twist-to-next-planet (last current))]))
+          [elite-seed]
+          (range 16)))
+
+
+
+
+
+    
+
+
+(defn planet-government
+  "Planet government is a number from 0 to 7, extracted directly from the bits in the seed.
+
+  The first operation in the original code, and the most basic."  
+  [planet-seed]  
   (bin-to-byte
    (get-seed-bits planet-seed 
                   (:s1_lo elite-index)
                   2 3)))
+
+(defn invert-bits
+  "Invert the bits in a boolean vector.
+  There's probably a built-in way to do this more succinctly that I'm forgetting."
+  [bits]
+  (map #(if (= % 0) 1 0) bits))
+
+(defn left-trim
+  "Trim leading zeros from a collection."
+  [col]
+  (subvec (into [] col) 
+          (first (positions #{1} col))))
+
+
+  ;; ([number-byte]
+  ;;  (if #(= 0 number-byte)
+  ;;    (invert-byte number-byte 3)
+  ;;    (first (positions #{1} col))))
+
+(defn invert-byte
+  "Given a number, break it down to its bit representation, invert the bits, and return it as a number."
+  [number-byte size]
+
+  (bin-to-byte
+   (invert-bits
+    (subvec (into [] (byte-to-bin number-byte)) (- 8 size) 8))))
+
+;; (byte-to-bin 5)
+;; (invert-byte 5 3)
+
+;; (subvec
+;;  (into [] (invert-byte 5 3))
+;;  0 3
+;;  )
 
 (defn planet-economy
   "Generate the economic level and type of the planet.
@@ -287,9 +361,82 @@
         adjusted (assoc eco-base 1 (if (< planet-government 2) 1 (nth eco-base 1)))
         type (nth eco-base 2)
         prosperity (bin-to-byte adjusted)
+        ;; Returning both the prosperity-coerced-to-an-integer *and* the flipped number
+        ;; is an example of how the original code compactly reuses its computational
+        ;; resources, in contrast with how our more-modular reconstruction needs to
+        ;; separate the values. I could avoid this if I just kept it as the bytes
+        ;; (or if I had a byte-flipping function)
+        ;;flipped-economy (bin-to-byte (invert-bits adjusted))
+        ;; ...on second thought, I wrote the byte-flipping function.
         ]
-    [type prosperity]
-    ))
+    [type prosperity]))
+
+
+(defn planet-tech-level
+  "The tech level formula is:
+       flipped_economy + (s1_hi AND %11) + (government / 2)" 
+  [planet-seed economy government]
+  ;;(println [(get-seed-bytes planet-seed) economy government])
+  [;; (invert-byte (second economy) 3)
+   ;; (bin-to-byte (get-seed-bits planet-seed (:s1_hi elite-index) 6 2))
+   ;; (bit-and 
+   ;;  (get-seed-byte-8 planet-seed (:s1_hi elite-index))
+   ;;  3)
+   ;; (clojure.math/ceil (/ government 2))
+   ;;"=>"
+   ;;(invert-byte (second economy) 3)
+   ;;(bit-and (second economy) 3)
+   ;;(get-seed-bits planet-seed (:s1_hi elite-index) 0 8)
+   ;;(get-seed-byte-8 planet-seed (:s1_hi elite-index))
+   (invert-byte (second economy) 3)
+   "+"
+   (bin-to-byte 
+    (get-seed-bits planet-seed (:s1_hi elite-index) 6 2))
+   ;;"OR"
+   ;;(get-seed-byte-8 planet-seed (:s1_hi elite-index))
+   "+"
+   (clojure.math/ceil (/ government 2))
+   ;;"OR"
+   ;;(clojure.math/ceil)
+   ;;(/ government 2)
+   "="
+   (+ (invert-byte (second economy) 3)
+      (bin-to-byte 
+       (get-seed-bits planet-seed (:s1_hi elite-index) 6 2))
+         (clojure.math/ceil (/ government 2)))])
+
+
+(get-seed-bits elite-seed (:s1_hi elite-index) 0 8)
+
+(planet-tech-level
+ elite-seed
+ (planet-economy elite-seed (planet-government elite-seed))
+ (planet-government elite-seed))
+
+(planet-tech-level
+ planet-two
+ (planet-economy planet-two (planet-government planet-two))
+ (planet-government planet-two))
+
+
+; 0 - 7 , 0 - 3, 0 - 3.5
+(let [sb (get-seed-bytes elite-seed)]
+  [
+   (bit-and (nth sb (:s0_hi elite-index)) 2r00000111)
+   (bit-xor (second (planet-economy elite-seed (planet-government elite-seed))) 2r111)
+   (invert-byte (second (planet-economy elite-seed (planet-government elite-seed))) 3)
+   (bit-and (nth sb (:s1_hi elite-index)) 2r00000011)
+   (planet-government elite-seed)
+   (bit-and (nth sb (:s1_lo elite-index)) 2r00000011)
+   ]
+  )
+
+(bin-to-byte
+ (get-seed-bits elite-seed (:s1_hi elite-index) 0 8))
+
+(defn planet-population-size [planet-tech-level planet-economy planet-government])
+(defn planet-productivity [planet-economy planet-government planet-population])
+
 
 (defn government-name [gov-type]
   (nth [:anarchy :feudal :multi-government :dictatorship :communist :confederacy :democracy :corporate-state]
@@ -314,20 +461,60 @@
 (map byte-to-bin (get-seed-bytes elite-seed))
 (government-name (planet-government elite-seed))
 (economy-name (planet-economy elite-seed (planet-government elite-seed)))
+(planet-tech-level
+ elite-seed
+ (planet-economy elite-seed (planet-government elite-seed))
+ (planet-government elite-seed))
+
 (map byte-to-bin (get-seed-bytes planet-two))
 (government-name (planet-government planet-two))
 (economy-name
  (planet-economy planet-two (planet-government planet-two)))
+(planet-tech-level
+ planet-two
+ (planet-economy planet-two (planet-government planet-two))
+ (planet-government planet-two))
 
 
 
-(defn planet-tech-level [planet-seed planet-economy planet-government]
-  
-  )
-(defn planet-population-size [planet-tech-level planet-economy planet-government])
-(defn planet-productivity [planet-economy planet-government planet-population])
 
 
+(get-seed-bytes (nth planet-seed-list 0))
+(get-seed-bytes (nth planet-seed-list 1))
+
+(map-indexed (fn [index item]
+               [index (get-seed-bytes item)])
+             planet-seed-list)
+
+
+(def auth-tech [9 7 8 12 7 10 9 5 12 7 3 10 9 7 7 8 9 8 7 7 9 4 11 14 8])
+
+(let []
+  (println "\n\n\n\n\n\n\n\n\n\n\n\n")
+  (doseq [[r p] (map-indexed (fn [index item]
+                               [index item])
+                             planet-seed-list)
+          ]
+    (let [econ (planet-economy p (planet-government p))]
+      (println "=======")
+      (println r " -> " (map #(. % toString 16) (get-seed-bytes p)))
+      (println (government-name (planet-government p)))
+      (println (economy-name econ))
+      (println (byte-to-bin (second econ)))
+      (println (planet-tech-level
+                p
+                econ
+                (planet-government p)))
+      (println (nth auth-tech r))
+      (println
+       (-
+        (nth auth-tech r)
+        (last
+         (planet-tech-level
+          p
+          econ
+          (planet-government p)
+          )))))))
 
 
 
