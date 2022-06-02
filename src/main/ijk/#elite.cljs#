@@ -270,9 +270,10 @@
                     twist-seed))
 
 (defn planet-government [planet-seed]
-  (get-seed-bits planet-seed 
-                       (:s1_lo elite-index)
-                       2 3))
+  (bin-to-byte
+   (get-seed-bits planet-seed 
+                  (:s1_lo elite-index)
+                  2 3)))
 
 (defn planet-economy
   "Generate the economic level and type of the planet.
@@ -283,18 +284,40 @@
         (get-seed-bits planet-seed
                        (:s0_hi elite-index)
                        5 3)
-        prosperity ((nth eco-base 0) (nth eco-base 2))
-        type (if (< planet-government 2) 1 (nth eco-base 1))
+        adjusted (assoc eco-base 1 (if (< planet-government 2) 1 (nth eco-base 1)))
+        type (nth eco-base 2)
+        prosperity (bin-to-byte adjusted)
         ]
     [type prosperity]
     ))
 
+(defn government-name [gov-type]
+  (nth [:anarchy :feudal :multi-government :dictatorship :communist :confederacy :democracy :corporate-state]
+       gov-type))
+
+(defn economy-name [[type prosperity]]
+  [
+   (get {0 :rich
+         1 :average
+         2 :poor
+         3 :mainly
+         4 :mainly
+         5 :rich
+         6 :average
+         7 :poor}
+        prosperity)
+   (nth [:industrial :agricultural] type)])
+
+
+(bin-to-byte [0 1 0 0])
+
 (map byte-to-bin (get-seed-bytes elite-seed))
-(planet-government elite-seed)
-(planet-economy elite-seed (planet-government elite-seed))
+(government-name (planet-government elite-seed))
+(economy-name (planet-economy elite-seed (planet-government elite-seed)))
 (map byte-to-bin (get-seed-bytes planet-two))
-(planet-government planet-two)
-(planet-economy planet-two (planet-government planet-two))
+(government-name (planet-government planet-two))
+(economy-name
+ (planet-economy planet-two (planet-government planet-two)))
 
 
 
