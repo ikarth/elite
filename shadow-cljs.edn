@@ -14,6 +14,26 @@
   [rand-cljc "0.1.0"]
   [org.clojure/test.check "1.1.1"]]
 
+ :plugins [;;[lein-kibit "0.1.8"]
+           ;;[lein-cljfmt "0.8.0"]
+           ;;[lein-marginalia "0.9.1"]
+           ;;[lein-instant-cheatsheet "2.2.2"]
+           ;; [funcool/codeina "0.4.0"
+           ;;  :exclusions [org.clojure/clojure]]
+           ]
+
+ :codeina {:sources ["src"]
+          :exclude [cats.monad.continuation
+                    cats.monad.reader
+                    cats.monad.writer]
+          :reader :clojurescript
+          :target "doc/codina/dist/latest/api"
+          :src-uri "https://github.com/ikarth/elite"
+           :src-uri-prefix "#L"}
+
+ :devtools
+ {}
+
  :dev-http {8080 "public"}
  :builds
  {:script

@@ -19,6 +19,8 @@
 
 
 
+
+
 (def database-records
   {})
 
@@ -66,37 +68,17 @@
   (println "Resetting database...")
   (reset-the-database! database-id))
 
-;;(byte-array [(byte 0x43)])
-
-
-
-;; (. (js/DataView. (js/ArrayBuffer. 2))
-;;    setInt16 0 255)
-
-
-;; (let [ab (js/ArrayBuffer. 6)
-;;       view (js/DataView. ab)
-;;       ]
-;;   (. view setUint16 1 65535 true)    
-;;   [(. view getUint8 0 )
-;;    (. view getUint8 1 )
-;;    (. view getUint8 2 )
-;;    (. view getUint8 3 )
-;;    (. view getUint8 4 )
-;;    (. view getUint8 5 )
-;;    ]
-;;   )
-
 (spec/def :seed/specifier
   (spec/and
    (spec/coll-of number? :kind vector? :count 3 :into [])
    ;(spec/every #(>= 0 % 255) :count 6)
    ))
 
-;; (spec/def :seed/data-array
+;; (spec/def :seed/data
 ;;   (spec/and
    
-;;    ))
+;;    )
+;;   )
 
 (def elite-index
   {:s0_lo 0 ;; QQ15
@@ -119,9 +101,8 @@
   view))
 
 (defn get-seed-bytes [seed]
+  ;;{:pre [(spec/valid? :seed/data seed)]}
   (into [] (map #(. seed getUint8 %) (range 6) )))
-
-;;(get-seed-bytes (make-seed [65535 65535 65535]))
 
 (defn byte-to-bin [dec]
   (let [byte-length 8
@@ -138,87 +119,10 @@
           start-index
           (+ start-index count-index)))
 
-;; (subvec
-;;  (into []
-;;        (nth 
-;;         (map byte-to-bin (get-seed-bytes (make-seed [1494 14 98])))
-;;         0))
-;;  0
-;;  )
-
-
-;; (get-seed-bytes (make-seed [1494 14 98]))
-
-;; (byte-to-bin (make-seed [1494 14 98]))
-;; (get-seed-bits (make-seed [1494 14 98]) 0 1 2)
-
 (defn get-value-from-seed [seed byte-index start-index count-index]
   (let [array-of-bits (get-seed-bits seed byte-index start-index count-index)]
     (js/parseInt (cstring/join "" array-of-bits))
     ))
-
-;; (get-value-from-seed (make-seed [65035 14 98]) 0 0 8) = 1011
-
-
-
-
-
-
-
-
-
-
-
-
-;;(bit-shift-right (bytes 2r1001) 1)
-
-;; (defn binary-string
-;;   "Returns a binary representation of a byte value."
-;;   [x]
-;;   (let [s #?(:clj (Integer/toBinaryString x)
-;;              :cljs (.toString x 2))
-;;         c (count s)]
-;;     (if (< c 8)
-;;       (str (apply str (repeat (- 8 c) "0")) s)
-;;       (subs s (- (count s) 8) (count s)))))
-
-;; (defn display-seed [seed]
-;;   (doseq [s-index (keys seed)]
-;;     (println (get seed s-index nil))
-;;       )
-;;   )
-
-;; (defn create-zero-seed
-;;   []
-;;   {:s0_lo (byte 2r00000000) ;; QQ15
-;;    :s0_hi (byte 2r00000000) ;; QQ15+1
-;;    :s1_lo (byte 2r00000000) ;; QQ15+2
-;;    :s1_hi (byte 2r00000000) ;; QQ15+3
-;;    :s2_lo (byte 2r00000000) ;; QQ15+4
-;;    :s2_hi (byte 2r00000000) ;; QQ15+5
-;;   })
-
-;; (defn low-byte [byte16]
-;;   (bit-and 0xff byte16))
-;; (defn high-byte [byte16]
-;;   (bit-and 0xff (bit-shift-right byte16 8)))
-;; (defn get-bit [byte8 bit])
-
-;; (low-byte (byte-array 2025))
-;; (high-byte (byte-array 2025))
-;; (. (high-byte 2025) toString)
-
-;; (defn create-seed [seed-val]
-;;   {:s0_lo (byte (nth seed-val 0)) ;; QQ15
-;;    :s0_hi (byte (nth seed-val 0)) ;; QQ15+1
-;;    :s1_lo (byte (nth seed-val 1)) ;; QQ15+2
-;;    :s1_hi (byte (nth seed-val 1)) ;; QQ15+3
-;;    :s2_lo (byte (nth seed-val 2)) ;; QQ15+4
-;;    :s2_hi (byte (nth seed-val 2)) ;; QQ15+5
-;;   }
-;;   )
-
-;; (create-seed [4 5 346])
 
 
 (defn extract-seed-for-name-length
@@ -229,7 +133,53 @@
     3))
 
 
-(extract-seed-for-name-length (make-seed [65035 14 98]))
+;; (extract-seed-for-name-length (make-seed [65035 14 98]))
+;; =======
+;;     4 3))
+
+(get-seed-bytes
+ (make-seed [65535 65535 65535]))
+
+()
+
+
+(defn generate-name-start [seed]
+  (let [token-seed seed
+        planet-name ""
+        ]
+    [token-seed planet-name]))
+
+(defn generate-name [seed-token name-length name-in-progress]
+  )
+
+
+
+(defn twist-seed
+  "Takes a random seed and twists it using Elite's 'tribonocci' method."
+  [old-seed]
+  (let [bytes (get-seed-bytes old-seed)]
+    [(nth bytes 2)
+     (nth bytes 3)
+     (nth bytes 4)
+     (nth bytes 5)
+     (+ (nth bytes 0) (nth bytes 2) (nth bytes 4))
+     (+ (nth bytes 1) (nth bytes 3) (nth bytes 5))
+     ]))
+
+(defn hyperjump [old-seed]
+  (let [bits (get-seed-bits old-seed)]
+    (map (fn [seed]
+           (concat (rest seed) [(first seed)])) bits)))
+
+(get-seed-bytes
+ (twist-seed
+  (make-seed [65535 65535 65535])))
+
+
+
+
+
+
 
 (defn is-seed? [possible-seed]
   true ;; TODO: actually check
@@ -255,6 +205,7 @@
 
 
 (egrammar/goat-soup 0 "Santa Cruz")
+
 
 (defn run []
   (.log js/console "Hello")
