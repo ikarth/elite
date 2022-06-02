@@ -100,6 +100,17 @@
   (. view setUint16 4 (nth seed-vals 2) true) 
   view))
 
+(defn bytes-to-seed [seed-bytes]
+  (let [ab (js/ArrayBuffer. 6)
+        view (js/DataView. ab)]
+    (doseq [n (range 6)]
+      (. view setUint8 n (nth seed-bytes n) true))
+    view))
+
+;; (bytes-to-seed [0 1 2 3 4 5])
+;; (get-seed-bytes (bytes-to-seed [0 10 20 30 40 50]))
+
+
 (defn get-seed-bytes [seed]
   ;;{:pre [(spec/valid? :seed/data seed)]}
   (into [] (map #(. seed getUint8 %) (range 6) )))
@@ -112,7 +123,17 @@
          (concat (take extra (repeat 0))
                  num-vec))))
 
-(map byte-to-bin (get-seed-bytes (make-seed [9991494 14 98])))
+(defn bin-to-byte
+  "Convert a vector of 0s and 1s to a number."
+  [bin]
+  (reduce +
+          (map #(apply * %)
+               (map vector bin 
+                    (rseq (into [] (map #(Math/pow 2 %) (range (count bin)))))))))
+
+(bin-to-byte [1 1 1 1 1 1 1 1])
+
+(map bin-to-byte(map byte-to-bin (get-seed-bytes (make-seed [9991494 14 98]))))
 
 (defn get-seed-bits [seed byte-index start-index count-index]
   (subvec (into [] (nth (map byte-to-bin (get-seed-bytes seed)) byte-index))
@@ -137,6 +158,7 @@
 ;; =======
 ;;     4 3))
 
+(bytes)
 (get-seed-bytes
  (make-seed [65535 65535 65535]))
 
@@ -157,25 +179,77 @@
 (defn twist-seed
   "Takes a random seed and twists it using Elite's 'tribonocci' method."
   [old-seed]
-  (let [bytes (get-seed-bytes old-seed)]
-    [(nth bytes 2)
-     (nth bytes 3)
-     (nth bytes 4)
-     (nth bytes 5)
-     (+ (nth bytes 0) (nth bytes 2) (nth bytes 4))
-     (+ (nth bytes 1) (nth bytes 3) (nth bytes 5))
-     ]))
+  (let [bytes (get-seed-bytes old-seed)
+        twisted [(+ (nth bytes 2)
+                    (* 256 (nth bytes 3)))
+                 (+ (nth bytes 4)
+                    (* 256 (nth bytes 5)))
+                 (mod (+ (+ (nth bytes 0) (nth bytes 2) (nth bytes 4))
+                         (* 256 (+ (nth bytes 1) (nth bytes 3) (nth bytes 5)))
+                         )
+                      65536)]]
+    ;;(map )(map byte-to-bin twisted)
+    (make-seed twisted)
+    ))
+
+;; (defn twist-seed
+;;   "Takes a random seed and twists it using Elite's 'tribonocci' method."
+;;   [old-seed]
+;;   (let [bytes (get-seed-bytes old-seed)
+;;         twisted [(nth bytes 2)
+;;                  (nth bytes 3)
+;;                  (nth bytes 4)
+;;                  (nth bytes 5)
+;;                  (mod (+ (nth bytes 0) (nth bytes 2) (nth bytes 4)) 255)
+;;                  (mod (+ (nth bytes 1) (nth bytes 3) (nth bytes 5)) 255)
+                         
+;;                  ]]
+;;     (bytes-to-seed twisted)
+;;     ;;(make-seed twisted)
+;;     ))
+
+
+
 
 (defn hyperjump [old-seed]
-  (let [bits (get-seed-bits old-seed)]
+  (let [bits (map byte-to-bin (map #(. old-seed getUint8) (range 6)))]
     (map (fn [seed]
            (concat (rest seed) [(first seed)])) bits)))
 
+(map #(. % toString 16)
+     (get-seed-bytes (make-seed [0x5A4A 0x0248 0xB753])))
+
+(map #(. % toString 16)
+     (get-seed-bytes
+      (twist-seed
+       (make-seed [0x5A4A 0x0248 0xB753]))))
+(map #(. % toString 16)
+     (get-seed-bytes
+      (twist-seed
+       (twist-seed
+        (make-seed [0x5A4A 0x0248 0xB753])))))
+(map #(. % toString 16)
+     (get-seed-bytes
+      (twist-seed
+       (twist-seed
+        (twist-seed
+         (twist-seed
+          (make-seed [0x5A4A 0x0248 0xB753])))))))
+
+
 (get-seed-bytes
  (twist-seed
-  (make-seed [65535 65535 65535])))
+  (twist-seed
+   (twist-seed
+    (twist-seed
+     (make-seed [0x5A4A 0x0248 0xB753]))))))
 
+()
 
+(hyperjump (make-seed [1 2 3]))
+
+(hyperjump )
+(twist)
 
 
 
