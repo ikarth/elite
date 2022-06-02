@@ -133,7 +133,7 @@
 
 (bin-to-byte [1 1 1 1 1 1 1 1])
 
-(map bin-to-byte(map byte-to-bin (get-seed-bytes (make-seed [9991494 14 98]))))
+;;(map bin-to-byte(map byte-to-bin (get-seed-bytes (make-seed [9991494 14 98]))))
 
 (defn get-seed-bits [seed byte-index start-index count-index]
   (subvec (into [] (nth (map byte-to-bin (get-seed-bytes seed)) byte-index))
@@ -142,8 +142,7 @@
 
 (defn get-value-from-seed [seed byte-index start-index count-index]
   (let [array-of-bits (get-seed-bits seed byte-index start-index count-index)]
-    (js/parseInt (cstring/join "" array-of-bits))
-    ))
+    (js/parseInt (cstring/join "" array-of-bits))))
 
 
 (defn extract-seed-for-name-length
@@ -158,11 +157,10 @@
 ;; =======
 ;;     4 3))
 
-(bytes)
+;;(bytes)
 (get-seed-bytes
  (make-seed [65535 65535 65535]))
 
-()
 
 
 (defn generate-name-start [seed]
@@ -192,64 +190,70 @@
     (make-seed twisted)
     ))
 
-;; (defn twist-seed
-;;   "Takes a random seed and twists it using Elite's 'tribonocci' method."
-;;   [old-seed]
-;;   (let [bytes (get-seed-bytes old-seed)
-;;         twisted [(nth bytes 2)
-;;                  (nth bytes 3)
-;;                  (nth bytes 4)
-;;                  (nth bytes 5)
-;;                  (mod (+ (nth bytes 0) (nth bytes 2) (nth bytes 4)) 255)
-;;                  (mod (+ (nth bytes 1) (nth bytes 3) (nth bytes 5)) 255)
-                         
-;;                  ]]
-;;     (bytes-to-seed twisted)
-;;     ;;(make-seed twisted)
-;;     ))
-
 
 
 
 (defn hyperjump [old-seed]
-  (let [bits (map byte-to-bin (map #(. old-seed getUint8) (range 6)))]
-    (map (fn [seed]
-           (concat (rest seed) [(first seed)])) bits)))
+  (let [bits (map byte-to-bin (map #(. old-seed getUint8 %) (range 6)))
+        after-jump (map (fn [seed]
+                          (concat (rest seed) [(first seed)]))
+                        bits)
+        ]
+    ;; (println bits)
+    ;; (println after-jump)
+    (bytes-to-seed(map bin-to-byte after-jump))))
 
-(map #(. % toString 16)
-     (get-seed-bytes (make-seed [0x5A4A 0x0248 0xB753])))
 
-(map #(. % toString 16)
-     (get-seed-bytes
-      (twist-seed
-       (make-seed [0x5A4A 0x0248 0xB753]))))
-(map #(. % toString 16)
-     (get-seed-bytes
-      (twist-seed
-       (twist-seed
-        (make-seed [0x5A4A 0x0248 0xB753])))))
-(map #(. % toString 16)
-     (get-seed-bytes
-      (twist-seed
-       (twist-seed
-        (twist-seed
+;; Tests for making and twisting seeds
+(= "4a5a48253b7"
+   (apply
+    str
+    (map #(. % toString 16)
+         (get-seed-bytes (make-seed [0x5A4A 0x0248 0xB753])))))
+
+
+(= '("48" "2" "53" "b7" "e5" "13")
+   (map #(. % toString 16)
+        (get-seed-bytes
          (twist-seed
-          (make-seed [0x5A4A 0x0248 0xB753])))))))
+          (make-seed [0x5A4A 0x0248 0xB753])))))
+
+(= '("53" "b7" "e5" "13" "80" "cd")
+   (map #(. % toString 16)
+        (get-seed-bytes
+         (twist-seed
+          (twist-seed
+           (make-seed [0x5A4A 0x0248 0xB753]))))))
+
+(= '("80" "cd" "b8" "98" "1d" "7a")
+   (map #(. % toString 16)
+        (get-seed-bytes
+         (twist-seed
+          (twist-seed
+           (twist-seed
+            (twist-seed
+             (make-seed [0x5A4A 0x0248 0xB753]))))))))
 
 
-(get-seed-bytes
- (twist-seed
+(= [128 205 184 152 29 122]
+ (get-seed-bytes
   (twist-seed
    (twist-seed
     (twist-seed
-     (make-seed [0x5A4A 0x0248 0xB753]))))))
+     (twist-seed
+      (make-seed [0x5A4A 0x0248 0xB753])))))))
 
-()
+;; Test making seeds from input
+(= [74 90 72 2 83 183] (get-seed-bytes (make-seed [0x5A4A 0x0248 0xB753])))
+(= '((0 1 0 0 1 0 1 0) (0 1 0 1 1 0 1 0) (0 1 0 0 1 0 0 0) (0 0 0 0 0 0 1 0) (0 1 0 1 0 0 1 1) (1 0 1 1 0 1 1 1))
 
-(hyperjump (make-seed [1 2 3]))
+   (map byte-to-bin (get-seed-bytes (make-seed [0x5A4A 0x0248 0xB753]))))
+;; Test hyperjump
+(= '("94" "b4" "90" "4" "a6" "6f")
+ (map #(. % toString 16)
+      (get-seed-bytes
+       (hyperjump (make-seed [0x5A4A 0x0248 0xB753])))))
 
-(hyperjump )
-(twist)
 
 
 
