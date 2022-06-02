@@ -224,10 +224,12 @@
 (defn extract-seed-for-name-length
   "Given a planet seed, determine the length of the name (3 or 4 digraphs)"
   [seed]
-  (get-value-from-seed seed (:s0_lo elite-index) 6 1)
+  (if (get-value-from-seed seed (:s0_lo elite-index) 6 1)
+    4
+    3))
 
 
-  )
+(extract-seed-for-name-length (make-seed [65035 14 98]))
 
 (defn is-seed? [possible-seed]
   true ;; TODO: actually check
