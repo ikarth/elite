@@ -160,24 +160,6 @@
     (js/parseInt (cstring/join "" array-of-bits))))
 
 
-(defn extract-seed-for-name-length
-  "Given a planet seed, determine the length of the name (3 or 4 digraphs)"
-  [seed]
-  (if (get-value-from-seed seed (:s0_lo elite-index) 6 1)
-    4
-    3))
-
-
-;; (extract-seed-for-name-length (make-seed [65035 14 98]))
-;; =======
-;;     4 3))
-
-;; Test (bytes)
-(= [131 234 135 25 255 255]
-   (get-seed-bytes
-    (make-seed [60035 6535 65535])))
-
-
 
 
 (defn twist-seed
@@ -280,7 +262,8 @@
 ;; I'm storing them from 0-31 here instead of the original 128 to 159, because I don't need to cram it into the same memory as the other text glyphs and commands so we save an extra step.
 (def elite-planet-name-digraphs
   [
- "AL"              ; Token 128
+   "" ;; for planet names, 0 is a special case. I'm encoding this in this table instead of in the function.
+   ;;"AL"              ; Token 128
  "LE"              ; Token 129
  "XE"              ; Token 130
  "GE"              ; Token 131
@@ -318,6 +301,30 @@
   )
 
 
+
+(defn extract-seed-for-name-length
+  "Given a planet seed, determine the length of the name (3 or 4 digraphs)"
+  [seed]
+  (println "extract-seed-for-name-length")
+  (println (get-value-from-seed seed (:s0_lo elite-index) 0 8))
+  (println (map byte-to-bin (get-seed-bytes seed)))
+  ;;(println (get-value-from-seed seed (:s0_hi elite-index) 0 8))
+  (if (get-value-from-seed seed (:s0_hi elite-index) 1 1)
+    4
+    3))
+
+
+;; (extract-seed-for-name-length (make-seed [65035 14 98]))
+;; =======
+;;     4 3))
+
+;; Test (bytes)
+(= [131 234 135 25 255 255]
+   (get-seed-bytes
+    (make-seed [60035 6535 65535])))
+
+
+
 (defn generate-name-start [seed]
   (let [token-seed seed
         name-length-remaining (extract-seed-for-name-length seed)
@@ -326,29 +333,43 @@
     [token-seed name-length-remaining planet-name]))
 
 
-(defn generate-name [seed-token name-length-remaining name-in-progress]
-  (if (< 1 name-length-remaining)
-    name-in-progress
-    (let [new-token (twist-seed seed-token)
-          digraph-index (get-seed-bits get-seed-bits
-                         (:s2_hi elite-index) 0 4)
-          digraph (get elite-planet-name-digraphs digraph-index)
-          ]
-      (println digraph-index)
-
-      [new-token
-       (dec name-length-remaining)
-       (concat name-in-progress digraph)]
-      )))
+(defn generate-name [input]
+  (if (string? input)
+    input
+    (let [[seed-token name-length-remaining name-in-progress] input]
+      
+      (if (< name-length-remaining 1)
+        name-in-progress
+        (let [new-token (twist-seed seed-token)
+              index-bits (get-seed-bits seed-token
+                                        (:s2_hi elite-index) 3 5)
+              digraph-index (bin-to-byte index-bits)
+              digraph (get elite-planet-name-digraphs digraph-index)
+              ]
+          (println [(get-seed-bits seed-token
+                                   (:s2_hi elite-index) 0 8)
+                    index-bits
+                    digraph
+                    digraph-index
+                    name-length-remaining])
+          [new-token
+           (dec name-length-remaining)
+           (str name-in-progress digraph)
+           ]
+          )))))
 
  
 (let [[a b c] (generate-name-start elite-seed)]
-(generate-name a b c)
-  )
+  (generate-name [a b c]))
 
+(generate-name
+ (generate-name
+  (generate-name
+   (generate-name
+    (generate-name
+     (generate-name-start elite-seed))))))
 
-    
-
+(last (take 7 (iterate generate-name (generate-name-start planet-two))))
 
 (defn planet-government
   "Planet government is a number from 0 to 7, extracted directly from the bits in the seed.
@@ -558,12 +579,15 @@
           tech (planet-tech-level p econ gov)
           pop (planet-population-size tech econ gov)
           prod (planet-productivity econ gov pop)
+          name (last (take 7 (iterate generate-name (generate-name-start p))))
           ]
       (println
        (map 
         #(str %1 ":\t "%2 "\n")
-        ["id" "seed" "government" "economy" "tech-level" "population size" "productivity"]
+        ["id" "name" "seed" "government" "economy" "tech-level" "population size" "productivity"]
         [r
+         name
+         ;(map byte-to-bin (get-seed-bytes p))
          (map #(. % toString 16) (get-seed-bytes p))
          (government-name gov)
          (economy-name econ)
