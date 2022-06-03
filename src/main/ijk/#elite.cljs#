@@ -331,7 +331,7 @@
         name-length-remaining (extract-seed-for-name-length seed)
         planet-name ""
         ]
-    (println name-length-remaining)
+    ;;(println name-length-remaining)
     [token-seed name-length-remaining planet-name]))
 
 
@@ -339,7 +339,6 @@
   (if (string? input)
     input
     (let [[seed-token name-length-remaining name-in-progress] input]
-      
       (if (< name-length-remaining 1)
         name-in-progress
         (let [new-token (twist-seed seed-token)
@@ -348,12 +347,12 @@
               digraph-index (bin-to-byte index-bits)
               digraph (get elite-planet-name-digraphs digraph-index)
               ]
-          (println [(get-seed-bits seed-token
-                                   (:s2_hi elite-index) 0 8)
-                    index-bits
-                    digraph
-                    digraph-index
-                    name-length-remaining])
+          ;; (println [(get-seed-bits seed-token
+          ;;                          (:s2_hi elite-index) 0 8)
+          ;;           index-bits
+          ;;           digraph
+          ;;           digraph-index
+          ;;           name-length-remaining])
           [new-token
            (dec name-length-remaining)
            (str name-in-progress digraph)
@@ -561,10 +560,18 @@
 (def planet-seed-list
   (reduce (fn [current next-id] (concat current [(twist-to-next-planet (last current))]))
           [elite-seed]
-          (range 16)))
+          (range 259)))
 
 
 (def auth-tech [9 7 8 12 7 10 9 5 12 7 3 10 9 7 7 8 9 8 7 7 9 4 11 14 8])
+
+
+
+(let []
+  (doseq [[r p] (map-indexed (fn [index item] [index item]) planet-seed-list)]
+    (let [name (last (take 6 (iterate generate-name (generate-name-start p))))
+          ]
+      (println (str r "\t" name)))))
 
 (let []
   (println "\n\n\n\n\n\n\n\n\n\n\n\n")
@@ -592,7 +599,7 @@
           prod (planet-productivity econ gov pop)
           name (last (take 7 (iterate generate-name (generate-name-start p))))
           ]
-      (println
+      (println 
        (map 
         #(str %1 ":\t "%2 "\n")
         ["id" "name" "seed" "government" "economy" "tech-level" "population size" "productivity"]
