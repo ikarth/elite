@@ -179,16 +179,6 @@
 
 
 
-(defn generate-name-start [seed]
-  (let [token-seed seed
-        planet-name ""
-        ]
-    [token-seed planet-name]))
-
-(defn generate-name [seed-token name-length name-in-progress]
-  )
-
-
 
 (defn twist-seed
   "Takes a random seed and twists it using Elite's 'tribonocci' method."
@@ -286,9 +276,75 @@
       twist-seed))
 
 
+;; .QQ16 in the original code.
+;; I'm storing them from 0-31 here instead of the original 128 to 159, because I don't need to cram it into the same memory as the other text glyphs and commands so we save an extra step.
+(def elite-planet-name-digraphs
+  [
+ "AL"              ; Token 128
+ "LE"              ; Token 129
+ "XE"              ; Token 130
+ "GE"              ; Token 131
+ "ZA"              ; Token 132
+ "CE"              ; Token 133
+ "BI"              ; Token 134
+ "SO"              ; Token 135
+ "US"              ; Token 136
+ "ES"              ; Token 137
+ "AR"              ; Token 138
+ "MA"              ; Token 139
+ "IN"              ; Token 140
+ "DI"              ; Token 141
+ "RE"              ; Token 142
+ "A"               ; Token 143, originally "A?"
+ "ER"              ; Token 144
+ "AT"              ; Token 145
+ "EN"              ; Token 146
+ "BE"              ; Token 147
+ "RA"              ; Token 148
+ "LA"              ; Token 149
+ "VE"              ; Token 150
+ "TI"              ; Token 151
+ "ED"              ; Token 152
+ "OR"              ; Token 153
+ "QU"              ; Token 154
+ "AN"              ; Token 155
+ "TE"              ; Token 156
+ "IS"              ; Token 157
+ "RI"              ; Token 158
+ "ON"              ; Token 159
+
+   ]
+
+  )
 
 
+(defn generate-name-start [seed]
+  (let [token-seed seed
+        name-length-remaining (extract-seed-for-name-length seed)
+        planet-name ""
+        ]
+    [token-seed name-length-remaining planet-name]))
 
+
+(defn generate-name [seed-token name-length-remaining name-in-progress]
+  (if (< 1 name-length-remaining)
+    name-in-progress
+    (let [new-token (twist-seed seed-token)
+          digraph-index (get-seed-bits get-seed-bits
+                         (:s2_hi elite-index) 0 4)
+          digraph (get elite-planet-name-digraphs digraph-index)
+          ]
+      (println digraph-index)
+
+      [new-token
+       (dec name-length-remaining)
+       (concat name-in-progress digraph)]
+      )))
+
+ 
+(let [[a b c] (generate-name-start elite-seed)]
+(generate-name a b c)
+  )
 
 
     
