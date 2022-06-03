@@ -331,7 +331,7 @@
         name-length-remaining (extract-seed-for-name-length seed)
         planet-name ""
         ]
-    (println name-length-remaining)
+    ;;(println name-length-remaining)
     [token-seed name-length-remaining planet-name]))
 
 
@@ -339,7 +339,6 @@
   (if (string? input)
     input
     (let [[seed-token name-length-remaining name-in-progress] input]
-      
       (if (< name-length-remaining 1)
         name-in-progress
         (let [new-token (twist-seed seed-token)
@@ -348,12 +347,12 @@
               digraph-index (bin-to-byte index-bits)
               digraph (get elite-planet-name-digraphs digraph-index)
               ]
-          (println [(get-seed-bits seed-token
-                                   (:s2_hi elite-index) 0 8)
-                    index-bits
-                    digraph
-                    digraph-index
-                    name-length-remaining])
+          ;; (println [(get-seed-bits seed-token
+          ;;                          (:s2_hi elite-index) 0 8)
+          ;;           index-bits
+          ;;           digraph
+          ;;           digraph-index
+          ;;           name-length-remaining])
           [new-token
            (dec name-length-remaining)
            (str name-in-progress digraph)
@@ -361,26 +360,6 @@
           )))))
 
  
-(let [[a b c] (generate-name-start elite-seed)]
-  (generate-name [a b c]))
-
-(generate-name
- (generate-name
-  (generate-name
-   (generate-name
-    (generate-name
-     (generate-name-start elite-seed))))))
-
-(last (take 7 (iterate generate-name (generate-name-start planet-two))))
-
-
-(let [e1 (last (take 7 (iterate generate-name (generate-name-start elite-seed))))
-      e2 (last (take 7 (iterate generate-name (generate-name-start planet-two))))]
-  [(= e1 "TIBEDIED")
-   e1
-   (= e2 "QUBE")
-   e2
-   ])
 
 (defn planet-government
   "Planet government is a number from 0 to 7, extracted directly from the bits in the seed.
@@ -436,7 +415,7 @@
                        (:s0_hi elite-index)
                        5 3)
         adjusted (assoc eco-base 1 (if (< planet-government 2) 1 (nth eco-base 1)))
-        type (nth eco-base 2)
+        type (nth eco-base 0)
         prosperity (bin-to-byte adjusted)
         ;; Returning both the prosperity-coerced-to-an-integer *and* the flipped number
         ;; is an example of how the original code compactly reuses its computational
@@ -446,6 +425,7 @@
         ;;flipped-economy (bin-to-byte (invert-bits adjusted))
         ;; ...on second thought, I wrote the byte-flipping function.
         ]
+    (println [eco-base adjusted prosperity])
     [type prosperity]))
 
 
@@ -561,10 +541,38 @@
 (def planet-seed-list
   (reduce (fn [current next-id] (concat current [(twist-to-next-planet (last current))]))
           [elite-seed]
-          (range 16)))
+          (range 255)))
 
 
 (def auth-tech [9 7 8 12 7 10 9 5 12 7 3 10 9 7 7 8 9 8 7 7 9 4 11 14 8])
+
+
+(let [[a b c] (generate-name-start elite-seed)]
+  (generate-name [a b c]))
+
+(generate-name
+ (generate-name
+  (generate-name
+   (generate-name
+    (generate-name
+     (generate-name-start elite-seed))))))
+
+(last (take 7 (iterate generate-name (generate-name-start planet-two))))
+
+
+(let [e1 (last (take 7 (iterate generate-name (generate-name-start elite-seed))))
+      e2 (last (take 7 (iterate generate-name (generate-name-start planet-two))))]
+  [(= e1 "TIBEDIED")
+   e1
+   (= e2 "QUBE")
+   e2
+   ])
+
+(let []
+  (doseq [[r p] (map-indexed (fn [index item] [index item]) planet-seed-list)]
+    (let [name (last (take 6 (iterate generate-name (generate-name-start p))))
+          ]
+      (println (str r "\t" name)))))
 
 (let []
   (println "\n\n\n\n\n\n\n\n\n\n\n\n")
@@ -572,19 +580,7 @@
                                [index item])
                              planet-seed-list)
           ]
-     ;;[econ (planet-economy p (planet-government p))]
-      ;;(println "=======")
-      ;;(println r " -> " (map #(. % toString 16) (get-seed-bytes p)))
-      ;;(println (government-name (planet-government p)))
-      ;;(println (economy-name econ))
-      ;;(println (byte-to-bin (second econ)))
-      ;; (println "TL: "(planet-tech-level
-      ;;           p
-      ;;           econ
-      ;;           (planet-government p)))
-
-
-
+ 
     (let [gov (planet-government p)
           econ (planet-economy p (planet-government p))
           tech (planet-tech-level p econ gov)
@@ -592,7 +588,7 @@
           prod (planet-productivity econ gov pop)
           name (last (take 7 (iterate generate-name (generate-name-start p))))
           ]
-      (println
+      (println 
        (map 
         #(str %1 ":\t "%2 "\n")
         ["id" "name" "seed" "government" "economy" "tech-level" "population size" "productivity"]
@@ -607,17 +603,7 @@
          prod
          ])))
       
-      ;; (println (nth auth-tech r))
-      ;; (println
-      ;;  (-
-      ;;   (nth auth-tech r)
-      ;;   (last
-      ;;    (planet-tech-level
-      ;;     p
-      ;;     econ
-      ;;     (planet-government p)
-      ;;     ))))
-
+ 
       ))
 
 
