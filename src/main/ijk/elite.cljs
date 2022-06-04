@@ -439,6 +439,61 @@
      (clojure.math/ceil (/ government 2))))
 
 
+(def species-table
+  [["Large ", "Fierce ", "Small ", "", "", "", "", ""]
+  ["Green " "Red " "Yellow" "Blue " "Black " "Harmless " "" "" "" ""]
+  ["Slimy " "Bug-eyed " "Horned " "Bony " "Fat ", "Furry ", "", ""]
+  ["Rodents"
+   "Frogs"
+   "Lizards"
+   "Birds"
+   "Humanoids"
+   "Felines"
+   "Insects"]
+   ])
+
+
+;; 01234567
+;; 76543210
+
+(defn planet-species
+  [seed]
+  ;; (println (bin-to-byte (get-seed-bits seed (:s2_lo elite-index) 0 8))
+  ;;          (get-seed-bits seed (:s2_lo elite-index) 0 1))
+  ;; (println [(into []
+  ;;                 (byte-to-bin
+  ;;                  (bit-xor
+  ;;                   (bin-to-byte (get-seed-bits seed (:s0_hi elite-index) 0 8))
+  ;;                   (bin-to-byte (get-seed-bits seed (:s1_hi elite-index) 0 8)))))
+  ;;           (byte-to-bin
+             
+  ;;            (bin-to-byte (get-seed-bits seed (:s0_hi elite-index) 0 8)))
+  ;;           (byte-to-bin (bin-to-byte (get-seed-bits seed (:s1_hi elite-index) 0 8)))
+          
+
+  ;;           ]
+  ;;         )
+  (if (= 0 
+         (first (get-seed-bits seed (:s2_lo elite-index) 0 1))
+         )
+    "Human Colonials"
+    (let [texture (into []
+                    (byte-to-bin
+                     (bit-xor
+                      (bin-to-byte (get-seed-bits seed (:s0_hi elite-index) 0 8))
+                      (bin-to-byte (get-seed-bits seed (:s1_hi elite-index) 0 8)))))
+          type (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 6 2))
+          species-id [(bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 3 3)) ;; size
+                      (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 0 3)) ;; color
+                      (bin-to-byte (subvec texture 6)) ;; texture
+                      (bin-to-byte (subvec (into [] (byte-to-bin (+ type (bin-to-byte texture)))) 6))]] ;; type
+      (apply str 
+       (map #(get %2 %1) species-id species-table)))))
+
+
+(planet-species (make-seed "fa57" "301d" "b317"))
+(planet-species elite-seed)
+
 ;; (get-seed-bits elite-seed (:s1_hi elite-index) 0 8)
 
 ;; (planet-tech-level
@@ -587,15 +642,17 @@
           pop (planet-population-size tech econ gov)
           prod (planet-productivity econ gov pop)
           name (last (take 7 (iterate generate-name (generate-name-start p))))
+          species (planet-species p)
           ]
       (println 
        (map 
         #(str %1 ":\t "%2 "\n")
-        ["id" "name" "seed" "government" "economy" "tech-level" "population size" "productivity"]
+        ["id" "name" "seed" "species" "government" "economy" "tech-level" "population size" "productivity"]
         [r
          name
          ;(map byte-to-bin (get-seed-bytes p))
          (map #(. % toString 16) (get-seed-bytes p))
+         species
          (government-name gov)
          (economy-name econ)
          tech
