@@ -486,13 +486,23 @@
           species-id [(bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 3 3)) ;; size
                       (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 0 3)) ;; color
                       (bin-to-byte (subvec texture 6)) ;; texture
-                      (bin-to-byte (subvec (into [] (byte-to-bin (+ type (bin-to-byte texture)))) 6))]] ;; type
+                      (bin-to-byte (subvec (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 6))
+                                                                    (bin-to-byte (subvec texture 6))))) 5))]] ;; type
       (apply str 
        (map #(get %2 %1) species-id species-table)))))
 
-
-(planet-species (make-seed "fa57" "301d" "b317"))
-(planet-species elite-seed)
+(last (take 6
+            (iterate
+             generate-name (generate-name-start (make-seed [0xfa57 0x301d 0xb317]))
+             
+             )))
+(last (take 6
+            (iterate
+             generate-name (generate-name-start (make-seed [0x57fa 0x1d30 0x17b3]))
+             
+             )))
+(planet-species (make-seed [0x57fa 0x1d30 0x17b3]))
+;;(planet-species elite-seed)
 
 ;; (get-seed-bits elite-seed (:s1_hi elite-index) 0 8)
 
@@ -629,41 +639,40 @@
           ]
       (println (str r "\t" name)))))
 
-(let []
-  (println "\n\n\n\n\n\n\n\n\n\n\n\n")
-  (doseq [[r p] (map-indexed (fn [index item]
-                               [index item])
-                             planet-seed-list)
-          ]
- 
-    (let [gov (planet-government p)
-          econ (planet-economy p (planet-government p))
-          tech (planet-tech-level p econ gov)
-          pop (planet-population-size tech econ gov)
-          prod (planet-productivity econ gov pop)
-          name (last (take 7 (iterate generate-name (generate-name-start p))))
-          species (planet-species p)
-          ]
-      (println 
-       (map 
-        #(str %1 ":\t "%2 "\n")
-        ["id" "name" "seed" "species" "government" "economy" "tech-level" "population size" "productivity"]
-        [r
-         name
-         ;(map byte-to-bin (get-seed-bytes p))
-         (map #(. % toString 16) (get-seed-bytes p))
-         species
-         (government-name gov)
-         (economy-name econ)
-         tech
-         pop
-         prod
-         ])))
+(defn test-galaxy-generator []
+  (let []
+    (println "\n\n\n\n\n\n\n\n\n\n\n\n")
+    (doseq [[r p] (map-indexed (fn [index item]
+                                 [index item])
+                               planet-seed-list)
+            ]
       
- 
-      ))
+      (let [gov (planet-government p)
+            econ (planet-economy p (planet-government p))
+            tech (planet-tech-level p econ gov)
+            pop (planet-population-size tech econ gov)
+            prod (planet-productivity econ gov pop)
+            name (last (take 7 (iterate generate-name (generate-name-start p))))
+            species (planet-species p)
+            ]
+        (if (< 250 r )
+          (println 
+           (map 
+            #(str %1 ":\t "%2 "\n")
+            ["id" "name" "seed" "species" "government" "economy" "tech-level" "population size" "productivity"]
+            [r
+             name
+                                        ;(map byte-to-bin (get-seed-bytes p))
+             (map #(. % toString 16) (get-seed-bytes p))
+             species
+             (government-name gov)
+             (economy-name econ)
+             tech
+             pop
+             prod
+             ])))))))
 
-
+(test-galaxy-generator )
 
 
 
