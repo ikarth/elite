@@ -82,6 +82,28 @@
    ;(spec/every #(>= 0 % 255) :count 6)
    ))
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ;; (spec/def :seed/data
 ;;   (spec/and
    
@@ -452,6 +474,21 @@
    "Insects"]
    ])
 
+(defn bitwise-add-vec
+ "take two boolean vectors and add them, emulating the BBC micro behavior"
+ [one two]
+ ;; (reduce
+ ;;  (fn [construct adders]
+ ;;    (let [new-sum
+ ;;          (map + adders)]
+ ;;      )
+ ;;    )
+ ;;  [] (interleave (reverse one) (reverse two)))
+ ;; [ 0 0 0 0  0 0 0 0]
+ (byte-to-bin
+  (+
+   (bin-to-byte one)
+   (bin-to-byte two))))
 
 ;; 01234567
 ;; 76543210
@@ -477,32 +514,47 @@
          (first (get-seed-bits seed (:s2_lo elite-index) 0 1))
          )
     "Human Colonials"
-    (let [texture (into []
-                        (map (fn [a b] (if (not= a b) 1 0))
-                         (get-seed-bits seed (:s0_hi elite-index) 0 8)
-                         (get-seed-bits seed (:s1_hi elite-index) 0 8)))
+    (let [register-A 
+          (vec (concat [0 0]
+                       (into [] (get-seed-bits seed (:s2_hi elite-index) 0 6))))
+          species-size  (bin-to-byte (mapv *
+                                          [0 0 0 0 0 1 1 1]
+                                          register-A))
+          species-color (subvec register-A 3 5)          
+          texture (mapv * [0 0 0 0 0 1 1 1]
+                       (mapv (fn [a b] (if (not= a b) 1 0))
+                            (get-seed-bits seed (:s0_hi elite-index) 0 8)
+                            (get-seed-bits seed (:s1_hi elite-index) 0 8)))
+          species-name (mapv * [0 0 0 0 0 1 1 1]
+                             (bitwise-add-vec
+                              (mapv * [0 0 0 0 0 0 1 1] register-A)
+                              texture))
+          
           type (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 6 2))
-          genus (get-seed-bits seed (:s2_hi elite-index) 6 2)
+          genus (mapv * [0 0 0 0 0 0 1 1] (get-seed-bits seed (:s2_hi elite-index) 0 8))
           species-id [(bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 3 3)) ;; size
                       (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 0 3)) ;; color
                       (bin-to-byte (subvec texture 5)) ;; texture
                       ;; (bin-to-byte (subvec (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 6))
                       ;;                                               (bin-to-byte (subvec texture 5))))) 5))
-                      (bin-to-byte (subvec (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 5)) (bin-to-byte genus)))) 5))
+                      (bin-to-byte (mapv * [0 0 0 0 0 1 1 1] (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 5)) (bin-to-byte genus))))))
 
                       ]] ;; type
       (comment )
       (println ["\n* * * *\n"
+                register-A "\n"
                 (get-seed-bits seed (:s2_hi elite-index) 0 8) "\n"
                 (get-seed-bits seed (:s0_hi elite-index) 0 8) "\n"
                 (get-seed-bits seed (:s1_hi elite-index) 0 8) "\n"
                 texture "\n"
                 genus "\n"
-                (subvec texture 5) " + " genus " = " (byte-to-bin (+ (bin-to-byte (subvec texture 5)) (bin-to-byte genus))) "\n"
-                (bin-to-byte (subvec  texture 5)) " + " (bin-to-byte genus)
+                texture "+" genus "=" (byte-to-bin (+ (bin-to-byte texture) (bin-to-byte genus))) "\n"
+                (bin-to-byte  texture) " + " (bin-to-byte genus)
                 " = "
-                (+ (bin-to-byte (subvec texture 5)) (bin-to-byte genus)) "\n"
+                (+ (bin-to-byte texture) (bin-to-byte genus)) "\nOR\n"
+                (bin-to-byte (mapv * [0 0 0 0 0 1 1 1] (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 5)) (bin-to-byte genus)))))) "\n"
                 (subvec (into [] (byte-to-bin (+ (bin-to-byte texture) (bin-to-byte genus)))) 4) "\n"
+                (apply str        (map #(get %2 %1) species-id species-table)) "\n"
                 ;;(byte-to-bin (+ (bin-to-byte texture) (bin-to-byte genus))) "\n"
                 ;; genus
                 ;; texture type
@@ -739,9 +791,27 @@
              prod
              ])))))))
 
-(test-galaxy-generator )
+;;(test-galaxy-generator )
 
 
+
+
+(def generative-operations
+  [;;{:op-function generate-galaxy}
+   {:op-function make-seed}
+   ;;{:op-function next-planet}
+   {:input :seed/planet-seed
+    :output :planet/government-type 
+    :op-function planet-government}
+   {:op-function planet-economy}
+   {:op-function planet-tech-level}
+   {:op-function planet-population-size}
+   {:op-function planet-productivity}
+   {:op-function generate-name-start}
+   {:op-function generate-name}
+   {:op-function planet-species}
+   ]
+  )
 
 
 

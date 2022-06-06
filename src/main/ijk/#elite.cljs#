@@ -82,6 +82,39 @@
    ;(spec/every #(>= 0 % 255) :count 6)
    ))
 
+
+(def elite-schema
+  :seed/planet       {:db/cardinality :db.cardinality/one}
+  :seed/description
+  :seed/galaxy
+  :planet/economy-type
+  :planet/species
+  :planet/government-type
+  :planet/name-length
+  :planet/partial-name
+  :planet/name
+  :planet
+  )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ;; (spec/def :seed/data
 ;;   (spec/and
    
@@ -452,7 +485,7 @@
    "Insects"]
    ])
 
-(bitwise-add-vec
+(defn bitwise-add-vec
  "take two boolean vectors and add them, emulating the BBC micro behavior"
  [one two]
  ;; (reduce
@@ -752,7 +785,7 @@
             name (last (take 7 (iterate generate-name (generate-name-start p))))
             species (planet-species p)
             ]
-        (if (< 245 r )
+        (if true;(< 245 r )
           (println 
            (map 
             #(str %1 ":\t "%2 "\n")
@@ -772,6 +805,24 @@
 (test-galaxy-generator )
 
 
+
+
+(def generative-operations
+  [;;{:op-function generate-galaxy}
+   {:op-function make-seed}
+   ;;{:op-function next-planet}
+   {:input :seed/planet-seed
+    :output :planet/government-type 
+    :op-function planet-government}
+   {:op-function planet-economy}
+   {:op-function planet-tech-level}
+   {:op-function planet-population-size}
+   {:op-function planet-productivity}
+   {:op-function generate-name-start}
+   {:op-function generate-name}
+   {:op-function planet-species}
+   ]
+  )
 
 
 
