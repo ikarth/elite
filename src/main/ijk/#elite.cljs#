@@ -483,6 +483,7 @@
                       (bin-to-byte (get-seed-bits seed (:s0_hi elite-index) 0 8))
                       (bin-to-byte (get-seed-bits seed (:s1_hi elite-index) 0 8)))))
           type (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 6 2))
+          genus (get-seed-bits seed (:s2_hi elite-index) 6 2)
           species-id [(bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 3 3)) ;; size
                       (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 0 3)) ;; color
                       (bin-to-byte (subvec texture 5)) ;; texture
@@ -490,6 +491,8 @@
                                                                     (bin-to-byte (subvec texture 5))))) 5))]] ;; type
       (comment )
       (println [texture type
+                "\n\n"
+                genus
                 "\n>>>"
                 species-id
                   ;;(subvec texture 5)
@@ -503,8 +506,8 @@
                   (bin-to-byte texture)
                   (bin-to-byte (subvec texture 6))
                   "="
-                  (+ type (bin-to-byte (subvec texture 6)))
-                  (byte-to-bin (+ type (bin-to-byte (subvec texture 6))))
+                (+ (bin-to-byte (subvec texture 5)) (bin-to-byte (subvec texture 6)))
+                  (byte-to-bin (+ (bin-to-byte (subvec texture 5)) (bin-to-byte (subvec texture 6))))
                   ])
       (apply str 
        (map #(get %2 %1) species-id species-table)))))
