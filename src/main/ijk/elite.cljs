@@ -83,6 +83,18 @@
    ))
 
 
+(def elite-schema
+  :seed/planet       {:db/cardinality :db.cardinality/one}
+  :seed/description
+  :seed/galaxy
+  :planet/economy-type
+  :planet/species
+  :planet/government-type
+  :planet/name-length
+  :planet/partial-name
+  :planet/name
+  :planet
+  )
 
 
 
@@ -90,8 +102,7 @@
 
 
 
-
-
+@current-database
 
 
 
@@ -355,6 +366,30 @@
         ]
     ;;(println name-length-remaining)
     [token-seed name-length-remaining planet-name]))
+
+(defn op-generate-name-start [seed]
+  (zipmap [::seed/token-seed
+           ::number/name-length-remaining
+           ::string/planet-name-partial]
+          (generate-name-start seed)))
+
+;; Ways we could design this DSL:
+;;
+;; * We could have the op functions explicitly map the outputs to datalog keys.
+;;      - Needs to specify for every function
+;;      - Most functions just need a straightforward list, so might implement something to auto-assemble a wrapper function.
+;; * For inputs, we could consume everything (removing it from the blackboard) and only keep the ones that get output again
+;;      - Seems a bit wasteful
+;;      - have to remember to specify all of the non-consumed terms all of the time
+;;      + relatively straightforward
+;; * We could add some kind of indicator to flag stuff that gets consumed
+;;      - Seems like it complicates the grammar a lot
+;; * We could indicate stuff getting consumed as part of the output
+;; * We could ignore the problem for the moment.
+
+
+;;(exec-func db-conn )
+
 
 
 (defn generate-name [input]
@@ -774,7 +809,7 @@
             name (last (take 7 (iterate generate-name (generate-name-start p))))
             species (planet-species p)
             ]
-        (if (< 245 r )
+        (if true;(< 245 r )
           (println 
            (map 
             #(str %1 ":\t "%2 "\n")
@@ -800,15 +835,26 @@
   [;;{:op-function generate-galaxy}
    {:op-function make-seed}
    ;;{:op-function next-planet}
-   {:input :seed/planet-seed
-    :output :planet/government-type 
+   {:input ::seed/planet-seed
+    :output ::planet/government-type 
     :op-function planet-government}
    {:op-function planet-economy}
    {:op-function planet-tech-level}
    {:op-function planet-population-size}
    {:op-function planet-productivity}
-   {:op-function generate-name-start}
-   {:op-function generate-name}
+   
+   {:input ::seed/planet-seed
+    :output [::seed/name-token-seed
+             ::number/planet-name-length
+             ::string/planet-name-partial]    
+    :op-function generate-name-start
+    {:input [::seed/name-token-seed
+             ::number/planet-name-length
+             ::string/planet-name-partial]
+     :output []
+     :op-function generate-name
+
+     }}
    {:op-function planet-species}
    ]
   )
