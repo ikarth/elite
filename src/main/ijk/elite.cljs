@@ -29,36 +29,39 @@
                     idx))
                 coll))
 
-(def database-records
-  {})
+;; (def database-records
+;;   {:elite {:db-conn }})
 
 (defonce current-database
   (atom {:db-conn nil
-         :db-schema {}}))
+         :db-schema {}
+         }))
 
 
 (defn setup [])
 
-(defn update-database [database-id]
-  (let [new-database (get database-records database-id :default-database)]
-    (if (and new-database (get new-database :db-conn false))
-      (let [swap-in! (fn [db-id]
-                       (swap! current-database assoc-in [db-id]
-                              (get new-database db-id)))]
-        (swap-in! :db-conn)
-        (swap-in! :db-schema)
-        )
-      (println (str "Database not found: " database-id)))))
 
-(defn reset-the-database!
-  [database-id]
-  (update-database database-id)
-  (if-let [db-conn (get @current-database :db-conn)]
-    (let [db-schema (get @current-database :db-conn)]
-      (d/reset-conn! db-conn (d/empty-db db-schema))
-      ;; TODO: any initial transactions go here...
-      db-conn
-      )))
+
+;; (defn update-database [database-id]
+;;   (let [new-database (get database-records database-id :default-database)]
+;;     (if (and new-database (get new-database :db-conn false))
+;;       (let [swap-in! (fn [db-id]
+;;                        (swap! current-database assoc-in [db-id]
+;;                               (get new-database db-id)))]
+;;         (swap-in! :db-conn)
+;;         (swap-in! :db-schema)
+;;         )
+;;       (println (str "Database not found: " database-id)))))
+
+;; (defn reset-the-database!
+;;   [database-id]
+;;   (update-database database-id)
+;;   (if-let [db-conn (get @current-database :db-conn)]
+;;     (let [db-schema (get @current-database :db-conn)]
+;;       (d/reset-conn! db-conn (d/empty-db db-schema))
+;;       ;; TODO: any initial transactions go here...
+;;       db-conn
+;;       )))
 
 (defn fetch-internal-view
   "Returns the internal database. Intended mostly for debugging visualization."
@@ -69,12 +72,12 @@
                   [e a v tx add])) (d/datoms @db-conn :eavt)))
     (println "Database connection missing when trying to fetch a new view.")))
 
-(defn make-empty-project [database-id]
-  (println (str "Switching to: " database-id))
-  (assert (not (undefined? database-id)) "Tried to switch to an undefined generator database.")
-  (update-database database-id)
-  (println "Resetting database...")
-  (reset-the-database! database-id))
+;; (defn make-empty-project [database-id]
+;;   (println (str "Switching to: " database-id))
+;;   (assert (not (undefined? database-id)) "Tried to switch to an undefined generator database.")
+;;   (update-database database-id)
+;;   (println "Resetting database...")
+;;   (reset-the-database! database-id))
 
 (spec/def :seed/specifier
   (spec/and
@@ -83,17 +86,16 @@
    ))
 
 
-(def elite-schema
-  :seed/planet       {:db/cardinality :db.cardinality/one}
-  :seed/description
-  :seed/galaxy
-  :planet/economy-type
-  :planet/species
-  :planet/government-type
-  :planet/name-length
-  :planet/partial-name
-  :planet/name
-  :planet
+(def elite-schema {:seed/planet            {:db/cardinality :db.cardinality/one   :db/unique :db.unique/identity}
+                   :seed/description       {:db/cardinality :db.cardinality/one}
+                   :seed/galaxy            {:db/cardinality :db.cardinality/one}
+                   :planet/economy-type    {:db/cardinality :db.cardinality/one}
+                   :planet/species         {:db/cardinality :db.cardinality/one}
+                   :planet/government-type {:db/cardinality :db.cardinality/one}
+                   :planet/name-length     {:db/cardinality :db.cardinality/one}
+                   :planet/partial-name    {:db/cardinality :db.cardinality/one}
+                   :planet/name            {:db/cardinality :db.cardinality/one}
+                   :planet/description     {:db/cardinality :db.cardinality/one}}
   )
 
 
@@ -102,11 +104,25 @@
 
 
 
-@current-database
+;; (if-let [db-conn (get @current-database :db-conn)]
+;;     (vec (map (fn [dat]
+;;                 (let [[e a v tx add] dat]
+;;                   [e a v tx add])) (d/datoms @db-conn :eavt)))
+;;     (println "Database connection missing when trying to fetch a new view."))
 
+;; (update-database :elite)
+;; (reset-the-database! :elite)
 
+;; (reset-the-database! :elite
+;;                      )
 
+;; (if-let [db-conn (get @current-database :db-conn)]
+;;   (d/transact! db-conn [{:test/name "Name of Test"}])
+;;   )
 
+;;(fetch-internal-view)
+
+;; (log-db @current-database)
 
 
 
@@ -282,7 +298,6 @@
 
 
 
-
 (defn twist-to-next-planet [planet-seed]
   (-> planet-seed
       twist-seed
@@ -357,8 +372,6 @@
    (get-seed-bytes
     (make-seed [60035 6535 65535])))
 
-
-
 (defn generate-name-start [seed]
   (let [token-seed seed
         name-length-remaining (extract-seed-for-name-length seed)
@@ -368,9 +381,9 @@
     [token-seed name-length-remaining planet-name]))
 
 (defn op-generate-name-start [seed]
-  (zipmap [::seed/token-seed
-           ::number/name-length-remaining
-           ::string/planet-name-partial]
+  (zipmap [:seed/token-seed
+           :number/name-length-remaining
+           :string/planet-name-partial]
           (generate-name-start seed)))
 
 ;; Ways we could design this DSL:
@@ -831,33 +844,33 @@
 
 
 
-(def generative-operations
-  [;;{:op-function generate-galaxy}
-   {:op-function make-seed}
-   ;;{:op-function next-planet}
-   {:input ::seed/planet-seed
-    :output ::planet/government-type 
-    :op-function planet-government}
-   {:op-function planet-economy}
-   {:op-function planet-tech-level}
-   {:op-function planet-population-size}
-   {:op-function planet-productivity}
+;; (def generative-operations
+;;   [;;{:op-function generate-galaxy}
+;;    {:op-function make-seed}
+;;    ;;{:op-function next-planet}
+;;    {:input :seed/planet-seed
+;;     :output :planet/government-type 
+;;     :op-function planet-government}
+;;    {:op-function planet-economy}
+;;    {:op-function planet-tech-level}
+;;    {:op-function planet-population-size}
+;;    {:op-function planet-productivity}
    
-   {:input ::seed/planet-seed
-    :output [::seed/name-token-seed
-             ::number/planet-name-length
-             ::string/planet-name-partial]    
-    :op-function generate-name-start
-    {:input [::seed/name-token-seed
-             ::number/planet-name-length
-             ::string/planet-name-partial]
-     :output []
-     :op-function generate-name
+;;    {:input :seed/planet-seed
+;;     :output [:seed/name-token-seed
+;;              :number/planet-name-length
+;;              :string/planet-name-partial]    
+;;     :op-function generate-name-start
+;;     {:input [:seed/name-token-seed
+;;              :number/planet-name-length
+;;              :string/planet-name-partial]
+;;      :output []
+;;      :op-function generate-name
 
-     }}
-   {:op-function planet-species}
-   ]
-  )
+;;      }}
+;;    {:op-function planet-species}
+;;    ]
+;;   )
 
 
 
@@ -894,3 +907,58 @@
 (defn run []
   (.log js/console "Hello")
   (println "World"))
+
+
+
+
+
+(def elite-db-conn (d/create-conn elite-schema))
+(swap! current-database assoc-in [:db-conn]
+       elite-db-conn)
+(swap! current-database assoc-in [:db-schema]
+       elite-schema)
+
+(d/transact! elite-db-conn [{:test/name "Name of Test"}])
+;(log-db elite-db-conn)
+(d/transact! elite-db-conn [{:seed/galaxy (make-seed [0x5A4A 0x0248 0xB753])}])
+(d/q '[:find ?e ?v
+       :where
+       [?e :seed/planet-seed ?v]]
+     @elite-db-conn)
+
+(defn make-planet
+  "Returns the seed for the planet at planet-index."
+  [galaxy-seed planet-index]
+  [{:planet/index-number planet-index
+    :seed/planet-seed
+    (if (> 0 planet-index)
+      (last (take planet-index (iterate twist-to-next-planet galaxy-seed)))
+      galaxy-seed)}])
+
+
+(make-seed [0x5A4A 0x0248 0xB753])
+
+
+(let [galaxy-seed (d/q '[:find ?gal-seed
+                        ;;:in $ %
+                        :where [?e :seed/galaxy ?gal-seed]]
+                       @elite-db-conn)
+      planet-index-number 7
+       
+      parameters [galaxy-seed planet-index-number]]
+  (d/transact! elite-db-conn
+               (make-planet galaxy-seed planet-index-number))
+
+  )
+
+
+(d/q '[:find ?e ?v
+       :where
+       [?e :seed/planet-seed ?v]]
+     @elite-db-conn)
+
+(d/q '[:find ?e ?v
+       :where
+       [3 ?e ?v]]
+     @elite-db-conn)
+
