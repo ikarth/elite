@@ -928,8 +928,9 @@
 
 (defn make-planet
   "Returns the seed for the planet at planet-index."
-  [galaxy-seed planet-index]
-  [{:planet/index-number planet-index
+  [galaxy-seed galaxy-index planet-index]
+  [{:planet/galaxy galaxy-index
+    :planet/index-number planet-index
     :seed/planet-seed
     (if (> 0 planet-index)
       (last (take planet-index (iterate twist-to-next-planet galaxy-seed)))
@@ -959,6 +960,6 @@
 
 (d/q '[:find ?e ?v
        :where
-       [3 ?e ?v]]
+       [3  ?v]]
      @elite-db-conn)
 
