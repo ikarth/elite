@@ -194,10 +194,23 @@
     ;;(first (d/q (:query prime-op) @elite-db-conn nil))
     )))
 
+(defn execute-op! [chosen-op]
+  (d/transact!
+   elite-db-conn
+   (let [prime-op (get-in chosen-op [:op])]
+     (apply
+      (:exec prime-op)
+      (get-in chosen-op [:parameters])))))
 
 
+(defn choose-op
+  "Choose an op from the valid subset of the global operations.
+  TODO: currently nondetermanistic, make determanistic"
+  []
+  (rand-nth (assess-operations operations)))
 
-
+(execute-op! (choose-op))
+       
 
 
 
