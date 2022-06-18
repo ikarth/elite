@@ -88,15 +88,15 @@
 ;; (def elite-db (d/init-db [] elite-schema))
 ;; (def elite-conn (d/create-conn elite-db))
 
-(defn get-possible-moves [db op-list]
-  (d/q
-   db))
+;; (defn get-possible-moves [db op-list]
+;;   (d/q
+;;    db))
 
-(defn execute-operation!
-  [db-conn op parameters]
-  (assert (map? op) "Generative operation is missing, so can't be executed.")
-  (println (str "executing op: " (:name op)))
-  (d/transact! db-conn (apply op parameters)))
+;; (defn execute-operation!
+;;   [db-conn op parameters]
+;;   (assert (map? op) "Generative operation is missing, so can't be executed.")
+;;   (println (str "executing op: " (:name op)))
+;;   (d/transact! db-conn (apply op parameters)))
 
 
 (def operations
@@ -118,38 +118,38 @@
 ;;(:query          (nth operations 0))
 
 ;;(execute-operation @elite-db-conn)
-(first
- (d/q 
-  (:query
-   (nth operations 0))
-  @elite-db-conn))
+;; (first
+;;  (d/q 
+;;   (:query
+;;    (nth operations 0))
+;;   @elite-db-conn))
 
 
-(apply
- (:exec (nth operations 0))
- (first
- (d/q 
-  (:query
-   (nth operations 0))
-  @elite-db-conn)))
+;; (apply
+;;  (:exec (nth operations 0))
+;;  (first
+;;  (d/q 
+;;   (:query
+;;    (nth operations 0))
+;;   @elite-db-conn)))
 
-(let [prime-op (nth operations 0)]
-  (apply
-   (:exec prime-op)
-   (first (d/q (:query prime-op) @elite-db-conn nil))))
+;; (let [prime-op (nth operations 0)]
+;;   (apply
+;;    (:exec prime-op)
+;;    (first (d/q (:query prime-op) @elite-db-conn nil))))
 
 ;; execute the op as a transaction
-(d/transact!
- elite-db-conn
- (let [prime-op (nth operations 0)]
-  (apply
-   (:exec prime-op)
-   (first (d/q (:query prime-op) @elite-db-conn nil)))))
+;; (d/transact!
+;;  elite-db-conn
+;;  (let [prime-op (nth operations 0)]
+;;   (apply
+;;    (:exec prime-op)
+;;    (first (d/q (:query prime-op) @elite-db-conn nil)))))
 
-(d/datoms @elite-db-conn :eavt)
+;; (d/datoms @elite-db-conn :eavt)
 
 ;; print database
-(let []
+(defn print-database []
   (println "----------")
   (doseq [dat (vec (map (fn [dat]
                           (let [[e a v tx add] dat]
@@ -176,23 +176,23 @@
 
 ;;(map (fn [] operations))
 
-(let [chosen-op
-      (first 
-       (assess-operations operations))]
-  ((get-in chosen-op [:op :exec]) @elite-db-conn (:parameters chosen-op))
-  )
+;; (let [chosen-op
+;;       (first 
+;;        (assess-operations operations))]
+;;   ((get-in chosen-op [:op :exec]) @elite-db-conn (:parameters chosen-op))
+;;   )
 
 
-(d/transact!
- elite-db-conn
- (let [chosen-op (first 
-                  (assess-operations operations))
-       prime-op (get-in chosen-op [:op])]
-   (apply
-    (:exec prime-op)
-    (get-in chosen-op [:parameters])
-    ;;(first (d/q (:query prime-op) @elite-db-conn nil))
-    )))
+;; (d/transact!
+;;  elite-db-conn
+;;  (let [chosen-op (first 
+;;                   (assess-operations operations))
+;;        prime-op (get-in chosen-op [:op])]
+;;    (apply
+;;     (:exec prime-op)
+;;     (get-in chosen-op [:parameters])
+;;     ;;(first (d/q (:query prime-op) @elite-db-conn nil))
+;;     )))
 
 (defn execute-op! [chosen-op]
   (d/transact!
@@ -220,15 +220,15 @@
 ;;     (elite/make-planet)
 ;;     ))
 
-(let [input 
-      (d/q
-       '[:find ?galaxy-seed ?galaxy-index
-         :in $
-         :where
-         [?galaxy-id :seed/galaxy ?galaxy-seed]
-         [?galaxy-id :galaxy/index ?galaxy-index]
-         [(= 0 ?galaxy-index)]]
-       @elite-db-conn)]
-  (apply (fn [[seed index]]
-           (elite/make-planet seed index))
-         input))
+;; (let [input 
+;;       (d/q
+;;        '[:find ?galaxy-seed ?galaxy-index
+;;          :in $
+;;          :where
+;;          [?galaxy-id :seed/galaxy ?galaxy-seed]
+;;          [?galaxy-id :galaxy/index ?galaxy-index]
+;;          [(= 0 ?galaxy-index)]]
+;;        @elite-db-conn)]
+;;   (apply (fn [[seed index]]
+;;            (elite/make-planet seed index))
+;;          input))
