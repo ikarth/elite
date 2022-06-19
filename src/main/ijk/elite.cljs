@@ -912,54 +912,55 @@
 
 
 
-(def elite-db-conn (d/create-conn elite-schema))
-(swap! current-database assoc-in [:db-conn]
-       elite-db-conn)
-(swap! current-database assoc-in [:db-schema]
-       elite-schema)
+;; (def elite-db-conn (d/create-conn elite-schema))
+;; (swap! current-database assoc-in [:db-conn]
+;;        elite-db-conn)
+;; (swap! current-database assoc-in [:db-schema]
+;;        elite-schema)
 
-(d/transact! elite-db-conn [{:test/name "Name of Test"}])
-;(log-db elite-db-conn)
-(d/transact! elite-db-conn [{:seed/galaxy (make-seed [0x5A4A 0x0248 0xB753])}])
-(d/q '[:find ?e ?v
-       :where
-       [?e :seed/planet-seed ?v]]
-     @elite-db-conn)
+;; (d/transact! elite-db-conn [{:test/name "Name of Test"}])
+;; ;(log-db elite-db-conn)
+;; (d/transact! elite-db-conn [{:seed/galaxy (make-seed [0x5A4A 0x0248 0xB753])}])
+;; (d/q '[:find ?e ?v
+;;        :where
+;;        [?e :seed/planet-seed ?v]]
+;;      @elite-db-conn)
 
 (defn make-planet
   "Returns the seed for the planet at planet-index."
   [galaxy-seed galaxy-index planet-index]
-  [{:planet/galaxy galaxy-index
-    :planet/index-number planet-index
-    :seed/planet-seed
+  [{:db/id -1
+    :planet/galaxy galaxy-index
+    :planet/index planet-index
+    :seed/planet
     (if (> 0 planet-index)
       (last (take planet-index (iterate twist-to-next-planet galaxy-seed)))
       galaxy-seed)}])
 
 
-(make-seed [0x5A4A 0x0248 0xB753])
+;; (make-seed [0x5A4A 0x0248 0xB753])
 
 
-(let [galaxy-seed (d/q '[:find ?gal-seed
-                        ;;:in $ %
-                        :where [?e :seed/galaxy ?gal-seed]]
-                       @elite-db-conn)
-      planet-index-number 7
+;; (let [galaxy-seed (d/q '[:find ?gal-seed
+;;                         ;;:in $ %
+;;                         :where [?e :seed/galaxy ?gal-seed]]
+;;                        @elite-db-conn)
+;;       planet-index-number 7
        
-      parameters [galaxy-seed planet-index-number]]
-  (d/transact! elite-db-conn
-               (make-planet galaxy-seed planet-index-number))
+;;       parameters [galaxy-seed planet-index-number]]
+;;   (d/transact! elite-db-conn
+;;                (make-planet galaxy-seed planet-index-number))
 
-  )
+;;   )
 
 
-(d/q '[:find ?e ?v
-       :where
-       [?e :seed/planet-seed ?v]]
-     @elite-db-conn)
+;; (d/q '[:find ?e ?v
+;;        :where
+;;        [?e :seed/planet-seed ?v]]
+;;      @elite-db-conn)
 
-(d/q '[:find ?e ?v
-       :where
-       [3  ?v]]
-     @elite-db-conn)
+;; (d/q '[:find ?e ?v
+;;        :where
+;;        [3  ?v]]
+;;      @elite-db-conn)
 

@@ -48,10 +48,13 @@
                   [e a v tx add])) (d/datoms @db-conn :eavt)))
     (println "Database connection missing when trying to fetch a new view.")))
 
-(def elite-schema {:seed/planet            {:db/cardinality :db.cardinality/one   :db/unique :db.unique/identity}
-                   :seed/description       {:db/cardinality :db.cardinality/one}
-                   :seed/galaxy            {:db/cardinality :db.cardinality/one}
+(def elite-schema {:planet/seed            {:db/cardinality :db.cardinality/one}
+                   :description/seed       {:db/cardinality :db.cardinality/one}
+                   :galaxy/seed            {:db/cardinality :db.cardinality/one}
+                   :galaxy/index            {:db/cardinality :db.cardinality/one   :db/unique :db.unique/identity}
+                   :planet/index            {:db/cardinality :db.cardinality/one   :db/unique :db.unique/identity}
                    :planet/economy-type    {:db/cardinality :db.cardinality/one}
+                   
                    :planet/species         {:db/cardinality :db.cardinality/one}
                    :planet/government-type {:db/cardinality :db.cardinality/one}
                    :planet/name-length     {:db/cardinality :db.cardinality/one}
@@ -63,35 +66,95 @@
 
 
 (def elite-db-conn (d/create-conn elite-schema))
-(d/transact! elite-db-conn [{:seed/galaxy (elite/make-seed [0x5A4A 0x0248 0xB753])
+(d/transact! elite-db-conn [{:galaxy/seed (elite/make-seed [0x5A4A 0x0248 0xB753])
                              :galaxy/index 0}
                             {:planet/galaxy 0
                              :planet/index 0
                              :planet/seed (elite/make-seed [0x5A4A 0x0248 0xB753])}
                             ])
-      
+
+(choose-op)
+(execute-op! (choose-op))
+(print-database)
+
 (comment 
 (swap! current-database assoc-in [:db-conn]
        elite-db-conn)
 (swap! current-database assoc-in [:db-schema]
        elite-schema))
 
+(def limit-to-galaxy-planet-count 256)
+
+(defn get-new-planet-index [db galaxy-index]
+  (let [new-index (d/q
+                   '[:find (max ?planet-index) .
+               :where
+                [?planet-id :planet/galaxy ?galaxy-index]
+                [?planet-id :planet/index ?planet-index]
+                ]
+             @db)
+        ]
+    ;; (if (if (seq? new-index)  (empty? new-index) (nil? new-index))
+    ;;   0
+    ;;   new-index)
+    (println new-index)
+    (+ 1 new-index)
+    ))
+
+(defn make-planet
+  "Returns the seed for the planet at planet-index."
+  [galaxy-seed galaxy-index planet-index]
+  [{:db/id -1
+    :planet/galaxy galaxy-index
+    :planet/index planet-index
+    :planet/seed
+    (if (> 0 planet-index)
+      (last (take planet-index (iterate elite/twist-to-next-planet galaxy-seed)))
+      galaxy-seed)
+    }
+
+   ])
+
 (def operations
   [{:name "make-planet"
     :exec
-    (fn [galaxy-seed galaxy-index previous-max-planet]
-      (elite/make-planet galaxy-seed galaxy-index (+ 1 previous-max-planet)))
+    (fn [galaxy-seed galaxy-index]
+      (let [new-planet-index (get-new-planet-index elite-db-conn galaxy-index)
+            new-planet (make-planet galaxy-seed galaxy-index new-planet-index)]
+        (println new-planet)
+        new-planet
+        ))
     :query
-    '[:find ?galaxy-seed ?galaxy-index (max ?planet-index)
+    '[:find ?galaxy-seed ?galaxy-index ;;(max ?planet-index)
       :in $ %
       :where
-      [?galaxy-id :seed/galaxy ?galaxy-seed]
+      [?galaxy-id :galaxy/seed ?galaxy-seed]
       [?galaxy-id :galaxy/index ?galaxy-index]
-      [?planet-id :planet/galaxy ?galaxy-index]
-      [?planet-id :planet/index-number ?planet-index]
-      [(= 0 ?galaxy-index)]]
-    :input [:seed/galaxy :planet/index-number]}
-   ;; {:name "planet-government"}
+      ;;[?planet-id :planet/galaxy ?galaxy-index]
+      ;;[?planet-id :planet/index ?planet-index]
+      ;; [(= 0 ?galaxy-index)]
+      ;;[(< (max ?planet-index) 4)]
+      ;;[(> ?planet-index limit-to-galaxy-planet-count)]
+      ;;[(> (max ?planet-index) 6)] ;; limit galaxies to 256 planets, like the original...
+      ;; (not-join [?planet-index]
+                ;; [_ :planet/index (+ ?planet-index 1)])
+      ]    
+    ;;:input [:galaxy/seed :planet/index]
+    }
+   {:name "planet-government"
+    :exec (fn [planet-seed planet-reference]
+            [{:db/id planet-reference :planet/government-type (elite/planet-government planet-seed)}])
+    :query
+    '[:find ?planet-seed ?ungoverned-planet
+      :in $ %
+      :where
+      [?ungoverned-planet :planet/seed ?planet-seed]
+      (not-join [?ungoverned-planet]
+                [?ungoverned-planet :planet/government-type _] )
+      ]
+    ;;:input [:planet/seed :planet/reference ]
+    }
+   
    ;; {:name "planet-economy"}
    ;; {:name "planet-tech-level"}
    ;; {:name "planet-population-size"}
@@ -114,6 +177,7 @@
 ;; check ops for which ones can be executed...
 
 (defn can-perform-operation [prime-op]
+  ;;(println "\t\t" prime-op)
   (let [q-map
         ;;(let [prime-op (nth operations 0)])
         (if-let [op-query (get prime-op :query false)]
@@ -122,28 +186,54 @@
           {:op prime-op :parameters nil})]
     (if (map? q-map) [q-map] q-map)))
 
-(apply concat (map can-perform-operation operations))
+;;(apply concat (map can-perform-operation operations))
 
 (defn assess-operations [ops]
   (apply concat (map can-perform-operation ops)))
 
+(defn report-problem [description]
+  (println (apply str description))
+  )
+
 
 (defn execute-op! [chosen-op]
-  (d/transact!
-   elite-db-conn
-   (let [prime-op (get-in chosen-op [:op])]
-     (apply
-      (:exec prime-op)
-      (get-in chosen-op [:parameters])))))
+  (if (empty? chosen-op)
+    (report-problem "No valid options")
+    (let []
+      (println (get-in chosen-op [:op :name]) (apply str (get-in chosen-op [:parameters])))
+      (d/transact!
+       elite-db-conn
+       (let [prime-op (get-in chosen-op [:op])
+             parameters (into [elite-db-conn] (get-in chosen-op [:parameters]))
+             result (apply
+          (:exec prime-op)
+          (get-in chosen-op [:parameters])
+          )]
+         (println (get-in chosen-op [:parameters]))
+         (println result)
+         result)))))
 
+
+(d/transact! elite-db-conn
+             [{:db/id -1
+               :test 2}]
+             )
 
 (defn choose-op
   "Choose an op from the valid subset of the global operations.
   TODO: currently nondetermanistic, make determanistic"
   []
-  (rand-nth (assess-operations operations)))
+  (let [valid-options (assess-operations operations)]
+    (if (empty? valid-options)
+      valid-options
+      (rand-nth valid-options))))
 
+
+(print-database)
+(assess-operations operations)
+(choose-op)
 (execute-op! (choose-op))
+(print-database)
        
 
 
