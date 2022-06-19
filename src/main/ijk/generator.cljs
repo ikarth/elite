@@ -78,23 +78,25 @@
 (print-database)
 
 (d/q
- '[:find ?planet-index (max ?planet-index)
+ '[:find ?planet-index ?allowed-galaxy ;; ?galaxy-count
    ;;:with ?planet-index
+   :in $ [?allowed-galaxy ...]
    :where
-   (or
-    ;;(and [])
-    (and
-        [?galaxy-id :galaxy/seed ?galaxy-seed]
-        [?galaxy-id :galaxy/index ?galaxy-index]
-        [?planet-id :planet/galaxy ?galaxy-index]
-        [?planet-id :planet/index ?planet-index]
-        
-        ;;[(max ?planet-index) ?max-planet-index]
-        ;;[(< ?max-planet-index 4)]
-        ))
+   [?galaxy-id :galaxy/seed ?galaxy-seed]
+   [?galaxy-id :galaxy/index ?galaxy-index]
+   [(= ?galaxy-index ?allowed-galaxy)]
+   [?planet-id :planet/galaxy ?galaxy-index]
+   [?planet-id :planet/index ?planet-index]
+   ;;[(ijk.generator/galaxy-planet-count ?galaxy-index) ?galaxy-count]
+      
+    ;;[(max ?planet-index) ?max-planet-index]
+    ;;[(< ?max-planet-index 4)]
+    
    ]
- @elite-db-conn)
+ @elite-db-conn
+ [1 2])
 
+(galaxy-planet-count 0)
 
 
 (comment 
@@ -103,7 +105,9 @@
 (swap! current-database assoc-in [:db-schema]
        elite-schema))
 
-(def limit-to-galaxy-planet-count 256)
+(def limit-to-galaxy-planet-count 4 ;;256
+  )
+(def limit-to-galaxy-count 5)
 
 (defn get-new-planet-index [db galaxy-index]
   (let [new-index (d/q
@@ -130,6 +134,26 @@
         galaxy-seed))}])
 
 
+(defn galaxy-planet-count [galaxy-index]
+  (d/q
+ '[:find (max ?planet-index) .
+   ;;:with ?planet-index
+   :in $ ?galaxy-index
+   :where
+   [?galaxy-id :galaxy/index ?galaxy-index]
+   [?planet-id :planet/galaxy ?galaxy-index]
+   [?planet-id :planet/index ?planet-index]
+   
+   ]
+ @elite-db-conn galaxy-index)
+  )
+
+(galaxy-planet-count 0)
+
+(filter #(< (galaxy-planet-count %) limit-to-galaxy-planet-count
+        
+        ) (range limit-to-galaxy-count))
+
 (def operations
   [{:name "make-planet"
     :exec
@@ -139,15 +163,22 @@
         ;;(println new-planet)
         new-planet
         ))
-    :exclude []
+    ;;:exclude
+    :query-data
+    (fn []
+      (filter #(< (galaxy-planet-count %)
+                  limit-to-galaxy-planet-count)
+              (range limit-to-galaxy-count)))
     :query
-    '[:find ?galaxy-seed ?galaxy-index (max ?planet-index)
-      :in $ %
+    '[:find ?galaxy-seed ?galaxy-index ;;(max ?planet-index)
+      :in $  [?allowed-galaxy ...]
       :where
       [?galaxy-id :galaxy/seed ?galaxy-seed]
       [?galaxy-id :galaxy/index ?galaxy-index]
       [?planet-id :planet/galaxy ?galaxy-index]
       [?planet-id :planet/index ?planet-index]
+      [(= ?galaxy-index ?allowed-galaxy)]
+      ;;[(galaxy-planet-count ?galaxy-index) ?galaxy-count]
       ;; [(= 0 ?galaxy-index)]
       ;;[(> (max ?planet-index) 4)]
       ;;[(> ?planet-index limit-to-galaxy-planet-count)]
@@ -205,9 +236,15 @@
   ;;(println "\t\t" prime-op)
   (let [q-map
         ;;(let [prime-op (nth operations 0)])
-        (if-let [op-query (get prime-op :query false)]
-          (map (fn [v] {:op prime-op :parameters v}) 
-               (d/q (:query prime-op) @elite-db-conn nil))
+        (if-let [op-query (get prime-op :query false)
+                 
+                 ]
+          (let [op-data-fn (get prime-op :query-data nil)
+                 op-data (if (fn? op-data-fn)
+                           (op-data-fn)
+                           nil)]
+            (map (fn [v] {:op prime-op :data op-data :parameters v}) 
+                 (d/q (:query prime-op) @elite-db-conn op-data)))
           {:op prime-op :parameters nil})]
     (if (map? q-map) [q-map] q-map)))
 
