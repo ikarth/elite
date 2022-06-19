@@ -86,17 +86,17 @@
    ))
 
 
-(def elite-schema {:seed/planet            {:db/cardinality :db.cardinality/one   :db/unique :db.unique/identity}
-                   :seed/description       {:db/cardinality :db.cardinality/one}
-                   :seed/galaxy            {:db/cardinality :db.cardinality/one}
-                   :planet/economy-type    {:db/cardinality :db.cardinality/one}
-                   :planet/species         {:db/cardinality :db.cardinality/one}
-                   :planet/government-type {:db/cardinality :db.cardinality/one}
-                   :planet/name-length     {:db/cardinality :db.cardinality/one}
-                   :planet/partial-name    {:db/cardinality :db.cardinality/one}
-                   :planet/name            {:db/cardinality :db.cardinality/one}
-                   :planet/description     {:db/cardinality :db.cardinality/one}}
-  )
+;; (def elite-schema {:seed/planet            {:db/cardinality :db.cardinality/one   :db/unique :db.unique/identity}
+;;                    :seed/description       {:db/cardinality :db.cardinality/one}
+;;                    :seed/galaxy            {:db/cardinality :db.cardinality/one}
+;;                    :planet/economy-type    {:db/cardinality :db.cardinality/one}
+;;                    :planet/species         {:db/cardinality :db.cardinality/one}
+;;                    :planet/government-type {:db/cardinality :db.cardinality/one}
+;;                    :planet/name-length     {:db/cardinality :db.cardinality/one}
+;;                    :planet/partial-name    {:db/cardinality :db.cardinality/one}
+;;                    :planet/name            {:db/cardinality :db.cardinality/one}
+;;                    :planet/description     {:db/cardinality :db.cardinality/one}}
+;;   )
 
 
 
@@ -146,6 +146,11 @@
    :s2_hi 5 ;; QQ15+5
   })
 
+(defn get-seed-bytes [seed]
+  ;;{:pre [(spec/valid? :seed/data seed)]}
+  (into [] (map #(. seed getUint8 %) (range 6) )))
+
+
 (defn make-seed [seed-vals]
   {:pre  [(spec/valid? :seed/specifier seed-vals)]
    ;;:post [(spec/valid? :seed/data-array %)]
@@ -154,23 +159,27 @@
       view (js/DataView. ab)]
   (. view setUint16 0 (nth seed-vals 0) true)    
   (. view setUint16 2 (nth seed-vals 1) true)    
-  (. view setUint16 4 (nth seed-vals 2) true) 
-  view))
+  (. view setUint16 4 (nth seed-vals 2) true)
+  ;;(aset view "toStringTag" (get-seed-bytes view))
+  view
+  ))
+
+
 
 (defn bytes-to-seed [seed-bytes]
   (let [ab (js/ArrayBuffer. 6)
         view (js/DataView. ab)]
     (doseq [n (range 6)]
       (. view setUint8 n (nth seed-bytes n) true))
-    view))
+    ;;(aset view "toStringTag" (get-seed-bytes view))
+    view
+    ))
 
-;; (bytes-to-seed [0 1 2 3 4 5])
-;; (get-seed-bytes (bytes-to-seed [0 10 20 30 40 50]))
+(bytes-to-seed [0 1 2 3 4 5])
+(println (bytes-to-seed [0 1 2 3 4 5]))
+(get-seed-bytes (bytes-to-seed [0 10 20 30 40 50]))
 
 
-(defn get-seed-bytes [seed]
-  ;;{:pre [(spec/valid? :seed/data seed)]}
-  (into [] (map #(. seed getUint8 %) (range 6) )))
 
 (defn byte-to-bin [dec]
   (let [byte-length 8
