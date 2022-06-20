@@ -504,7 +504,7 @@
         ;;flipped-economy (bin-to-byte (invert-bits adjusted))
         ;; ...on second thought, I wrote the byte-flipping function.
         ]
-    (println [eco-base adjusted prosperity])
+    ;;(println [eco-base adjusted prosperity])
     [type prosperity]))
 
 
