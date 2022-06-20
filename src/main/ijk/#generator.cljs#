@@ -247,13 +247,31 @@
     ;;:input [:planet/seed :planet/reference ]
     }
    
-   {:name "planet-economy"}
-   {:name "planet-tech-level"}
-   {:name "planet-population-size"}
-   {:name "planet-productivity"}
-   {:name "planet-name"}
-   {:name "planet-species"}
-   {:name "planet-description"}
+   {:name "planet-economy"
+    :exec
+    (fn [p-index p-seed p-gov]
+      (let [[type prosperity] (elite/planet-economy p-seed p-gov)]
+        [{:db/id p-index
+          :planet/economy-type type
+          :planet/economy-prosperity prosperity}]))
+    :query
+    '[:find ?unfilled-planet ?planet-seed ?planet-government
+      :in $ %
+      :where
+      [?unfilled-planet :planet/seed ?planet-seed]
+      [?unfilled-planet :planet/government-type ?planet-government]      
+      (not-join [?unfilled-planet]
+                [?unfilled-planet :planet/economy-type _] )
+      (not-join [?unfilled-planet]
+                [?unfilled-planet :planet/economy-prosperity _] )]
+      
+    }
+   ;; {:name "planet-tech-level"}
+   ;; {:name "planet-population-size"}
+   ;; {:name "planet-productivity"}
+   ;; {:name "planet-name"}
+   ;; {:name "planet-species"}
+   ;; {:name "planet-description"}
    ])
 
 
