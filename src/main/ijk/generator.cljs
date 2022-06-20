@@ -73,28 +73,28 @@
                              :planet/seed (elite/make-seed [0x5A4A 0x0248 0xB753])}
                             ])
 
-(choose-op)
+;;(choose-op)
 (execute-op! (choose-op))
 (print-database)
 
-(d/q
- '[:find ?planet-index ?allowed-galaxy ;; ?galaxy-count
-   ;;:with ?planet-index
-   :in $ [?allowed-galaxy ...]
-   :where
-   [?galaxy-id :galaxy/seed ?galaxy-seed]
-   [?galaxy-id :galaxy/index ?galaxy-index]
-   [(= ?galaxy-index ?allowed-galaxy)]
-   [?planet-id :planet/galaxy ?galaxy-index]
-   [?planet-id :planet/index ?planet-index]
-   ;;[(ijk.generator/galaxy-planet-count ?galaxy-index) ?galaxy-count]
+;; (d/q
+;;  '[:find ?planet-index ?allowed-galaxy ;; ?galaxy-count
+;;    ;;:with ?planet-index
+;;    :in $ [?allowed-galaxy ...]
+;;    :where
+;;    [?galaxy-id :galaxy/seed ?galaxy-seed]
+;;    [?galaxy-id :galaxy/index ?galaxy-index]
+;;    [(= ?galaxy-index ?allowed-galaxy)]
+;;    [?planet-id :planet/galaxy ?galaxy-index]
+;;    [?planet-id :planet/index ?planet-index]
+;;    ;;[(ijk.generator/galaxy-planet-count ?galaxy-index) ?galaxy-count]
       
-    ;;[(max ?planet-index) ?max-planet-index]
-    ;;[(< ?max-planet-index 4)]
+;;     ;;[(max ?planet-index) ?max-planet-index]
+;;     ;;[(< ?max-planet-index 4)]
     
-   ]
- @elite-db-conn
- [1 2])
+;;    ]
+;;  @elite-db-conn
+;;  [1 2])
 
 (galaxy-planet-count 0)
 
@@ -188,6 +188,51 @@
       ]    
     ;;:input [:galaxy/seed :planet/index]
     }
+   {:name "make-planet-name"
+    :exec
+    (fn [p-id p-seed n-length partial]
+      (println [p-id p-seed n-length partial])
+      (let [output (elite/generate-name [p-seed n-length partial])]
+        (println output)
+        (cond (string? output)
+              [{:db/id p-id
+                ;;:planet/token-seed 
+                :planet/name output}]
+          true
+          [{:db/id p-id
+            :planet/token-seed (nth output 0)
+            :planet/name-partial (nth output 2)
+            :planet/name-length-remaining (nth output 1)
+            }])))
+    :query
+    '[:find ?unnamed-planet ?token-seed ?name-length-remaining ?partial-name
+      :in $ %
+      :where
+      [?unnamed-planet :planet/name-partial ?partial-name]
+      [?unnamed-planet :planet/token-seed ?token-seed]
+      [?unnamed-planet :planet/name-length-remaining ?name-length-remaining]
+      [?unnamed-planet :planet/seed ?planet-seed]
+      (not-join [?unnamed-planet]
+                [?unnamed-planet :planet/name _] )
+      ]}
+   {:name "planet-name-start"
+    :exec
+    (fn [planet-seed db-id]
+      (let [[token-seed name-length-remaining planet-name] (elite/generate-name-start planet-seed)]
+        [{:db/id db-id
+          :planet/name-partial planet-name
+          :planet/token-seed token-seed
+          :planet/name-length-remaining name-length-remaining}]))
+    :query
+    '[:find ?planet-seed ?unnamed-planet
+      :in $ %
+      :where
+      [?unnamed-planet :planet/seed ?planet-seed]
+      (not-join [?unnamed-planet]
+                [?unnamed-planet :planet/name-partial _] )
+      (not-join [?unnamed-planet]
+                [?unnamed-planet :planet/name _] )]
+    }
    {:name "planet-government"
     :exec (fn [planet-seed planet-reference]
             [{:db/id planet-reference :planet/government-type (elite/planet-government planet-seed)}])
@@ -219,7 +264,7 @@
                           (let [[e a v tx add] dat]
                             [e a v tx add]))
                         (d/datoms @elite-db-conn :eavt)))]
-    (if (some #{(nth dat 1)} '(:galaxy/seed :planet/seed))
+    (if (some #{(nth dat 1)} '(:galaxy/seed :planet/seed :planet/token-seed))
       (let [[e a v tx add] dat]
         (println [e a
                   (elite/get-seed-bytes v)
