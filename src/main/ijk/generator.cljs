@@ -268,11 +268,11 @@
      :input [:planet/seed :planet/economy-prosperity :planet/government-type]
      :output [:planet/tech-level]
      :exec-fn elite/planet-tech-level-from-prosperity})
-   ;; {:name "planet-population-size"}
-   ;; {:name "planet-productivity"}
-   ;; {:name "planet-name"}
-   ;; {:name "planet-species"}
-   ;; {:name "planet-description"}
+   {:name "planet-population-size"}
+   {:name "planet-productivity"}
+   {:name "planet-name"}
+   {:name "planet-species"}
+   {:name "planet-description"}
    ])
 
 
