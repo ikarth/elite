@@ -518,6 +518,19 @@
      (clojure.math/ceil (/ government 2))))
 
 
+(defn planet-tech-level-from-prosperity
+  "The tech level formula is:
+       flipped_economy + (s1_hi AND %11) + (government / 2)
+
+  There are two of these functions because the ecological query was
+  easier to write if it used prosperity directly." 
+  [planet-seed prosperity government]
+  (+ (invert-byte prosperity 3)
+     (bin-to-byte
+      (get-seed-bits planet-seed (:s1_hi elite-index) 6 2))
+     (clojure.math/ceil (/ government 2))))
+
+
 (def species-table
   [["Large ", "Fierce ", "Small ", "", "", "", "", ""]
   ["Green " "Red " "Yellow" "Blue " "Black " "Harmless " "" "" "" ""]

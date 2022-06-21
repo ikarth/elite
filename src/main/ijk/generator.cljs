@@ -1,4 +1,5 @@
 (ns ijk.generator
+  (:require-macros [ijk.generator])
   (:require
    [ijk.elite :as elite]
    [ijk.elite-grammar :as egrammar]
@@ -11,6 +12,125 @@
    ;;["js-xxhash" :as xx :refer (xxHash32)]
 
   ))
+
+
+(defn clause-out [attr]
+  `[(~'not-join [~'?entity]
+     [~'?entity ~attr ~'_])])
+
+(defn clause-out-vector [attrs]
+  (println attrs)
+  (map println attrs)
+  (vec (apply concat
+              (map clause-out attrs))))
+
+(defn clause-in [[attr-key attr-sym]]
+  `[~'?entity ~attr-key ~(symbol attr-sym)])
+
+;;(clause-in :test "?test")
+
+(defn clause-in-vector [attrs]
+  (vec 
+       (map clause-in attrs)))
+
+
+
+;;(clause-in-vector (zipmap [:a] ["?a"]))
+
+(defn make-q-syms [key-data]
+  (take (count key-data)
+        (map
+         #(symbol (keyword (str "?attr-" %)))
+         (iterate inc 1))))
+
+(defn make-q-syms-str [key-data]
+  (println (count key-data))
+  (take (count key-data)
+        (map
+         #(str "?attr-" %)
+         (iterate inc 1))))
+
+
+;;(make-q-sym :test)
+
+(defn make-query [in-keys out-keys]
+  ;;(println in-keys)
+  (let [q-syms (make-q-syms in-keys)]
+    (println q-syms)
+    (println (zipmap in-keys q-syms))
+    (println out-keys)
+    (println "-0-0-0-")
+    (println "in:" (clause-in-vector (zipmap in-keys q-syms)))
+    (println "out: " (clause-out-vector out-keys))
+    (vec
+     (concat
+      `[:find ~'?entity ~@q-syms]
+      '[:in $ %]
+      '[:where]
+      ;;`[[~'?entity ~(first q-syms)]]
+      (clause-in-vector (zipmap in-keys q-syms))
+      (clause-out-vector out-keys)))))
+
+(make-query [:in-one :in-two] [:out-one :out-two])
+(make-query [:planet/seed] [:planet/size])
+
+ 
+;; (d/q
+;;  '[:find ?entity ?attr-1
+;;    :in $
+;;    :where
+;;    [?entity :planet/seed ?attr-1]
+;;    (not-join [?entity] [?entity :planet/size _])
+;;    ]
+;;  @elite-db-conn)
+
+
+;; (d/q
+;;  (make-query [:planet/seed] [:planet/size])
+;;  @elite-db-conn nil)
+
+
+
+(defn generate-attribute
+  [{:keys [name input output exec-fn] :as op-data}]
+  {:name name
+   :input input
+   :exec
+   (fn [& exec-input]
+     (println "exec-fn")
+     (println exec-input)
+     (println (vector? exec-input))
+     (if (vector? exec-input)
+       (println (rest exec-input))
+       (println "input is not a vector"))
+     (if (list? exec-input)
+       (println "list: " (rest exec-input)))
+     (println "type: " (type exec-input))
+     
+     (apply println (rest exec-input))
+     (let [result (apply exec-fn (rest exec-input))
+           result-vec (if (vector? result) result [result])
+           ]
+       (println "result type: " (type result))
+     
+       (println result)
+       (println (vector? result))
+       (println result-vec)
+       (println (vector? result-vec))
+       (println exec-input)
+       (println "first" (first exec-input))
+       (println "zipmap " (zipmap output result-vec))
+       [(merge {:db/id (first exec-input)}
+                 (zipmap output result-vec))
+          ]))
+   :query
+   (make-query input output)})
+
+(generate-attribute
+ {:name "planet-tech-level"
+  :input [:planet/seed :planet/economy-prosperity :planet/government-type]
+  :output [:planet/tech-level]
+  :exec-fn elite/planet-tech-level-from-prosperity})
 
 
 (defn log-db
@@ -73,7 +193,7 @@
                              :planet/seed (elite/make-seed [0x5A4A 0x0248 0xB753])}
                             ])
 
-;;(choose-op)
+(choose-op)
 (execute-op! (choose-op))
 (print-database)
 
@@ -96,18 +216,18 @@
 ;;  @elite-db-conn
 ;;  [1 2])
 
-(galaxy-planet-count 0)
+;; (galaxy-planet-count 0)
 
 
-(comment 
-(swap! current-database assoc-in [:db-conn]
-       elite-db-conn)
-(swap! current-database assoc-in [:db-schema]
-       elite-schema))
+;; (comment 
+;; (swap! current-database assoc-in [:db-conn]
+;;        elite-db-conn)
+;; (swap! current-database assoc-in [:db-schema]
+;;        elite-schema))
 
 (def limit-to-galaxy-planet-count 4 ;;256
   )
-(def limit-to-galaxy-count 5)
+(def limit-to-galaxy-count 8)
 
 (defn get-new-planet-index [db galaxy-index]
   (let [new-index (d/q
@@ -148,11 +268,11 @@
  @elite-db-conn galaxy-index)
   )
 
-(galaxy-planet-count 0)
+;;(galaxy-planet-count 0)
 
-(filter #(< (galaxy-planet-count %) limit-to-galaxy-planet-count
+;; (filter #(< (galaxy-planet-count %) limit-to-galaxy-planet-count
         
-        ) (range limit-to-galaxy-count))
+;;         ) (range limit-to-galaxy-count))
 
 (def operations
   [{:name "make-planet"
@@ -246,9 +366,52 @@
       ]
     ;;:input [:planet/seed :planet/reference ]
     }
+   (generate-attribute
+    {:name "planet-economy"
+     :input [:planet/seed :planet/government-type]
+     :output [:planet/economy-type :planet/economy-prosperity]
+     :exec-fn elite/planet-economy})
+   (generate-attribute
+    {:name "planet-tech-level"
+     :input [:planet/seed :planet/economy-prosperity :planet/government-type]
+     :output [:planet/tech-level]
+     :exec-fn elite/planet-tech-level-from-prosperity})
+
    
-   ;; {:name "planet-economy"}
-   ;; {:name "planet-tech-level"}
+   ;; {:name "planet-economy"
+   ;;  :exec
+   ;;  (fn [p-index p-seed p-gov]
+   ;;    (let [[type prosperity] (elite/planet-economy p-seed p-gov)]
+   ;;      [{:db/id p-index
+   ;;        :planet/economy-type type
+   ;;        :planet/economy-prosperity prosperity}]))
+   ;;  :query
+   ;;  '[:find ?unfilled-planet ?planet-seed ?planet-government
+   ;;    :in $ %
+   ;;    :where
+   ;;    [?unfilled-planet :planet/seed ?planet-seed]
+   ;;    [?unfilled-planet :planet/government-type ?planet-government]      
+   ;;    (not-join [?unfilled-planet]
+   ;;              [?unfilled-planet :planet/economy-type _] )
+   ;;    (not-join [?unfilled-planet]
+   ;;              [?unfilled-planet :planet/economy-prosperity _] )]
+      
+   ;;  }
+   ;; {:name "planet-tech-level"
+   ;;  :exec
+   ;;  (fn [p-index p-seed p-econ p-gov]
+   ;;    {:db/id p-index
+   ;;     :planet/tech-level (elite/planet-tech-level p-seed p-econ p-gov)})
+   ;;  :query
+   ;;  '[:find ?unfilled-planet ?planet-seed ?planet-economy ?planet-government
+   ;;    :in $ %
+   ;;    :where
+   ;;    [?unfilled-planet :planet/seed ?planet-seed]
+   ;;    [?unfilled-planet :planet/government-type ?planet-government]      
+   ;;    (not-join [?unfilled-planet]
+   ;;              [?unfilled-planet :planet/tech-level _] )
+   ;;    ]
+   ;;  }
    ;; {:name "planet-population-size"}
    ;; {:name "planet-productivity"}
    ;; {:name "planet-name"}
@@ -281,19 +444,27 @@
   ;;(println "\t\t" prime-op)
   (let [q-map
         ;;(let [prime-op (nth operations 0)])
-        (if-let [op-query (get prime-op :query false)
-                 
-                 ]
+        (if-let [op-query (get prime-op :query false)]
           (let [op-data-fn (get prime-op :query-data nil)
                  op-data (if (fn? op-data-fn)
                            (op-data-fn)
                            nil)]
-            (map (fn [v] {:op prime-op :data op-data :parameters v}) 
-                 (d/q (:query prime-op) @elite-db-conn op-data)))
+            (let [parameter-result (d/q (:query prime-op) @elite-db-conn op-data)
+                  _ (println "+++ " parameter-result " +++")
+                  ;;_ (js/console.log parameter-result)
+                  applied-result (map (fn [vw]
+                     (println "op:" (str prime-op) "\nV:" vw "\n")
+                     {:op prime-op :data op-data :parameters vw}) 
+                                      parameter-result)
+                  ]
+              (println "=> " applied-result "\n")
+              applied-result
+              ))
           {:op prime-op :parameters nil})]
     (if (map? q-map) [q-map] q-map)))
 
 ;;(apply concat (map can-perform-operation operations))
+(assess-operations operations)
 
 (defn assess-operations [ops]
   (apply concat (map can-perform-operation ops)))
@@ -307,20 +478,36 @@
   (if (empty? chosen-op)
     (report-problem "No valid options")
     (let []
-      (println (get-in chosen-op [:op :name])
+      (println (get-in chosen-op [:op :name] nil)
                ;;(apply str (get-in chosen-op [:parameters]))
                )
-      (d/transact!
-       elite-db-conn
-       (let [prime-op (get-in chosen-op [:op])
-             parameters (into [elite-db-conn] (get-in chosen-op [:parameters]))
-             result (apply
-          (:exec prime-op)
-          (get-in chosen-op [:parameters])
-          )]
-         ;;(println (get-in chosen-op [:parameters]))
-         ;;(println result)
-         result)))))
+      (let [prime-op (get-in chosen-op [:op] nil)
+            exec-fn (get-in prime-op [:exec] nil)
+            params (get-in chosen-op [:parameters] nil)
+            ]
+        (println "params:" params)
+        (println (count params)
+                 (count (get prime-op :input []))
+                 (get prime-op :input [])
+                 )
+        (if (or (nil? prime-op) (nil? exec-fn))
+          (report-problem ["Op is missing:" chosen-op])
+          (d/transact!
+           elite-db-conn
+           (let [_ (println "transact")
+                 ;;parameters (into [elite-db-conn] (get-in chosen-op [:parameters] nil))
+                 params-vec params
+                 _ (println "params is vec? " (vector? params-vec))
+                 _ (println (get prime-op :input nil))
+                 _ (println params-vec)
+                 result (apply
+                         exec-fn
+                         params-vec)
+                         ]
+             ;;(println (get-in chosen-op [:parameters]))
+             (println result)
+             (println "+#+#+#+#+")
+             result)))))))
 
 
 (d/transact! elite-db-conn
@@ -341,8 +528,29 @@
 (print-database)
 (assess-operations operations)
 (choose-op)
+
+'[:find [?entity ?attr-1 ?attr-2]
+  :in $ %
+  :where
+  [?entity :planet/seed ?attr-1]
+  [?entity :planet/government-type ?attr-2]
+  (not-join [?entity] [?entity :planet/economy-type _])
+  (not-join [?entity] [?entity :planet/economy-prosperity _])]
+
+'[:find ?planet-seed ?unnamed-planet
+  :in $ %
+  :where
+  [?unnamed-planet :planet/seed ?planet-seed]
+  (not-join [?unnamed-planet] [?unnamed-planet :planet/name-partial _])
+  (not-join [?unnamed-planet] [?unnamed-planet :planet/name _])]
+;; }
+;;, :data nil, :parameters [#object[DataView [object DataView]] 4]
+;; }
+
 (execute-op! (choose-op))
 (print-database)
        
+(println "a" 4)
 
 
+(choose-op);; => {:op {:name "planet-tech-level", :input [:planet/seed :planet/economy-prosperity :planet/government-type], :exec #object[Function], :query [:find ?entity ?attr-1 ?attr-2 ?attr-3 :in $ % :where [?entity :planet/seed ?attr-1] [?entity :planet/economy-prosperity ?attr-2] [?entity :planet/government-type ?attr-3] (not-join [?entity] [?entity :planet/tech-level _])]}, :data nil, :parameters [3 #object[DataView [object DataView]] 5 7]}
