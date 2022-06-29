@@ -490,12 +490,21 @@
   We *could* just calculate the government type on the fly, since in the original algorithm this was all one dense code block that fed into the next step, but for the purposes of our more flexible generator, I'm opting to make it a parameter - maybe there's some new operation that alters the government type or something, so we'll want the final value instead of a parallel calculation. But in other circumstances we might opt for the parallel calculation."
   [planet-seed planet-government]
   (let [eco-base
-        (get-seed-bits planet-seed
-                       (:s0_hi elite-index)
-                       5 3)
+        (try 
+          (get-seed-bits planet-seed
+                         (:s0_hi elite-index)
+                         5 3)
+          (catch js/Error e
+            (println "An economic errort occurred:" e)
+              0))
         adjusted (assoc eco-base 1 (if (< planet-government 2) 1 (nth eco-base 1)))
         type (nth eco-base 0)
-        prosperity (bin-to-byte adjusted)
+        prosperity (try
+                     (bin-to-byte adjusted)
+                     (catch js/Error e
+                       (println "An economic error occurred: " e)
+                       0
+                       ))
         ;; Returning both the prosperity-coerced-to-an-integer *and* the flipped number
         ;; is an example of how the original code compactly reuses its computational
         ;; resources, in contrast with how our more-modular reconstruction needs to
@@ -527,7 +536,10 @@
   [planet-seed prosperity government]
   (+ (invert-byte prosperity 3)
      (bin-to-byte
-      (get-seed-bits planet-seed (:s1_hi elite-index) 6 2))
+      (get-seed-bits planet-seed
+                     (:s1_hi elite-index)
+                     6
+                     2))
      (clojure.math/ceil (/ government 2))))
 
 

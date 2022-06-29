@@ -1,5 +1,7 @@
 (ns ijk.generator
-  (:require-macros [ijk.generator])
+  (:require-macros
+   [ijk.generator]
+   [cljs.repl])
   (:require
    [ijk.elite :as elite]
    [ijk.elite-grammar :as egrammar]
@@ -58,22 +60,56 @@
   {:name name
    :input input
    :exec
-   (fn [& exec-input]
+   (fn
+     ;;"Auto-generated function to take the given input (of the specified types) and run the designated function to produce the specified output. Note that the exec-function is expected to return a vector that will be zipped against the vector of output types to produce the map for the transaction. "
+     [& exec-input]
+     (println exec-input)
+     (println output)
+     (println (cljs.repl/doc exec-fn))
+     (println (meta exec-fn))
+     (println "")
      (let [result (apply exec-fn (rest exec-input))
            ;; Note that if the exec-fn returns anything other than a sequence,
            ;; we need to wrap it in a vector so that it can match up with the
            ;; vector of labels for the attributes.
-           result-vec (if (seq? result) result [result])]
-       [(merge {:db/id (first exec-input)}
-                 (zipmap output result-vec))]))
+           ;; However, if it is a vector already we need to keep it that way...
+           result-vec
+           (cond
+             (seq? result)
+             (vec result)
+             (vector? result)
+             (vec result)
+             true
+             [result]
+             )
+           combined (merge {:db/id (first exec-input)}
+                           (zipmap output result-vec))]
+       (println result)
+       (println (vector? result))
+       (println (seq? result))
+       (println (type result))
+       (println "result-vec" result-vec)
+       (println "output" output)
+       (println "zipmap" (zipmap output result-vec))
+       ;;(println "apply zipmap" (apply zipmap output result-vec))
+       (println combined)
+       [combined]))
    :query
    (make-query input output)})
 
-;; (generate-attribute
-;;  {:name "planet-tech-level"
-;;   :input [:planet/seed :planet/economy-prosperity :planet/government-type]
-;;   :output [:planet/tech-level]
-;;   :exec-fn elite/planet-tech-level-from-prosperity})
+(clojure.repl/doc)
+(meta
+ (:exec
+  (generate-attribute
+   {:name "planet-tech-level"
+    :input [:planet/seed :planet/economy-prosperity :planet/government-type]
+    :output [:planet/tech-level]
+    :exec-fn elite/planet-tech-level-from-prosperity})))
+
+
+(elite/make-seed [0x5A4A 0x0248 0xB753]) 0 0
+
+
 
 
 (defn log-db
@@ -150,10 +186,8 @@
                 [?planet-id :planet/galaxy ?galaxy-index]
                 [?planet-id :planet/index ?planet-index]
                 ]
-             @db)
-        ]
-    (+ 1 new-index)
-    ))
+             @db)]
+    (+ 1 new-index)))
 
 (defn make-planet
   "Returns the seed for the planet at planet-index."
@@ -268,11 +302,13 @@
      :input [:planet/seed :planet/economy-prosperity :planet/government-type]
      :output [:planet/tech-level]
      :exec-fn elite/planet-tech-level-from-prosperity})
-   {:name "planet-population-size"}
-   {:name "planet-productivity"}
-   {:name "planet-name"}
-   {:name "planet-species"}
-   {:name "planet-description"}
+   ;;{:name "planet-population-size"}
+   ;;{:name "planet-productivity"}
+   ;;{:name "planet-name"}
+   ;; {:name "planet-species"
+   ;;  }
+   ;; {:name "planet-description"}
+
    ])
 
 
@@ -316,6 +352,8 @@
 (defn report-problem [description]
   (println (apply str description)))
 
+(defn report-success []
+  true)
 
 (defn execute-op! [chosen-op]
   (if (empty? chosen-op)
@@ -328,9 +366,11 @@
             ]
         (if (or (nil? prime-op) (nil? exec-fn))
           (report-problem ["Op is missing:" chosen-op])
-          (d/transact!
-           elite-db-conn
-           (apply exec-fn params)))))))
+          (let []
+            (d/transact!
+             elite-db-conn
+             (apply exec-fn params))
+            true))))))
 
 
 
@@ -350,4 +390,22 @@
   (choose-op)
   (execute-op! (choose-op))
   (print-database))
-       
+
+(def elite-db-conn (d/create-conn elite-schema))
+(d/transact! elite-db-conn [{:galaxy/seed (elite/make-seed [0x5A4A 0x0248 0xB753])
+                             :galaxy/index 0}
+                            {:planet/galaxy 0
+                             :planet/index 0
+                             :planet/seed (elite/make-seed [0x5A4A 0x0248 0xB753])}
+                            ])
+
+
+
+(while
+    (execute-op! (choose-op)))
+
+(print-database)
+(assess-operations operations)
+                                        ;operations
+(execute-op! (choose-op))
+(println operations)
