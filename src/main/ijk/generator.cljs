@@ -63,11 +63,11 @@
    (fn
      ;;"Auto-generated function to take the given input (of the specified types) and run the designated function to produce the specified output. Note that the exec-function is expected to return a vector that will be zipped against the vector of output types to produce the map for the transaction. "
      [& exec-input]
-     (println exec-input)
-     (println output)
-     (println (cljs.repl/doc exec-fn))
-     (println (meta exec-fn))
-     (println "")
+     ;; (println exec-input)
+     ;; (println output)
+     ;; (println (cljs.repl/doc exec-fn))
+     ;; (println (meta exec-fn))
+     ;; (println "")
      (let [result (apply exec-fn (rest exec-input))
            ;; Note that if the exec-fn returns anything other than a sequence,
            ;; we need to wrap it in a vector so that it can match up with the
@@ -84,15 +84,15 @@
              )
            combined (merge {:db/id (first exec-input)}
                            (zipmap output result-vec))]
-       (println result)
-       (println (vector? result))
-       (println (seq? result))
-       (println (type result))
-       (println "result-vec" result-vec)
-       (println "output" output)
-       (println "zipmap" (zipmap output result-vec))
-       ;;(println "apply zipmap" (apply zipmap output result-vec))
-       (println combined)
+       ;; (println result)
+       ;; (println (vector? result))
+       ;; (println (seq? result))
+       ;; (println (type result))
+       ;; (println "result-vec" result-vec)
+       ;; (println "output" output)
+       ;; (println "zipmap" (zipmap output result-vec))
+       ;; ;;(println "apply zipmap" (apply zipmap output result-vec))
+       ;; (println combined)
        [combined]))
    :query
    (make-query input output)})
@@ -302,9 +302,19 @@
      :input [:planet/seed :planet/economy-prosperity :planet/government-type]
      :output [:planet/tech-level]
      :exec-fn elite/planet-tech-level-from-prosperity})
-   ;;{:name "planet-population-size"}
-   ;;{:name "planet-productivity"}
-   ;;{:name "planet-name"}
+   (generate-attribute
+    {:name "planet-population-size"
+     :input [:planet/tech-level :planet/economy-prosperity :planet/government-type]
+     :output [:planet/population-size]
+     :exec-fn ;;(fn [entity-id & rest] (apply elite/planet-population-size rest))
+     elite/planet-population-size
+     })
+   (generate-attribute
+    {:name "planet-productivity"
+     :input [:planet/economy-prosperity :planet/government-type :planet/population-size]
+     :output [:planet/economic-productivity]
+     :exec-fn ;;(fn [entity-id & rest ] (apply elite/planet-productivity rest))
+     elite/planet-productivity})
    ;; {:name "planet-species"
    ;;  }
    ;; {:name "planet-description"}
@@ -356,6 +366,7 @@
   true)
 
 (defn execute-op! [chosen-op]
+  (println chosen-op)
   (if (empty? chosen-op)
     (report-problem "No valid options")
     (let []
@@ -409,3 +420,4 @@
                                         ;operations
 (execute-op! (choose-op))
 (println operations)
+(choose-op)

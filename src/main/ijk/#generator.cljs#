@@ -302,9 +302,19 @@
      :input [:planet/seed :planet/economy-prosperity :planet/government-type]
      :output [:planet/tech-level]
      :exec-fn elite/planet-tech-level-from-prosperity})
-   ;;{:name "planet-population-size"}
-   ;;{:name "planet-productivity"}
-   ;;{:name "planet-name"}
+   (generate-attribute
+    {:name "planet-population-size"
+     :input [:planet/tech-level :planet/economy-prosperity :planet/government-type]
+     :output [:planet/population-size]
+     :exec-fn ;;(fn [entity-id & rest] (apply elite/planet-population-size rest))
+     elite/planet-population-size
+     })
+   (generate-attribute
+    {:name "planet-productivity"
+     :input [:planet/economy-prosperity :planet/government-type :planet/population-size]
+     :output [:planet/economic-productivity]
+     :exec-fn ;;(fn [entity-id & rest ] (apply elite/planet-productivity rest))
+     elite/planet-productivity})
    ;; {:name "planet-species"
    ;;  }
    ;; {:name "planet-description"}
@@ -356,6 +366,7 @@
   true)
 
 (defn execute-op! [chosen-op]
+  ;;(println chosen-op)
   (if (empty? chosen-op)
     (report-problem "No valid options")
     (let []
@@ -409,3 +420,4 @@
                                         ;operations
 (execute-op! (choose-op))
 (println operations)
+(choose-op)

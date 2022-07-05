@@ -734,7 +734,7 @@
 ;;  (get-seed-bits elite-seed (:s1_hi elite-index) 0 8))
 
 (defn planet-population-size [tech-level economy government]
-  (println tech-level economy government)
+  ;;(println tech-level economy government)
   (let [econ-prosperity ;; econ can be passed in as a tuple of [type, prosperity]
         (if (seq? economy)
           (second economy)
@@ -746,8 +746,8 @@
    1)))
 
 (defn planet-productivity [economy government population]
-  (println "planet-prodcutivity")
-  (println economy government population)
+  ;;(println "planet-prodcutivity")
+  ;;(println economy government population)
   (let [econ-prosperity ;; econ can be passed in as a tuple of [type, prosperity]
         (if (seq? economy)
           (second economy)
