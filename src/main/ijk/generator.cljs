@@ -175,7 +175,7 @@
 
 
 
-(def limit-to-galaxy-planet-count 4 ;;256
+(def limit-to-galaxy-planet-count 4;;256
   )
 (def limit-to-galaxy-count 8)
 
@@ -322,6 +322,93 @@
    ])
 
 
+(def export-translation
+  {;;:planet/index #(%)
+   :planet/seed  #(elite/get-seed-bytes %)
+   ;;:planet/name  #(%)
+   ;;:planet/tech-level #(%)
+   :planet/economy-type #(get (zipmap (range) [:industrial :agricultural]) % "Unknown")
+   :planet/economy-prosperity #(get {0 :rich
+                                     1 :average
+                                     2 :poor
+                                     3 :mainly
+                                     4 :mainly
+                                     5 :rich
+                                     6 :average
+                                     7 :poor} % "Unknown")
+   :planet/government-type #(elite/government-name %)
+   :planet/population-size #(str (* % 0.1 )" Billion")
+   :planet/economic-productivity #(str % " M CR")
+   })
+
+(defn export-entity
+  "Input: a vector of the data linked to an entity. Prints the data in a readable format. Returns nil."
+  [entity]
+  (println "---")
+  (doseq [[e a v tx add] (vec
+                          (map
+                           (fn [dat]
+                             (let [[e a v tx add] dat]
+                               [e a v tx add]))
+                           entity))]
+    ;;(println [e a v tx add])
+    (println (str a ":\t" ((get export-translation a (fn [x] x)) v)))
+
+    ))
+
+;;((get export-translation :planet/economy-type) 0)
+
+(defn fetch-attribute [planet attribute]
+  ;; (p
+   ;; rintln planet)
+   ;; (println attribute)
+   ;; (println (get export-translation attribute (fn [x] x)))
+   ;; (println (get planet attribute nil))
+   (let [attr (get planet attribute nil)
+         value (if (number? attr)
+                 ((get export-translation attribute (fn [x] x))
+                  attr)
+                 attr)]
+     (if (keyword? value)
+       (name value)
+       value)))
+
+(defn export-planet [planet-data]
+  ;;(println planet-data)
+  (let [planet (into {}
+                     (map
+                      (fn [dat]
+                        ;;(println dat)
+                        (let [[e a v t add] dat]
+                          [a v]))
+                      planet-data))
+        planet-index (get planet :planet/index nil)]
+    ;;(println planet)
+    (if (not (nil? planet-index))
+      ;;(println ">")
+      (str
+       "### "
+       (get planet :planet/name "UNNAMED") " (" planet-index ")" " ###\n"
+       "Government:\t" (fetch-attribute planet :planet/government-type) "\n"
+       "Economy:\t" (fetch-attribute planet :planet/economy-prosperity) " "
+       (fetch-attribute planet :planet/economy-type) "\n"
+       "Tech Level:\t" (fetch-attribute planet :planet/tech-level)"\n"
+       "Population:\t" (fetch-attribute planet :planet/population-size) "\n"
+       "Productivty:\t" (fetch-attribute planet :planet/economic-productivity) "\n"
+       ))
+    ))
+
+(defn export-galaxy []
+  (let [data (d/datoms @elite-db-conn :eavt)
+        by-entity (group-by first data)]
+    (doseq [ent by-entity]
+      ;;(export-entity (second ent))
+      (println (export-planet (second ent)))
+      )))
+
+
+
+
 ;; print database
 (defn print-database []
   (println "----------")
@@ -366,7 +453,7 @@
   true)
 
 (defn execute-op! [chosen-op]
-  (println chosen-op)
+  ;;(println chosen-op)
   (if (empty? chosen-op)
     (report-problem "No valid options")
     (let []
@@ -421,3 +508,4 @@
 (execute-op! (choose-op))
 (println operations)
 (choose-op)
+(export-galaxy)
