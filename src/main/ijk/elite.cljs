@@ -40,8 +40,6 @@
 
 (defn setup [])
 
-
-
 ;; (defn update-database [database-id]
 ;;   (let [new-database (get database-records database-id :default-database)]
 ;;     (if (and new-database (get new-database :db-conn false))
@@ -310,8 +308,7 @@
 ;; I'm storing them from 0-31 here instead of the original 128 to 159, because I don't need to cram it into the same memory as the other text glyphs and commands so we save an extra step.
 (def elite-planet-name-digraphs
   [
-   "" ;; for planet names, 0 is a special case. I'm encoding this in this table instead of in the function.
-   ;;"AL"              ; Token 128
+ ""                ;; for planet names, 0 is a special case. I'm encoding this in this table instead of in the function.   ;;"AL"              ; Token 128
  "LE"              ; Token 129
  "XE"              ; Token 130
  "GE"              ; Token 131
@@ -343,9 +340,7 @@
  "IS"              ; Token 157
  "RI"              ; Token 158
  "ON"              ; Token 159
-
    ]
-
   )
 
 
@@ -404,8 +399,11 @@
 ;;(exec-func db-conn )
 
 
-
-(defn generate-name [input]
+(defn generate-name
+  "Generate the planet name recursively, using the elite-planet-name-diagraphs table as the source data.
+  
+  Having this operation be recursive follows the original BBC Elite, plus it lets us demonstrate how the generator can handle partially-constructed artifacts."
+  [input]
   (if (string? input)
     input
     (let [[seed-token name-length-remaining name-in-progress] input]
@@ -509,6 +507,8 @@
      (clojure.math/ceil (/ government 2))))
 
 
+;; 2022/9/6 - There is a bug in the species generation. For example, 252 Tiinlebi is
+;;            reporting "Green Horned Felines" when it should be "Green Horned Humanoids"
 (def species-table
   [["Large ", "Fierce ", "Small ", "", "", "", "", ""]
   ["Green " "Red " "Yellow" "Blue " "Black " "Harmless " "" "" "" ""]
@@ -839,7 +839,7 @@
              prod
              ])))))))
 
-;;(test-galaxy-generator )
+(test-galaxy-generator )
 
 
 
