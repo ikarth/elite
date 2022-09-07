@@ -107,7 +107,7 @@
     :exec-fn elite/planet-tech-level-from-prosperity})))
 
 
-(elite/make-seed [0x5A4A 0x0248 0xB753]) 0 0
+;(elite/make-seed [0x5A4A 0x0248 0xB753]) 0 0
 
 
 
@@ -395,6 +395,7 @@
        "Tech Level:\t" (fetch-attribute planet :planet/tech-level)"\n"
        "Population:\t" (fetch-attribute planet :planet/population-size) "\n"
        "Productivty:\t" (fetch-attribute planet :planet/economic-productivity) "\n"
+       "Species:\t" (fetch-attribute planet :planet/species) "\n"
        ))
     ))
 

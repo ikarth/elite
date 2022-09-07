@@ -461,11 +461,6 @@
           (first (positions #{1} col))))
 
 
-  ;; ([number-byte]
-  ;;  (if #(= 0 number-byte)
-  ;;    (invert-byte number-byte 3)
-  ;;    (first (positions #{1} col))))
-
 (defn invert-byte
   "Given a number, break it down to its bit representation, invert the bits, and return it as a number."
   [number-byte size]
@@ -562,14 +557,6 @@
 (defn bitwise-add-vec
  "take two boolean vectors and add them, emulating the BBC micro behavior"
  [one two]
- ;; (reduce
- ;;  (fn [construct adders]
- ;;    (let [new-sum
- ;;          (map + adders)]
- ;;      )
- ;;    )
- ;;  [] (interleave (reverse one) (reverse two)))
- ;; [ 0 0 0 0  0 0 0 0]
  (byte-to-bin
   (+
    (bin-to-byte one)
@@ -579,24 +566,9 @@
 ;; 76543210
 
 (defn planet-species
+  "Generate a (brief) description of the local planetary species."
   [seed]
-  ;; (println (bin-to-byte (get-seed-bits seed (:s2_lo elite-index) 0 8))
-  ;;          (get-seed-bits seed (:s2_lo elite-index) 0 1))
-  ;; (println [(into []
-  ;;                 (byte-to-bin
-  ;;                  (bit-xor
-  ;;                   (bin-to-byte (get-seed-bits seed (:s0_hi elite-index) 0 8))
-  ;;                   (bin-to-byte (get-seed-bits seed (:s1_hi elite-index) 0 8)))))
-  ;;           (byte-to-bin
-             
-  ;;            (bin-to-byte (get-seed-bits seed (:s0_hi elite-index) 0 8)))
-  ;;           (byte-to-bin (bin-to-byte (get-seed-bits seed (:s1_hi elite-index) 0 8)))
-          
-
-  ;;           ]
-  ;;         )
-
-    ;; Check it 7 of s2_lo - if it is zero return "Human Colonials"
+   ;; Check it 7 of s2_lo - if it is zero return "Human Colonials"
   (if (= 0 
          (first (get-seed-bits seed (:s2_lo elite-index) 0 1))
          )
@@ -763,7 +735,6 @@
             ["id" "name" "seed" "species" "government" "economy" "tech-level" "population size" "productivity"]
             [r
              name
-                                        ;(map byte-to-bin (get-seed-bytes p))
              (map #(. % toString 16) (get-seed-bytes p))
              species
              (government-name gov)
@@ -870,6 +841,8 @@
     (if (> 0 planet-index)
       (last (take planet-index (iterate twist-to-next-planet galaxy-seed)))
       galaxy-seed)}])
+
+(make-planet [0x5A4A 0x0248 0xB753] 0 62)
 
 
 ;; (make-seed [0x5A4A 0x0248 0xB753])
