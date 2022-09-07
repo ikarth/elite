@@ -601,73 +601,17 @@
       (apply str 
        (map #(get %2 %1) species-id species-table)))))
 
+;; Test generating species descriptions and planet names...
+(comment
+  (planet-species (make-seed [0x57fa 0x1d30 0x17b3]))
+  (planet-species (make-seed [0x588a 0x476c 0x02db]))
+  (last (take 6
+              (iterate
+               generate-name (generate-name-start (make-seed [0xfa57 0x301d 0xb317])))))
+  (last (take 6
+              (iterate
+               generate-name (generate-name-start (make-seed [0x57fa 0x1d30 0x17b3]))))))
 
-(planet-species (make-seed [0x57fa 0x1d30 0x17b3]))
-(planet-species (make-seed [0x588a 0x476c 0x02db]))
-
-(last (take 6
-            (iterate
-             generate-name (generate-name-start (make-seed [0xfa57 0x301d 0xb317]))
-             
-             )))
-(last (take 6
-            (iterate
-             generate-name (generate-name-start (make-seed [0x57fa 0x1d30 0x17b3]))
-             
-             )))
-
-
-;; [0 0 0 0 0 0 1 0] ;; s2
-;; [0 1 0 1 1 0 0 0] ;; s0
-;; [0 1 0 0 0 1 1 1] ;; s1
-;; [0 0 0 1 1 1 1 1] ;; XOR
-;; [0 0 1 0 0 0 0 1] ;; A + B
-
-
-;; [0 0 0 1 1 1 1 1] 2
-;; s2_hi
-;; s0_hi
-;; s1_hi
-;; A = s0_hi EOR s1_hi
-;; s2_hi + A
-
-;; 0 0 0 0 - 0 0 1 0 
-;;
-
-;; 0 0 1 1
-;; 0 1 0 1 +
-;; 1 0 0 0 =
-
-
-;;(planet-species elite-seed)
-
-;; (get-seed-bits elite-seed (:s1_hi elite-index) 0 8)
-
-;; (planet-tech-level47
-;;  elite-seed
-;;  (planet-economy elite-seed (planet-government elite-seed))
-;;  (planet-government elite-seed))
-
-;; (planet-tech-level
-;;  planet-two
-;;  (planet-economy planet-two (planet-government planet-two))
-;;  (planet-government planet-two))
-
-
-; 0 - 7 , 0 - 3, 0 - 3.5
-;; (let [sb (get-seed-bytes elite-seed)]
-;;   [
-;;    (bit-and (nth sb (:s0_hi elite-index)) 2r00000111)
-;;    (bit-xor (second (planet-economy elite-seed (planet-government elite-seed))) 2r111)
-;;    (invert-byte (second (planet-economy elite-seed (planet-government elite-seed))) 3)
-;;    (bit-and (nth sb (:s1_hi elite-index)) 2r00000011)
-;;    (planet-government elite-seed)
-;;    (bit-and (nth sb (:s1_lo elite-index)) 2r00000011)
-;;    ]
-;;   )
-
-;; (bin-to-byte
-;;  (get-seed-bits elite-seed (:s1_hi elite-index) 0 8))
 
 (defn planet-population-size [tech-level economy government]
   (+
@@ -701,45 +645,17 @@
         prosperity)
    (nth [:industrial :agricultural] type)])
 
-
-;; (bin-to-byte [0 1 0 0])
-
-;; (map byte-to-bin (get-seed-bytes elite-seed))
-;; (government-name (planet-government elite-seed))
-;; (economy-name (planet-economy elite-seed (planet-government elite-seed)))
-;; (planet-tech-level
-;;  elite-seed
-;;  (planet-economy elite-seed (planet-government elite-seed))
-;;  (planet-government elite-seed))
-
-;; (map byte-to-bin (get-seed-bytes planet-two))
-;; (government-name (planet-government planet-two))
-;; (economy-name
-;;  (planet-economy planet-two (planet-government planet-two)))
-;; (planet-tech-level
-;;  planet-two
-;;  (planet-economy planet-two (planet-government planet-two))
-;;  (planet-government planet-two))
-
-
-
-
-
-;; (get-seed-bytes (nth planet-seed-list 0))
-;; (get-seed-bytes (nth planet-seed-list 1))
-
-;; (map-indexed (fn [index item]
-;;                [index (get-seed-bytes item)])
-;;              planet-seed-list)
-
-
+;; The seed for the orignal game, chosen after searching through many possibilities...
 (def elite-seed (make-seed [0x5A4A 0x0248 0xB753]))
+
+;; test twisting the seed
 (def planet-two (-> elite-seed
                     twist-seed
                     twist-seed
                     twist-seed
                     twist-seed))
 
+;; test getting all of the planets
 (def planet-seed-list
   (reduce (fn [current next-id] (concat current [(twist-to-next-planet (last current))]))
           [elite-seed]
@@ -748,10 +664,11 @@
 
 (def auth-tech [9 7 8 12 7 10 9 5 12 7 3 10 9 7 7 8 9 8 7 7 9 4 11 14 8])
 
-
+;; test starting the generation of a name
 (let [[a b c] (generate-name-start elite-seed)]
   (generate-name [a b c]))
 
+;; test recursively generating a name
 (generate-name
  (generate-name
   (generate-name
