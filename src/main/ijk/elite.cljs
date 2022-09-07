@@ -509,6 +509,7 @@
 
 ;; 2022/9/6 - There is a bug in the species generation. For example, 252 Tiinlebi is
 ;;            reporting "Green Horned Felines" when it should be "Green Horned Humanoids"
+;; 2022/9/6 - The bug was in this table: "Lobster" was missing from the list.
 (def species-table
   [["Large ", "Fierce ", "Small ", "", "", "", "", ""]
   ["Green " "Red " "Yellow" "Blue " "Black " "Harmless " "" "" "" ""]
@@ -516,6 +517,7 @@
   ["Rodents"
    "Frogs"
    "Lizards"
+   "Lobsters"
    "Birds"
    "Humanoids"
    "Felines"
@@ -558,25 +560,53 @@
 
   ;;           ]
   ;;         )
+
+    ;; Check it 7 of s2_lo - if it is zero return "Human Colonials"
   (if (= 0 
          (first (get-seed-bits seed (:s2_lo elite-index) 0 1))
          )
     "Human Colonials"
-    (let [register-A 
+    (let [;; A bunch of fiddly bitmapping operations. Remember that our subvec indexing is counting from the opposite direction as the notes on the BBC Elite site...
+          ;; register-A = s2_hi
+          register-A 
           (vec (concat [0 0]
                        (into [] (get-seed-bits seed (:s2_hi elite-index) 0 6))))
+          ;; bits 2-4 of A, by using a mask which multiplies the bit strings together 
           species-size  (bin-to-byte (mapv *
                                           [0 0 0 0 0 1 1 1]
                                           register-A))
-          species-color (subvec register-A 3 5)          
+          ;; bits 5-7 of A, by just grabbing the subvec 
+          species-color (subvec register-A 3 5)
+          ;; A = bits 0-2 of (s0_hi EOR s1_hi)
+          register-A-new
+          (mapv (fn [a b] (if (not= a b) 1 0))
+                (get-seed-bits seed (:s0_hi elite-index) 0 8)
+                (get-seed-bits seed (:s1_hi elite-index) 0 8))
+          ;; texture = bits 0-2 of the new A
           texture (mapv * [0 0 0 0 0 1 1 1]
-                       (mapv (fn [a b] (if (not= a b) 1 0))
-                            (get-seed-bits seed (:s0_hi elite-index) 0 8)
-                            (get-seed-bits seed (:s1_hi elite-index) 0 8)))
+                        register-A-new)
+          ;; bits 0-1 of s2_hi
+          register-B (mapv * [0 0 0 0 0 0 1 1]
+                           (get-seed-bits seed (:s2_hi elite-index) 0 8))
+          ;; add register B to A-new
+          register-B-plus (bitwise-add-vec texture
+                                           (mapv * [0 0 0 0 0 0 1 1]
+                                                 register-B))
+          ;; take bits 0-2 of B-plus
           species-name (mapv * [0 0 0 0 0 1 1 1]
-                             (bitwise-add-vec
-                              (mapv * [0 0 0 0 0 0 1 1] register-A)
-                              texture))
+                             register-B-plus)
+          ;; species-name (mapv * [0 0 0 0 0 1 1 1]
+          ;;                    (bitwise-add-vec
+          ;;                     (mapv * [0 0 0 0 0 0 1 1] register-A-new)
+          ;;                     texture))
+          species-name-unified (mapv * [0 0 0 0 0 1 1 1]
+                                     (bitwise-add-vec
+                                      (mapv (fn [a b] (if (not= a b) 1 0))
+                                            (get-seed-bits seed (:s0_hi elite-index) 0 8)
+                                            (get-seed-bits seed (:s1_hi elite-index) 0 8))
+                                           (mapv * [0 0 0 0 0 0 1 1]
+                                                 (mapv * [0 0 0 0 0 0 1 1]
+                                                       (get-seed-bits seed (:s2_hi elite-index) 0 8)))))
           
           type (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 6 2))
           genus (mapv * [0 0 0 0 0 0 1 1] (get-seed-bits seed (:s2_hi elite-index) 0 8))
@@ -585,49 +615,62 @@
                       (bin-to-byte (subvec texture 5)) ;; texture
                       ;; (bin-to-byte (subvec (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 6))
                       ;;                                               (bin-to-byte (subvec texture 5))))) 5))
-                      (bin-to-byte (mapv * [0 0 0 0 0 1 1 1] (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 5)) (bin-to-byte genus))))))
+                      (bin-to-byte ;;(mapv * [0 0 0 0 0 1 1 1] (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 5)) (bin-to-byte genus)))))
+                       species-name
+                                   )
 
                       ]] ;; type
       (comment )
-      (println ["\n* * * *\n"
-                register-A "\n"
-                (get-seed-bits seed (:s2_hi elite-index) 0 8) "\n"
-                (get-seed-bits seed (:s0_hi elite-index) 0 8) "\n"
-                (get-seed-bits seed (:s1_hi elite-index) 0 8) "\n"
-                texture "\n"
-                genus "\n"
-                texture "+" genus "=" (byte-to-bin (+ (bin-to-byte texture) (bin-to-byte genus))) "\n"
-                (bin-to-byte  texture) " + " (bin-to-byte genus)
-                " = "
-                (+ (bin-to-byte texture) (bin-to-byte genus)) "\nOR\n"
-                (bin-to-byte (mapv * [0 0 0 0 0 1 1 1] (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 5)) (bin-to-byte genus)))))) "\n"
-                (subvec (into [] (byte-to-bin (+ (bin-to-byte texture) (bin-to-byte genus)))) 4) "\n"
-                (apply str        (map #(get %2 %1) species-id species-table)) "\n"
-                ;;(byte-to-bin (+ (bin-to-byte texture) (bin-to-byte genus))) "\n"
-                ;; genus
-                ;; texture type
-                ;; "\n\n"
-                ;; genus
-                ;; "\n>>>"
-                ;; species-id
-                ;;   ;;(subvec texture 5)
-                ;;   ;;(subvec (into [] (byte-to-bin (+ type (bin-to-byte texture)))) 5)
-                ;;   "\n=>\n"
-                ;;   (get-seed-bits seed (:s2_hi elite-index) 0 8)
-                ;;   type
-                ;;   (get-seed-bits seed (:s2_hi elite-index) 6 2)
-                ;;   "\n+\n"
-                ;;   texture
-                ;;   (bin-to-byte texture)
-                ;;   (bin-to-byte (subvec texture 6))
-                ;;   "\n=\n"
-                ;; (+ (bin-to-byte (subvec texture 5)) (bin-to-byte (subvec texture 6)))
-                ;; (byte-to-bin (+ (bin-to-byte (subvec texture 5)) (bin-to-byte (subvec texture 6))))
-                ;; (bin-to-byte (subvec (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 6))
-                ;;                                               (bin-to-byte (subvec texture 5))))) 5))
-                ;; (subvec (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 6))
-                ;;                                                (bin-to-byte (subvec texture 5))))) 5)
-                  ])
+      (if true 
+        (println ["\n* * * *\n"
+                  "register-A " register-A "\n"
+                  "     s2_hi " (get-seed-bits seed (:s2_hi elite-index) 0 8) "\n"
+                  "     s0_hi " (get-seed-bits seed (:s0_hi elite-index) 0 8) "\n"
+                  "     s1_hi " (get-seed-bits seed (:s1_hi elite-index) 0 8) "\n"
+                  "     A-new " register-A-new "\t" (bin-to-byte register-A-new) "\n"
+                  "register-B " register-B "\t" (bin-to-byte register-B)  "\n"
+                  "    B-plus " register-B-plus "\t" (bin-to-byte register-B-plus)  "\n"
+                  "      name " species-name "\t" (bin-to-byte species-name)  "\n"
+                  "   unified " species-name-unified "\n"
+                  "      size " species-size "\n"
+                  "     color " species-color "\n"
+                  "   texture " texture "\n"
+                  "     genus " genus "\n"
+                  texture "+" species-name "=" (byte-to-bin (+ (bin-to-byte texture) (bin-to-byte species-name))) "\n"
+                  
+                  
+                  texture "+" genus "=" (byte-to-bin (+ (bin-to-byte texture) (bin-to-byte genus))) "\n"
+                  (bin-to-byte  texture) " + " (bin-to-byte genus)
+                  " = "
+                  (+ (bin-to-byte texture) (bin-to-byte genus)) "\nOR\n"
+                  (bin-to-byte (mapv * [0 0 0 0 0 1 1 1] (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 5)) (bin-to-byte genus)))))) "\n"
+                  (subvec (into [] (byte-to-bin (+ (bin-to-byte texture) (bin-to-byte genus)))) 4) "\n"
+                  (apply str        (map #(get %2 %1) species-id species-table)) "\n"
+                  ;;(byte-to-bin (+ (bin-to-byte texture) (bin-to-byte genus))) "\n"
+                  ;; genus
+                  ;; texture type
+                  ;; "\n\n"
+                  ;; genus
+                  ;; "\n>>>"
+                  ;; species-id
+                  ;;   ;;(subvec texture 5)
+                  ;;   ;;(subvec (into [] (byte-to-bin (+ type (bin-to-byte texture)))) 5)
+                  ;;   "\n=>\n"
+                  ;;   (get-seed-bits seed (:s2_hi elite-index) 0 8)
+                  ;;   type
+                  ;;   (get-seed-bits seed (:s2_hi elite-index) 6 2)
+                  ;;   "\n+\n"
+                  ;;   texture
+                  ;;   (bin-to-byte texture)
+                  ;;   (bin-to-byte (subvec texture 6))
+                  ;;   "\n=\n"
+                  ;; (+ (bin-to-byte (subvec texture 5)) (bin-to-byte (subvec texture 6)))
+                  ;; (byte-to-bin (+ (bin-to-byte (subvec texture 5)) (bin-to-byte (subvec texture 6))))
+                  ;; (bin-to-byte (subvec (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 6))
+                  ;;                                               (bin-to-byte (subvec texture 5))))) 5))
+                  ;; (subvec (into [] (byte-to-bin (+ (bin-to-byte (subvec texture 6))
+                  ;;                                                (bin-to-byte (subvec texture 5))))) 5)
+                  ]))
       (apply str 
        (map #(get %2 %1) species-id species-table)))))
 
