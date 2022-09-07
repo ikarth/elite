@@ -84,17 +84,17 @@
    ))
 
 
-(def elite-schema {:seed/planet            {:db/cardinality :db.cardinality/one   :db/unique :db.unique/identity}
-                   :seed/description       {:db/cardinality :db.cardinality/one}
-                   :seed/galaxy            {:db/cardinality :db.cardinality/one}
-                   :planet/economy-type    {:db/cardinality :db.cardinality/one}
-                   :planet/species         {:db/cardinality :db.cardinality/one}
-                   :planet/government-type {:db/cardinality :db.cardinality/one}
-                   :planet/name-length     {:db/cardinality :db.cardinality/one}
-                   :planet/partial-name    {:db/cardinality :db.cardinality/one}
-                   :planet/name            {:db/cardinality :db.cardinality/one}
-                   :planet/description     {:db/cardinality :db.cardinality/one}}
-  )
+;; (def elite-schema {:seed/planet            {:db/cardinality :db.cardinality/one   :db/unique :db.unique/identity}
+;;                    :seed/description       {:db/cardinality :db.cardinality/one}
+;;                    :seed/galaxy            {:db/cardinality :db.cardinality/one}
+;;                    :planet/economy-type    {:db/cardinality :db.cardinality/one}
+;;                    :planet/species         {:db/cardinality :db.cardinality/one}
+;;                    :planet/government-type {:db/cardinality :db.cardinality/one}
+;;                    :planet/name-length     {:db/cardinality :db.cardinality/one}
+;;                    :planet/partial-name    {:db/cardinality :db.cardinality/one}
+;;                    :planet/name            {:db/cardinality :db.cardinality/one}
+;;                    :planet/description     {:db/cardinality :db.cardinality/one}}
+;;   )
 
 
 
@@ -144,6 +144,11 @@
    :s2_hi 5 ;; QQ15+5
   })
 
+(defn get-seed-bytes [seed]
+  ;;{:pre [(spec/valid? :seed/data seed)]}
+  (into [] (map #(. seed getUint8 %) (range 6) )))
+
+
 (defn make-seed [seed-vals]
   {:pre  [(spec/valid? :seed/specifier seed-vals)]
    ;;:post [(spec/valid? :seed/data-array %)]
@@ -152,23 +157,27 @@
       view (js/DataView. ab)]
   (. view setUint16 0 (nth seed-vals 0) true)    
   (. view setUint16 2 (nth seed-vals 1) true)    
-  (. view setUint16 4 (nth seed-vals 2) true) 
-  view))
+  (. view setUint16 4 (nth seed-vals 2) true)
+  ;;(aset view "toStringTag" (get-seed-bytes view))
+  view
+  ))
+
+
 
 (defn bytes-to-seed [seed-bytes]
   (let [ab (js/ArrayBuffer. 6)
         view (js/DataView. ab)]
     (doseq [n (range 6)]
       (. view setUint8 n (nth seed-bytes n) true))
-    view))
+    ;;(aset view "toStringTag" (get-seed-bytes view))
+    view
+    ))
 
-;; (bytes-to-seed [0 1 2 3 4 5])
-;; (get-seed-bytes (bytes-to-seed [0 10 20 30 40 50]))
+(bytes-to-seed [0 1 2 3 4 5])
+(println (bytes-to-seed [0 1 2 3 4 5]))
+(get-seed-bytes (bytes-to-seed [0 10 20 30 40 50]))
 
 
-(defn get-seed-bytes [seed]
-  ;;{:pre [(spec/valid? :seed/data seed)]}
-  (into [] (map #(. seed getUint8 %) (range 6) )))
 
 (defn byte-to-bin [dec]
   (let [byte-length 8
@@ -479,12 +488,21 @@
   We *could* just calculate the government type on the fly, since in the original algorithm this was all one dense code block that fed into the next step, but for the purposes of our more flexible generator, I'm opting to make it a parameter - maybe there's some new operation that alters the government type or something, so we'll want the final value instead of a parallel calculation. But in other circumstances we might opt for the parallel calculation."
   [planet-seed planet-government]
   (let [eco-base
-        (get-seed-bits planet-seed
-                       (:s0_hi elite-index)
-                       5 3)
+        (try 
+          (get-seed-bits planet-seed
+                         (:s0_hi elite-index)
+                         5 3)
+          (catch js/Error e
+            (println "An economic errort occurred:" e)
+              0))
         adjusted (assoc eco-base 1 (if (< planet-government 2) 1 (nth eco-base 1)))
         type (nth eco-base 0)
-        prosperity (bin-to-byte adjusted)
+        prosperity (try
+                     (bin-to-byte adjusted)
+                     (catch js/Error e
+                       (println "An economic error occurred: " e)
+                       0
+                       ))
         ;; Returning both the prosperity-coerced-to-an-integer *and* the flipped number
         ;; is an example of how the original code compactly reuses its computational
         ;; resources, in contrast with how our more-modular reconstruction needs to
@@ -493,7 +511,7 @@
         ;;flipped-economy (bin-to-byte (invert-bits adjusted))
         ;; ...on second thought, I wrote the byte-flipping function.
         ]
-    (println [eco-base adjusted prosperity])
+    ;;(println [eco-base adjusted prosperity])
     [type prosperity]))
 
 
@@ -507,9 +525,26 @@
      (clojure.math/ceil (/ government 2))))
 
 
+(defn planet-tech-level-from-prosperity
+  "The tech level formula is:
+       flipped_economy + (s1_hi AND %11) + (government / 2)
+
+  There are two of these functions because the ecological query was
+  easier to write if it used prosperity directly." 
+  [planet-seed prosperity government]
+  (+ (invert-byte prosperity 3)
+     (bin-to-byte
+      (get-seed-bits planet-seed
+                     (:s1_hi elite-index)
+                     6
+                     2))
+     (clojure.math/ceil (/ government 2))))
+
+
 ;; 2022/9/6 - There is a bug in the species generation. For example, 252 Tiinlebi is
 ;;            reporting "Green Horned Felines" when it should be "Green Horned Humanoids"
 ;; 2022/9/6 - The bug was in this table: "Lobster" was missing from the list.
+
 (def species-table
   [["Large ", "Fierce ", "Small ", "", "", "", "", ""]
   ["Green " "Red " "Yellow" "Blue " "Black " "Harmless " "" "" "" ""]
@@ -614,23 +649,35 @@
 
 
 (defn planet-population-size [tech-level economy government]
+  ;;(println tech-level economy government)
+  (let [econ-prosperity ;; econ can be passed in as a tuple of [type, prosperity]
+        (if (seq? economy)
+          (second economy)
+          economy)]
   (+
    (* tech-level 4)
-   (second economy)
+   econ-prosperity
    government
-   1))
+   1)))
 
 (defn planet-productivity [economy government population]
+  ;;(println "planet-prodcutivity")
+  ;;(println economy government population)
+  (let [econ-prosperity ;; econ can be passed in as a tuple of [type, prosperity]
+        (if (seq? economy)
+          (second economy)
+          economy)]
   (* 8
-     (+ (invert-byte (second economy) 3) 3)
+     (+ (invert-byte econ-prosperity 3) 3)
      (+ government 4)
      population
-     ))
+     )))
 
 
 (defn government-name [gov-type]
   (nth [:anarchy :feudal :multi-government :dictatorship :communist :confederacy :democracy :corporate-state]
-       gov-type))
+       gov-type
+       :unknown))
 
 (defn economy-name [[type prosperity]]
   [
@@ -799,53 +846,55 @@
 
 
 
-(def elite-db-conn (d/create-conn elite-schema))
-(swap! current-database assoc-in [:db-conn]
-       elite-db-conn)
-(swap! current-database assoc-in [:db-schema]
-       elite-schema)
+;; (def elite-db-conn (d/create-conn elite-schema))
+;; (swap! current-database assoc-in [:db-conn]
+;;        elite-db-conn)
+;; (swap! current-database assoc-in [:db-schema]
+;;        elite-schema)
 
-(d/transact! elite-db-conn [{:test/name "Name of Test"}])
-;(log-db elite-db-conn)
-(d/transact! elite-db-conn [{:seed/galaxy (make-seed [0x5A4A 0x0248 0xB753])}])
-(d/q '[:find ?e ?v
-       :where
-       [?e :seed/planet-seed ?v]]
-     @elite-db-conn)
+;; (d/transact! elite-db-conn [{:test/name "Name of Test"}])
+;; ;(log-db elite-db-conn)
+;; (d/transact! elite-db-conn [{:seed/galaxy (make-seed [0x5A4A 0x0248 0xB753])}])
+;; (d/q '[:find ?e ?v
+;;        :where
+;;        [?e :seed/planet-seed ?v]]
+;;      @elite-db-conn)
 
 (defn make-planet
   "Returns the seed for the planet at planet-index."
-  [galaxy-seed planet-index]
-  [{:planet/index-number planet-index
-    :seed/planet-seed
+  [galaxy-seed galaxy-index planet-index]
+  [{:db/id -1
+    :planet/galaxy galaxy-index
+    :planet/index planet-index
+    :seed/planet
     (if (> 0 planet-index)
       (last (take planet-index (iterate twist-to-next-planet galaxy-seed)))
       galaxy-seed)}])
 
 
-(make-seed [0x5A4A 0x0248 0xB753])
+;; (make-seed [0x5A4A 0x0248 0xB753])
 
 
-(let [galaxy-seed (d/q '[:find ?gal-seed
-                        ;;:in $ %
-                        :where [?e :seed/galaxy ?gal-seed]]
-                       @elite-db-conn)
-      planet-index-number 7
+;; (let [galaxy-seed (d/q '[:find ?gal-seed
+;;                         ;;:in $ %
+;;                         :where [?e :seed/galaxy ?gal-seed]]
+;;                        @elite-db-conn)
+;;       planet-index-number 7
        
-      parameters [galaxy-seed planet-index-number]]
-  (d/transact! elite-db-conn
-               (make-planet galaxy-seed planet-index-number))
+;;       parameters [galaxy-seed planet-index-number]]
+;;   (d/transact! elite-db-conn
+;;                (make-planet galaxy-seed planet-index-number))
 
-  )
+;;   )
 
 
-(d/q '[:find ?e ?v
-       :where
-       [?e :seed/planet-seed ?v]]
-     @elite-db-conn)
+;; (d/q '[:find ?e ?v
+;;        :where
+;;        [?e :seed/planet-seed ?v]]
+;;      @elite-db-conn)
 
-(d/q '[:find ?e ?v
-       :where
-       [3 ?e ?v]]
-     @elite-db-conn)
+;; (d/q '[:find ?e ?v
+;;        :where
+;;        [3  ?v]]
+;;      @elite-db-conn)
 
