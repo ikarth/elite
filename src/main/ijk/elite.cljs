@@ -600,11 +600,11 @@
           ;; take bits 0-2 of B-plus
           species-name (mapv * [0 0 0 0 0 1 1 1]
                              intermediate-B-plus)         
-          type (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 6 2))
-          species-id [(bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 3 3)) ;; size
-                      (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 0 3)) ;; color
-                      (bin-to-byte (subvec texture 5)) ;; texture                  
-                      (bin-to-byte species-name)]] ;; type
+          species-type (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 6 2))
+          species-id  [(bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 3 3)) ;; size
+                       (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 0 3)) ;; color
+                       (bin-to-byte (subvec texture 5)) ;; texture                  
+                       (bin-to-byte species-name)]] ;; type
       (apply str 
        (map #(get %2 %1) species-id species-table)))))
 
@@ -623,7 +623,8 @@
 (defn planet-population-size [tech-level economy government]
   ;;(println tech-level economy government)
   (let [econ-prosperity ;; econ can be passed in as a tuple of [type, prosperity]
-        (if (seq? economy)
+        (if (or (vector? economy)
+                (seq? economy))
           (second economy)
           economy)]
   (+
@@ -631,6 +632,10 @@
    econ-prosperity
    government
    1)))
+
+(seq? [0 1])
+(second (seq [0 1]))
+(planet-population-size 4 [0 0] 2)
 
 (defn planet-productivity [economy government population]
   ;;(println "planet-prodcutivity")

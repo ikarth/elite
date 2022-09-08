@@ -339,6 +339,7 @@
    :planet/government-type #(elite/government-name %)
    :planet/population-size #(str (* % 0.1 )" Billion")
    :planet/economic-productivity #(str % " M CR")
+   ;;:planet/species #(str %)
    })
 
 (defn export-entity
@@ -395,9 +396,8 @@
        "Tech Level:\t" (fetch-attribute planet :planet/tech-level)"\n"
        "Population:\t" (fetch-attribute planet :planet/population-size) "\n"
        "Productivty:\t" (fetch-attribute planet :planet/economic-productivity) "\n"
-       "Species:\t" (fetch-attribute planet :planet/species) "\n"
-       ))
-    ))
+       ;;"Species:\t" (fetch-attribute planet :planet/species) "\n"
+       ))))
 
 (defn export-galaxy []
   (let [data (d/datoms @elite-db-conn :eavt)
