@@ -452,7 +452,7 @@
 ;;(sample (range 5) :seed 7)
 
 
-;; (goat-soup 1 "Test")
+(goat-soup 1 "Test")
 
 ;; (println
 ;;  (frequencies 

@@ -13,7 +13,10 @@
    ;;[grotesque.core :as grot]
    ;;["js-xxhash" :as xx :refer (xxHash32)]
 
-  ))
+   ))
+
+
+;(elite/make-seed [0x5A4A 0x0248 0xB753]) 0 0
 
 
 (defn clause-out [attr]
@@ -63,11 +66,6 @@
    (fn
      ;;"Auto-generated function to take the given input (of the specified types) and run the designated function to produce the specified output. Note that the exec-function is expected to return a vector that will be zipped against the vector of output types to produce the map for the transaction. "
      [& exec-input]
-     ;; (println exec-input)
-     ;; (println output)
-     ;; (println (cljs.repl/doc exec-fn))
-     ;; (println (meta exec-fn))
-     ;; (println "")
      (let [result (apply exec-fn (rest exec-input))
            ;; Note that if the exec-fn returns anything other than a sequence,
            ;; we need to wrap it in a vector so that it can match up with the
@@ -84,30 +82,9 @@
              )
            combined (merge {:db/id (first exec-input)}
                            (zipmap output result-vec))]
-       ;; (println result)
-       ;; (println (vector? result))
-       ;; (println (seq? result))
-       ;; (println (type result))
-       ;; (println "result-vec" result-vec)
-       ;; (println "output" output)
-       ;; (println "zipmap" (zipmap output result-vec))
-       ;; ;;(println "apply zipmap" (apply zipmap output result-vec))
-       ;; (println combined)
        [combined]))
    :query
    (make-query input output)})
-
-(clojure.repl/doc)
-(meta
- (:exec
-  (generate-attribute
-   {:name "planet-tech-level"
-    :input [:planet/seed :planet/economy-prosperity :planet/government-type]
-    :output [:planet/tech-level]
-    :exec-fn elite/planet-tech-level-from-prosperity})))
-
-
-;(elite/make-seed [0x5A4A 0x0248 0xB753]) 0 0
 
 
 
@@ -168,11 +145,6 @@
                              :planet/index 0
                              :planet/seed (elite/make-seed [0x5A4A 0x0248 0xB753])}
                             ])
-
-;;(choose-op)
-;;(execute-op! (choose-op))
-;;(print-database)
-
 
 
 (def limit-to-galaxy-planet-count 4;;256
@@ -315,10 +287,33 @@
      :output [:planet/economic-productivity]
      :exec-fn ;;(fn [entity-id & rest ] (apply elite/planet-productivity rest))
      elite/planet-productivity})
-   ;; {:name "planet-species"
-   ;;  }
-   ;; {:name "planet-description"}
-
+   (generate-attribute
+    {:name "planet-species"
+     :input [:planet/seed]
+     :output [:planet/species]
+     :exec-fn elite/planet-species
+     })
+   (generate-attribute
+    {:name "planet-description"
+     :exec-fn elite/planet-goat-soup
+     :input [:planet/seed :planet/name]
+     :output [:planet/description]
+     })
+   (generate-attribute
+    {:name "galactic-x"
+     :exec-fn elite/galactic-x
+     :input [:planet/seed]
+     :output [:planet/galactic-x]})
+   (generate-attribute
+    {:name "galactic-y"
+     :exec-fn elite/galactic-y
+     :input [:planet/seed]
+     :output [:planet/galactic-y]})
+      (generate-attribute
+    {:name "size-on-map"
+     :exec-fn elite/size-on-map
+     :input [:planet/seed]
+     :output [:planet/size-on-map]})
    ])
 
 
@@ -339,7 +334,8 @@
    :planet/government-type #(elite/government-name %)
    :planet/population-size #(str (* % 0.1 )" Billion")
    :planet/economic-productivity #(str % " M CR")
-   ;;:planet/species #(str %)
+   :planet/species #(str %)
+   :planet/description #(str %)
    })
 
 (defn export-entity
@@ -354,17 +350,11 @@
                            entity))]
     ;;(println [e a v tx add])
     (println (str a ":\t" ((get export-translation a (fn [x] x)) v)))
-
     ))
 
 ;;((get export-translation :planet/economy-type) 0)
 
 (defn fetch-attribute [planet attribute]
-  ;; (p
-   ;; rintln planet)
-   ;; (println attribute)
-   ;; (println (get export-translation attribute (fn [x] x)))
-   ;; (println (get planet attribute nil))
    (let [attr (get planet attribute nil)
          value (if (number? attr)
                  ((get export-translation attribute (fn [x] x))
@@ -396,7 +386,9 @@
        "Tech Level:\t" (fetch-attribute planet :planet/tech-level)"\n"
        "Population:\t" (fetch-attribute planet :planet/population-size) "\n"
        "Productivty:\t" (fetch-attribute planet :planet/economic-productivity) "\n"
-       ;;"Species:\t" (fetch-attribute planet :planet/species) "\n"
+       "Species:\t" (fetch-attribute planet :planet/species) "\n"
+       ;;"Description:\t" (fetch-attribute planet :planet/description) ""
+       "Location:\t" (fetch-attribute planet :planet/galactic-x) "x " (fetch-attribute planet :planet/galactic-y) "y\n"
        ))))
 
 (defn export-galaxy []

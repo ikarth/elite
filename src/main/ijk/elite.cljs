@@ -438,6 +438,25 @@
 
  
 
+(defn galactic-coordinates [seed]
+  (let [galactic-x (bin-to-byte (get-seed-bits seed (:s1_hi elite-index) 0 7))
+        galactic-y (/ (bin-to-byte (get-seed-bits seed (:s0_hi elite-index) 0 7)) 2)
+        size-on-map (bin-to-byte (mapv max [0 1 0 1 0 0 0 0] (get-seed-bits seed (:s2_lo elite-index) 0 7)))
+        ]
+    {:planet/galactic-x  galactic-x
+     :planet/galactic-y  galactic-y
+     :planet/size-on-map size-on-map}))
+
+
+(defn galactic-x [seed]
+  (bin-to-byte (get-seed-bits seed (:s1_hi elite-index) 0 7)))
+
+(defn galactic-y [seed]
+  (/ (bin-to-byte (get-seed-bits seed (:s0_hi elite-index) 0 7)) 2))
+
+(defn size-on-map [seed]
+  (bin-to-byte (mapv max [0 1 0 1 0 0 0 0] (get-seed-bits seed (:s2_lo elite-index) 0 7))))
+
 (defn planet-government
   "Planet government is a number from 0 to 7, extracted directly from the bits in the seed.
 
@@ -565,6 +584,13 @@
 ;; 01234567
 ;; 76543210
 
+(defn planet-goat-soup
+  "Generate the 'goat soup' planet description string"
+  [seed system-name]
+  "goat soup"
+  (egrammar/goat-soup seed system-name)
+  )
+
 (defn planet-species
   "Generate a (brief) description of the local planetary species."
   [seed]
@@ -608,6 +634,8 @@
       (apply str 
        (map #(get %2 %1) species-id species-table)))))
 
+
+
 ;; Test generating species descriptions and planet names...
 (comment
   (planet-species (make-seed [0x57fa 0x1d30 0x17b3]))
@@ -649,6 +677,7 @@
      (+ government 4)
      population
      )))
+
 
 
 (defn government-name [gov-type]
