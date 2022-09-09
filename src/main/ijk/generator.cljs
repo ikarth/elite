@@ -185,6 +185,8 @@
    [?planet-id :planet/index ?planet-index]]
  @elite-db-conn galaxy-index))
 
+
+
 (def operations
   [{:name "make-planet"
     :exec
@@ -209,6 +211,16 @@
       [?planet-id :planet/index ?planet-index]
       [(= ?galaxy-index ?allowed-galaxy)]
       ]}
+   ;; {:name "calculate-planet-hub-count"
+   ;;  :exec
+   ;;  (fn [])
+   ;;  :query-data
+   ;;  (fn []
+      
+   ;;    )
+   ;;  :query
+   ;;  '[:find ?]
+   ;;  }
    {:name "make-planet-name"
     :exec
     (fn [p-id p-seed n-length partial]
