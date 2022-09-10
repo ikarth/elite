@@ -133,11 +133,27 @@
       (js/Math.pow (- (second a) (second b)) 2))))
 
 (defn distance-2d-bbc-elite
-  "Because calculating the distance on a BBC Micro had limitations..."
-  [a b]
-  (js/Math.sqrt
-   (+ (js/Math.pow (- (first a) (first b)) 2)
-      (js/Math.pow (- (second a) (second b)) 2))))
+  "Because calculating the distance on a BBC Micro had limitations,
+  we have to deliberately introduce a rounding error to match it."
+  [location-one location-two]
+  (let [x-delta (abs (- (first location-one) (first location-two)))
+        x-delta (* x-delta x-delta)
+        y-delta (/ (abs (- (second location-one) (second location-two))) 2)
+        y-delta (* y-delta y-delta)
+        delta (+ x-delta y-delta)
+        hypot (js/Math.trunc (js/Math.sqrt delta)) ; deliberately truncate result
+        dist (* 4 hypot)
+        ]
+    dist))
+
+
+
+(distance-2d-bbc-elite [20 173] [12 203])
+(distance-2d-bbc-elite [12 203] [19 236])
+
+(* 4 (distance-2d [12 (/ 203 2)] [19 118]))
+(distance-2d [12 105] [19 118])
+(/ 236 2)
 
 
 ;; The original Elite code makes extensive use of directly manipulating bits.
@@ -715,14 +731,8 @@
 (defn list-reachable-systems
   "Given an indexed list of planet coordinates, return a list of planets within jump range."
   [system-coordinates list-of-planet-coordinates jump-range]
-  ;; (filterv #(<= % jump-range)
-  ;;          (mapv #((println %)
-  ;;                  (println system-coordinates)
-  ;;                  (println (distance-2d system-coordinates (second %)))
-  ;;                  [(first %)
-  ;;                   (distance-2d system-coordinates (second %))]) list-of-planet-coordinates))
-  (filterv (fn [p] (<= (second p) jump-range))
-           (mapv (fn [p] [(first p) (distance-2d system-coordinates (second p))]) list-of-planet-coordinates)))
+  (filterv (fn [p] (and (< 0 (second p)) (<= (second p) jump-range)))
+           (mapv (fn [p] [(first p) (distance-2d-bbc-elite system-coordinates (second p))]) list-of-planet-coordinates)))
 
 (test-galaxy-generator)
 
@@ -810,7 +820,7 @@
             ]
       
       (let [planet-coord-list (map-indexed (fn [index p] [index [(galactic-x p) (galactic-y p)]]) planet-seed-list)
-            jump-range 7.0
+            jump-range 70
             gov (planet-government p)
             econ (planet-economy p (planet-government p))
             tech (planet-tech-level p econ gov)
@@ -843,7 +853,7 @@
              hub-count
              ])))))))
 
-(test-galaxy-generator )
+(test-galaxy-generator)
 
 ;;(pprint/cl-format nil "~,1f" 3.0001)
 ;;(+ 0.1 0.2)
