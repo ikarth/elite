@@ -6,6 +6,7 @@
    ;;[clojure.edn :as edn]
    [clojure.string :as cstring]
    [clojure.math]
+   [cljs.pprint :as pprint]
    ;;[grotesque.core :as grot]
    ;;["js-xxhash" :as xx :refer (xxHash32)]
 
@@ -131,13 +132,27 @@
    (+ (js/Math.pow (- (first a) (first b)) 2)
       (js/Math.pow (- (second a) (second b)) 2))))
 
+(defn distance-2d-bbc-elite
+  "Because calculating the distance on a BBC Micro had limitations..."
+  [a b]
+  (js/Math.sqrt
+   (+ (js/Math.pow (- (first a) (first b)) 2)
+      (js/Math.pow (- (second a) (second b)) 2))))
 
 
+;; The original Elite code makes extensive use of directly manipulating bits.
+;; Which makes sense given the hardware that it was built for, but its
+;; not something Javascript or Clojurescript are usually used to handle,
+;; particularly with regard to the idiosyncrasies of the original hardware.
+;; So we've got to write some functions to handle it.
+
+
+;; These correspond to the registers in the BBC Micro code
 (def elite-index
   {:s0_lo 0 ;; QQ15
-   :s0_hi 1 ;; QQ15+1
+   :s0_hi 1 ;; QQ15+1 = galactic-y
    :s1_lo 2 ;; QQ15+2
-   :s1_hi 3 ;; QQ15+3
+   :s1_hi 3 ;; QQ15+3 = galactic-x
    :s2_lo 4 ;; QQ15+4
    :s2_hi 5 ;; QQ15+5
   })
@@ -240,7 +255,7 @@
         ]
     ;; (println bits)
     ;; (println after-jump)
-    (bytes-to-seed(map bin-to-byte after-jump))))
+    (bytes-to-seed (map bin-to-byte after-jump))))
 
 
 ;; Tests for making and twisting seeds
@@ -447,10 +462,10 @@
 
 
 (defn galactic-x [seed]
-  (bin-to-byte (get-seed-bits seed (:s1_hi elite-index) 0 7)))
+  (bin-to-byte (get-seed-bits seed (:s1_hi elite-index) 0 8)))
 
 (defn galactic-y [seed]
-  (/ (bin-to-byte (get-seed-bits seed (:s0_hi elite-index) 0 7)) 2))
+  (bin-to-byte (get-seed-bits seed (:s0_hi elite-index) 0 8)))
 
 (defn size-on-map [seed]
   (bin-to-byte (mapv max [0 1 0 1 0 0 0 0] (get-seed-bits seed (:s2_lo elite-index) 0 7))))
@@ -664,10 +679,8 @@
 (planet-population-size 4 [0 0] 2)
 
 (defn planet-productivity [economy government population]
-  ;;(println "planet-prodcutivity")
-  ;;(println economy government population)
   (let [econ-prosperity ;; econ can be passed in as a tuple of [type, prosperity]
-        (if (seq? economy)
+        (if (or (vector? economy)(seq? economy))
           (second economy)
           economy)]
   (* 8
@@ -676,7 +689,9 @@
      population
      )))
 
-
+;; (planet-productivity 3 1 25)
+;; (planet-productivity [0 3] 1 25)
+;; (seq? [0 3])
 
 (defn government-name [gov-type]
   (nth [:anarchy :feudal :multi-government :dictatorship :communist :confederacy :democracy :corporate-state]
@@ -697,11 +712,31 @@
    (nth [:industrial :agricultural] type)])
 
 
+(defn list-reachable-systems
+  "Given an indexed list of planet coordinates, return a list of planets within jump range."
+  [system-coordinates list-of-planet-coordinates jump-range]
+  ;; (filterv #(<= % jump-range)
+  ;;          (mapv #((println %)
+  ;;                  (println system-coordinates)
+  ;;                  (println (distance-2d system-coordinates (second %)))
+  ;;                  [(first %)
+  ;;                   (distance-2d system-coordinates (second %))]) list-of-planet-coordinates))
+  (filterv (fn [p] (<= (second p) jump-range))
+           (mapv (fn [p] [(first p) (distance-2d system-coordinates (second p))]) list-of-planet-coordinates)))
+
+(test-galaxy-generator)
+
 (defn calculate-hub-count
   "Given a list of x,y galactic coordinates, figure out how many systems are in jump range of this system"
   [system-coordinates list-of-planet-coordinates jump-range]
-  
-  )
+  (count (list-reachable-systems system-coordinates list-of-planet-coordinates jump-range)
+   ))
+
+
+
+;;(mapv #(distance-2d [0 0] %) (test-galaxy-locations))
+
+;;(calculate-hub-count [45 21] (test-galaxy-locations) 7.0)
 
 ;; The seed for the orignal game, chosen after searching through many possibilities...
 (def elite-seed (make-seed [0x5A4A 0x0248 0xB753]))
@@ -762,15 +797,21 @@
 
 (js/Math.sqrt 4)
 
+(defn round-pop [pop]
+  (/ (.round js/Math (* 10 pop)) 10))
+
 (defn test-galaxy-generator []
   (let []
     (println "\n\n\n\n\n\n\n\n\n\n\n\n")
     (doseq [[r p] (map-indexed (fn [index item]
                                  [index item])
                                planet-seed-list)
+           
             ]
       
-      (let [gov (planet-government p)
+      (let [planet-coord-list (map-indexed (fn [index p] [index [(galactic-x p) (galactic-y p)]]) planet-seed-list)
+            jump-range 7.0
+            gov (planet-government p)
             econ (planet-economy p (planet-government p))
             tech (planet-tech-level p econ gov)
             pop (planet-population-size tech econ gov)
@@ -779,25 +820,34 @@
             species (planet-species p)
             galactic-x (galactic-x p)
             galactic-y (galactic-y p)
+            reachable-systems (list-reachable-systems [galactic-x galactic-y] planet-coord-list jump-range)
+            ;;hub-count (calculate-hub-count [galactic-x galactic-y] planet-coord-list jump-range)
+            hub-count (count reachable-systems)
             ]
         (if true;(< 245 r )
           (println 
            (map 
             #(str %1 ":\t "%2 "\n")
-            ["id" "name" "seed" "species" "government" "economy" "tech-level" "population size" "productivity" "galactic-coords" ]
+            ["id" "name" "seed" "species" "government" "economy" "tech-level" "pop. size" "productivity" "gal. coords" "neighbors" "hub count"]
             [r
              name
              (map #(. % toString 16) (get-seed-bytes p))
              species
-             (government-name gov)
-             (economy-name econ)
+             [gov (government-name gov)]
+             [econ (economy-name econ)]
              tech
-             pop
+             [pop (str (round-pop (* pop 0.1)) " billion")]
              prod
              [galactic-x galactic-y]
+             reachable-systems
+             hub-count
              ])))))))
 
 (test-galaxy-generator )
+
+;;(pprint/cl-format nil "~,1f" 3.0001)
+;;(+ 0.1 0.2)
+
 
 
 

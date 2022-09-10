@@ -112,6 +112,8 @@
          }))
 
 
+
+
 (defn fetch-internal-view
   "Returns the internal database. Intended mostly for debugging visualization."
   []
@@ -145,6 +147,19 @@
                              :planet/index 0
                              :planet/seed (elite/make-seed [0x5A4A 0x0248 0xB753])}
                             ])
+
+(defn reset-database! []
+  (d/reset-conn! elite-db-conn (d/empty-db elite-schema))
+  (d/transact! elite-db-conn [{:galaxy/seed (elite/make-seed [0x5A4A 0x0248 0xB753])
+                             :galaxy/index 0}
+                            {:planet/galaxy 0
+                             :planet/index 0
+                             :planet/seed (elite/make-seed [0x5A4A 0x0248 0xB753])}
+                            ]))
+
+;;(reset-database!)
+;;(print elite-db-conn)
+
 
 
 (def limit-to-galaxy-planet-count 4;;256
@@ -185,7 +200,23 @@
    [?planet-id :planet/index ?planet-index]]
  @elite-db-conn galaxy-index))
 
+(defn nearby-planets
+  [galaxy-index planet-index]
+  
+  )
 
+(defn survey-attributes
+  [galaxy-index attribute-name]
+  (d/q
+   '[:find (count ?planet-attribute) .
+     :in $ ?galaxy-index ?attribute-name
+     :where
+     [?galaxy-id :galaxy/index ?galaxy-index]
+     [?planet-id :planet/galaxy ?galaxy-index]
+     [?planet-id :planet/index ?planet-index]
+     [?planet-id ?attribute-name ?planet-attribute]
+     ]
+   @elite-db-conn galaxy-index attribute-name))
 
 (def operations
   [{:name "make-planet"
@@ -216,10 +247,16 @@
    ;;  (fn [])
    ;;  :query-data
    ;;  (fn []
-      
-   ;;    )
+   ;;    (filter #(= (galaxy-planet-count %)
+   ;;                limit-to-galaxy-planet-count)
+   ;;            (range limit-to-galaxy-count)))
    ;;  :query
-   ;;  '[:find ?]
+   ;;  '[:find ?galaxy-index
+   ;;    :in $ [?allowed-galaxy ...]
+   ;;    :where
+   ;;    [(= ?galaxy-index ?allowed-galaxy)]
+      
+   ;;    ]
    ;;  }
    {:name "make-planet-name"
     :exec
@@ -514,3 +551,4 @@
 (println operations)
 (choose-op)
 (export-galaxy)
+;;(reset-database!)
