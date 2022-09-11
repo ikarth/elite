@@ -3,6 +3,8 @@
    [clojure.edn :as edn]
    [clojure.string :as cstring]
    [grotesque.core :as grot]
+    [ijk.elite-utility :as utility]
+   ;;[clojure.set]
    ["js-xxhash" :as xx :refer (xxHash32)]
    ["seedrandom" :as seedrandom]
    ;;[cljx-sampling.random :as random]
@@ -415,33 +417,157 @@
 ;;                                          )))
 
 
-(defn goat-soup [seed system-name]
-  (let [determ (make-determanistic-selector seed)]
-    (-> text-tokens-extended
-        (assoc-in [:elite-seed] seed)
-        (assoc-in [:system-name] system-name)
-        (assoc-in [:system-adjective] (name-to-adjective system-name))
-        (translate-grammar-rules #(if (string? %1) [%1] %1))
-        (grot/create-grammar)
-        (grot/set-handler :set handler-fn)
-        (grot/set-validator :when validator-fn)
-        (grot/set-selector determ)
-        (grotesque.core/set-modifier :capitalize clojure.string/capitalize)
-        (grot/generate "#TKN1_5#")
-        ((fn [x] ;;[(keys x) (get-in x [:generated] nil) (get-in x [:errors] nil)]
-           (if (empty? (get x :errors))
-             (if (empty? (get x :generated))             
-               (get-in x [:generated] "ERROR: missing generated result?")
-               ;; ["EMPTY GENERATION"
-               ;;  (keys x)
-               ;;  (:errors x)
-               ;;  (:selected x)
-               ;;  (:generated x)
-               ;;  ]
-               (:generated x)
-               )
-             [(get-in x [:rules :TKN1_141]) [(get-in x [:errors] nil) (:rules x)]])
-           )))))
+;; (defn goat-soup [seed system-name]
+;;   (let [determ (make-determanistic-selector seed)]
+;;     (-> text-tokens-extended
+;;         (assoc-in [:elite-seed] seed)
+;;         (assoc-in [:system-name] system-name)
+;;         (assoc-in [:system-adjective] (name-to-adjective system-name))
+;;         (translate-grammar-rules #(if (string? %1) [%1] %1))
+;;         (grot/create-grammar)
+;;         (grot/set-handler :set handler-fn)
+;;         (grot/set-validator :when validator-fn)
+;;         (grot/set-selector determ)
+;;         (grotesque.core/set-modifier :capitalize clojure.string/capitalize)
+;;         (grot/generate "#TKN1_5#")
+;;         ((fn [x] ;;[(keys x) (get-in x [:generated] nil) (get-in x [:errors] nil)]
+;;            (if (empty? (get x :errors))
+;;              (if (empty? (get x :generated))             
+;;                (get-in x [:generated] "ERROR: missing generated result?")
+;;                ;; ["EMPTY GENERATION"
+;;                ;;  (keys x)
+;;                ;;  (:errors x)
+;;                ;;  (:selected x)
+;;                ;;  (:generated x)
+;;                ;;  ]
+;;                (:generated x)
+;;                )
+;;              [(get-in x [:rules :TKN1_141]) [(get-in x [:errors] nil) (:rules x)]])
+;;            )))))
+
+
+
+
+
+
+
+
+
+
+;; (defn goat-soup-bbc [seed planet-name]
+;;   (let [rand-seed []])
+
+;;   )
+
+(def elite-seed (utility/make-seed [0x5A4A 0x0248 0xB753]))
+(goat-soup elite-seed "Tibedied")
+
+;; (mapv #(get-seed-bits elite-seed % 0 8) [2 3 4 5])
+
+;;  (get text-tokens-extended :TKN1_5)
+
+;; (-> 
+;;  (get text-tokens-extended :TKN1_5)
+;;  #(cstring/split % #"\#")
+;; ;\\
+;;  )
+
+;; (cstring/split (cstring/replace
+;;                 (get text-tokens-extended :TKN1_5)
+;;                 #"#([A-Za-z0-9_])"
+;;                 "!$1!"
+;;                 )
+;;                #"")
+
+(get text-tokens-extended :TKN1_5)
+
+(defn goat-soup-invoke [word]
+  ;;(goat-soup-recurse)
+  (get text-tokens-extended (keyword word)))
+
+(defn goat-soup-vary [word rand-seed]
+  (get text-tokens-extended (keyword word))
+  )
+
+
+
+;; (byte-to-bin
+;;  (get elite-seed ))
+
+;; [elite-seed]
+(print elite-seed)
+(def goat-soup-seed
+  (mapv #(utility/get-seed-bits elite-seed % 0 8) [2 3 4 5]))
+(utility/goat-soup-next-rand goat-soup-seed)
+
+;; (+ true true)
+
+;; (apply + [1 1 ])
+
+(defn next-expand [tokens rand-seed]
+  (println tokens)
+  (let [variances-remaining (count (filter #(or (cstring/starts-with? % "TKN1")
+                                                (cstring/starts-with? % "EQUB"))
+                                           tokens))]
+    (println variances-remaining)
+    (if (< 0 variances-remaining)
+      (let [first-variance (some #(when (cstring/starts-with? % "EQUB") %) tokens)
+            variance-indexes 0;(.indexOf tokens first-variance)
+            ]
+        (if first-variance
+          (let [[rnd-choice next-seed] (utility/goat-soup-next-rand rand-seed)
+                choice-index (apply + (mapv #(>= rnd-choice %) [0x33 0x66 0x99 0xCC]))
+                choices (get text-tokens-extended (keyword first-variance))
+                new-token (nth choices choice-index)
+                new-token-list (assoc tokens variance-indexes new-token)
+                ]
+                                        ;(goat-soup-recurse (cstring/join "α" new-token-list) next-seed)
+            [(cstring/join "α" new-token-list) next-seed]
+            )
+          ;(goat-soup-recurse tokens rand-seed )
+          [tokens rand-seed]))
+      [tokens rand-seed])))
+
+
+
+(> 0 1)
+
+(defn goat-soup-split-terms [tokens]
+  (cstring/split (cstring/replace tokens
+                                  #"#([A-Za-z0-9_]*?)#"
+                                  "α$1α") ""))
+
+(goat-soup-split-terms "#EQUB_86# more text #TKN1_140#")
+
+()
+
+(next-expand (goat-soup-split-terms "#EQUB_86# more text #TKN1_140#") goat-soup-seed)
+
+;; (defn goat-soup-recurse [tokens rand-seed]
+;;   (let [split-tokens (cond (string? tokens)
+;;                            (flatten (goat-soup-split-terms tokens))
+;;                            (vector? tokens)
+;;                            (mapv goat-soup-split-terms (flatten tokens))
+;;                            :else [:c tokens])
+;;         my-tokens
+;;         (mapv (fn [word]
+;;                 (cond
+;;                   (cstring/starts-with? word "TKN1") (goat-soup-invoke word)
+;;                   ;;(cstring/starts-with? word "EQUB") (goat-soup-vary word rand-seed)
+;;                   :else word))
+;;               split-tokens)]
+;;     (println my-tokens)
+;;     (next-expand
+;;      my-tokens
+;;      rand-seed)))
+
+;; (goat-soup-recurse (get text-tokens-extended :TKN1_5) goat-soup-seed)
+
+
+;; (get text-tokens-extended :TKN1_5)
+
+
+
 
 ;(doc sample)
 ;(keys)
@@ -452,7 +578,8 @@
 ;;(sample (range 5) :seed 7)
 
 
-(goat-soup 1 "Test")
+;;(goat-soup 1 "Test")
+
 
 ;; (println
 ;;  (frequencies 

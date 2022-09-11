@@ -1,6 +1,7 @@
 (ns ijk.elite
   (:require
-   [ijk.elite-grammar :as egrammar]
+   ;;[ijk.elite-grammar :as egrammar]
+   [ijk.elite-utility :as utility]
    [datascript.core :as d]
    [clojure.spec.alpha :as spec]
    ;;[clojure.edn :as edn]
@@ -22,13 +23,7 @@
 
 
 
-(defn positions
-  "https://stackoverflow.com/a/4831131/5562922"
-  [pred coll]
-  (keep-indexed (fn [idx x]
-                  (when (pred x)
-                    idx))
-                coll))
+
 
 ;; (def database-records
 ;;   {:elite {:db-conn }})
@@ -62,14 +57,15 @@
 ;;       db-conn
 ;;       )))
 
-(defn fetch-internal-view
-  "Returns the internal database. Intended mostly for debugging visualization."
-  []
-  (if-let [db-conn (get @current-database :db-conn)]
-    (vec (map (fn [dat]
-                (let [[e a v tx add] dat]
-                  [e a v tx add])) (d/datoms @db-conn :eavt)))
-    (println "Database connection missing when trying to fetch a new view.")))
+(comment
+  (defn fetch-internal-view
+    "Returns the internal database. Intended mostly for debugging visualization."
+    []
+    (if-let [db-conn (get @current-database :db-conn)]
+      (vec (map (fn [dat]
+                  (let [[e a v tx add] dat]
+                    [e a v tx add])) (d/datoms @db-conn :eavt)))
+      (println "Database connection missing when trying to fetch a new view."))))
 
 ;; (defn make-empty-project [database-id]
 ;;   (println (str "Switching to: " database-id))
@@ -127,219 +123,86 @@
 
 
 
-(defn distance-2d [a b]
-  (js/Math.sqrt
-   (+ (js/Math.pow (- (first a) (first b)) 2)
-      (js/Math.pow (- (second a) (second b)) 2))))
-
-(defn distance-2d-bbc-elite
-  "Because calculating the distance on a BBC Micro had limitations,
-  we have to deliberately introduce a rounding error to match it."
-  [location-one location-two]
-  (let [x-delta (abs (- (first location-one) (first location-two)))
-        x-delta (* x-delta x-delta)
-        y-delta (/ (abs (- (second location-one) (second location-two))) 2)
-        y-delta (* y-delta y-delta)
-        delta (+ x-delta y-delta)
-        hypot (js/Math.trunc (js/Math.sqrt delta)) ; deliberately truncate result
-        dist (* 4 hypot)
-        ]
-    dist))
 
 
 
-(distance-2d-bbc-elite [20 173] [12 203])
-(distance-2d-bbc-elite [12 203] [19 236])
-
-(* 4 (distance-2d [12 (/ 203 2)] [19 118]))
-(distance-2d [12 105] [19 118])
-(/ 236 2)
-
-
-;; The original Elite code makes extensive use of directly manipulating bits.
-;; Which makes sense given the hardware that it was built for, but its
-;; not something Javascript or Clojurescript are usually used to handle,
-;; particularly with regard to the idiosyncrasies of the original hardware.
-;; So we've got to write some functions to handle it.
-
-
-;; These correspond to the registers in the BBC Micro code
-(def elite-index
-  {:s0_lo 0 ;; QQ15
-   :s0_hi 1 ;; QQ15+1 = galactic-y
-   :s1_lo 2 ;; QQ15+2
-   :s1_hi 3 ;; QQ15+3 = galactic-x
-   :s2_lo 4 ;; QQ15+4
-   :s2_hi 5 ;; QQ15+5
-  })
-
-(defn get-seed-bytes [seed]
-  ;;{:pre [(spec/valid? :seed/data seed)]}
-  (into [] (map #(. seed getUint8 %) (range 6) )))
-
-
-(defn make-seed [seed-vals]
-  {:pre  [(spec/valid? :seed/specifier seed-vals)]
-   ;;:post [(spec/valid? :seed/data-array %)]
-   }
-  (let [ab (js/ArrayBuffer. 6)
-      view (js/DataView. ab)]
-  (. view setUint16 0 (nth seed-vals 0) true)    
-  (. view setUint16 2 (nth seed-vals 1) true)    
-  (. view setUint16 4 (nth seed-vals 2) true)
-  ;;(aset view "toStringTag" (get-seed-bytes view))
-  view
-  ))
 
 
 
-(defn bytes-to-seed [seed-bytes]
-  (let [ab (js/ArrayBuffer. 6)
-        view (js/DataView. ab)]
-    (doseq [n (range 6)]
-      (. view setUint8 n (nth seed-bytes n) true))
-    ;;(aset view "toStringTag" (get-seed-bytes view))
-    view
-    ))
 
-(bytes-to-seed [0 1 2 3 4 5])
-(println (bytes-to-seed [0 1 2 3 4 5]))
-(get-seed-bytes (bytes-to-seed [0 10 20 30 40 50]))
+;; (defn get-seed-bytes [seed]
+;;   ;;{:pre [(spec/valid? :seed/data seed)]}
+;;   (into [] (map #(. seed getUint8 %) (range 6) )))
 
 
+;; (defn make-seed [seed-vals]
+;;   {:pre  [(spec/valid? :seed/specifier seed-vals)]
+;;    ;;:post [(spec/valid? :seed/data-array %)]
+;;    }
+;;   (let [ab (js/ArrayBuffer. 6)
+;;       view (js/DataView. ab)]
+;;   (. view setUint16 0 (nth seed-vals 0) true)    
+;;   (. view setUint16 2 (nth seed-vals 1) true)    
+;;   (. view setUint16 4 (nth seed-vals 2) true)
+;;   ;;(aset view "toStringTag" (get-seed-bytes view))
+;;   view
+;;   ))
 
-(defn byte-to-bin [dec]
-  (let [byte-length 8
-        num-vec (vec (. (bit-shift-right dec 0) toString 2))
-        extra (- byte-length (count num-vec))]
-    (map #(js/parseInt % 2)
-         (concat (take extra (repeat 0))
-                 num-vec))))
 
-(defn bin-to-byte
-  "Convert a vector of 0s and 1s to a number."
-  [bin]
-  (reduce +
-          (map #(apply * %)
-               (map vector bin 
-                    (rseq (into [] (map #(Math/pow 2 %) (range (count bin)))))))))
+
+;; (defn bytes-to-seed [seed-bytes]
+;;   (let [ab (js/ArrayBuffer. 6)
+;;         view (js/DataView. ab)]
+;;     (doseq [n (range 6)]
+;;       (. view setUint8 n (nth seed-bytes n) true))
+;;     ;;(aset view "toStringTag" (get-seed-bytes view))
+;;     view
+;;     ))
+
+;; (bytes-to-seed [0 1 2 3 4 5])
+;; (println (bytes-to-seed [0 1 2 3 4 5]))
+;; (get-seed-bytes (bytes-to-seed [0 10 20 30 40 50]))
+
+
+
+;; (defn byte-to-bin [dec]
+;;   (let [byte-length 8
+;;         num-vec (vec (. (bit-shift-right dec 0) toString 2))
+;;         extra (- byte-length (count num-vec))]
+;;     (map #(js/parseInt % 2)
+;;          (concat (take extra (repeat 0))
+;;                  num-vec))))
+
+;; (defn bin-to-byte
+;;   "Convert a vector of 0s and 1s to a number."
+;;   [bin]
+;;   (reduce +
+;;           (map #(apply * %)
+;;                (map vector bin 
+;;                     (rseq (into [] (map #(Math/pow 2 %) (range (count bin)))))))))
 
 ;;(= (bin-to-byte [1 1 0 1 1 1 1 1]) 223)
 
 ;;(map bin-to-byte(map byte-to-bin (get-seed-bytes (make-seed [9991494 14 98]))))
 
-(defn get-seed-bits [seed byte-index start-index count-index]
-  (subvec (into [] (nth (map byte-to-bin (get-seed-bytes seed)) byte-index))
-          start-index
-          (+ start-index count-index)))
+;; (defn get-seed-bits [seed byte-index start-index count-index]
+;;   (subvec (into [] (nth (map byte-to-bin (get-seed-bytes seed)) byte-index))
+;;           start-index
+;;           (+ start-index count-index)))
 
-(defn get-seed-byte-8 [seed byte-index]
-  (. seed getUint8 byte-index))
+;; (defn get-seed-byte-8 [seed byte-index]
+;;   (. seed getUint8 byte-index))
 
-(defn get-seed-byte-16 [seed byte-index]
-  (. seed getUint16 byte-index))
-
-
-(defn get-value-from-seed [seed byte-index start-index count-index]
-  (let [array-of-bits (get-seed-bits seed byte-index start-index count-index)]
-    (js/parseInt (cstring/join "" array-of-bits))))
+;; (defn get-seed-byte-16 [seed byte-index]
+;;   (. seed getUint16 byte-index))
 
 
-
-
-(defn twist-seed
-  "Takes a random seed and twists it using Elite's 'tribonocci' method."
-  [old-seed]
-  (let [bytes (get-seed-bytes old-seed)
-        twisted [(+ (nth bytes 2)
-                    (* 256 (nth bytes 3)))
-                 (+ (nth bytes 4)
-                    (* 256 (nth bytes 5)))
-                 (mod (+ (+ (nth bytes 0) (nth bytes 2) (nth bytes 4))
-                         (* 256 (+ (nth bytes 1) (nth bytes 3) (nth bytes 5)))
-                         )
-                      65536)]]
-    ;;(map )(map byte-to-bin twisted)
-    (make-seed twisted)))
-
-
-(defn hyperjump [old-seed]
-  (let [bits (map byte-to-bin (map #(. old-seed getUint8 %) (range 6)))
-        after-jump (map (fn [seed]
-                          (concat (rest seed) [(first seed)]))
-                        bits)
-        ]
-    ;; (println bits)
-    ;; (println after-jump)
-    (bytes-to-seed (map bin-to-byte after-jump))))
-
-
-;; Tests for making and twisting seeds
-(= "4a5a48253b7"
-   (apply
-    str
-    (map #(. % toString 16)
-         (get-seed-bytes (make-seed [0x5A4A 0x0248 0xB753])))))
-
-
-(= '("48" "2" "53" "b7" "e5" "13")
-   (map #(. % toString 16)
-        (get-seed-bytes
-         (twist-seed
-          (make-seed [0x5A4A 0x0248 0xB753])))))
-
-(= '("53" "b7" "e5" "13" "80" "cd")
-   (map #(. % toString 16)
-        (get-seed-bytes
-         (twist-seed
-          (twist-seed
-           (make-seed [0x5A4A 0x0248 0xB753]))))))
-
-(= '("80" "cd" "b8" "98" "1d" "7a")
-   (map #(. % toString 16)
-        (get-seed-bytes
-         (twist-seed
-          (twist-seed
-           (twist-seed
-            (twist-seed
-             (make-seed [0x5A4A 0x0248 0xB753]))))))))
-
-
-(= [128 205 184 152 29 122]
- (get-seed-bytes
-  (twist-seed
-   (twist-seed
-    (twist-seed
-     (twist-seed
-      (make-seed [0x5A4A 0x0248 0xB753])))))))
-
-;; Test making seeds from input
-(= [74 90 72 2 83 183] (get-seed-bytes (make-seed [0x5A4A 0x0248 0xB753])))
-(= '((0 1 0 0 1 0 1 0)
-     (0 1 0 1 1 0 1 0)
-     (0 1 0 0 1 0 0 0)
-     (0 0 0 0 0 0 1 0)
-     (0 1 0 1 0 0 1 1)
-     (1 0 1 1 0 1 1 1))
-   (map byte-to-bin (get-seed-bytes (make-seed [0x5A4A 0x0248 0xB753]))))
-
-;; Test hyperjump
-(= '("94" "b4" "90" "4" "a6" "6f")
- (map #(. % toString 16)
-      (get-seed-bytes
-       (hyperjump (make-seed [0x5A4A 0x0248 0xB753])))))
+;; (defn get-value-from-seed [seed byte-index start-index count-index]
+;;   (let [array-of-bits (get-seed-bits seed byte-index start-index count-index)]
+;;     (js/parseInt (cstring/join "" array-of-bits))))
 
 
 
-
-
-
-(defn twist-to-next-planet [planet-seed]
-  (-> planet-seed
-      twist-seed
-      twist-seed
-      twist-seed
-      twist-seed))
 
 
 ;; .QQ16 in the original code.
@@ -391,7 +254,7 @@
   ;; (println (map byte-to-bin (get-seed-bytes seed)))
   ;; (println (get-value-from-seed seed (:s0_lo elite-index) 1 1))
   ;;(println (get-value-from-seed seed (:s0_hi elite-index) 0 8))
-  (if (= 1 (get-value-from-seed seed (:s0_lo elite-index) 1 1))
+  (if (= 1 (utility/get-value-from-seed seed (:s0_lo utility/elite-index) 1 1))
     4
     3))
 
@@ -401,9 +264,9 @@
 ;;     4 3))
 
 ;; Test (bytes)
-(= [131 234 135 25 255 255]
-   (get-seed-bytes
-    (make-seed [60035 6535 65535])))
+;; (= [131 234 135 25 255 255]
+;;    (get-seed-bytes
+;;     (make-seed [60035 6535 65535])))
 
 (defn generate-name-start [seed]
   (let [token-seed seed
@@ -447,10 +310,10 @@
     (let [[seed-token name-length-remaining name-in-progress] input]
       (if (< name-length-remaining 1)
         name-in-progress
-        (let [new-token (twist-seed seed-token)
-              index-bits (get-seed-bits seed-token
-                                        (:s2_hi elite-index) 3 5)
-              digraph-index (bin-to-byte index-bits)
+        (let [new-token (utility/twist-seed seed-token)
+              index-bits (utility/get-seed-bits seed-token
+                                        (:s2_hi utility/elite-index) 3 5)
+              digraph-index (utility/bin-to-byte index-bits)
               digraph (get elite-planet-name-digraphs digraph-index)
               ]
           ;; (println [(get-seed-bits seed-token
@@ -468,9 +331,9 @@
  
 
 (defn galactic-coordinates [seed]
-  (let [galactic-x (bin-to-byte (get-seed-bits seed (:s1_hi elite-index) 0 7))
-        galactic-y (/ (bin-to-byte (get-seed-bits seed (:s0_hi elite-index) 0 7)) 2)
-        size-on-map (bin-to-byte (mapv max [0 1 0 1 0 0 0 0] (get-seed-bits seed (:s2_lo elite-index) 0 7)))
+  (let [galactic-x (utility/bin-to-byte (utility/get-seed-bits seed (:s1_hi utility/elite-index) 0 7))
+        galactic-y (/ (utility/bin-to-byte (utility/get-seed-bits seed (:s0_hi utility/elite-index) 0 7)) 2)
+        size-on-map (utility/bin-to-byte (mapv max [0 1 0 1 0 0 0 0] (utility/get-seed-bits seed (:s2_lo utility/elite-index) 0 7)))
         ]
     {:planet/galactic-x  galactic-x
      :planet/galactic-y  galactic-y
@@ -478,44 +341,27 @@
 
 
 (defn galactic-x [seed]
-  (bin-to-byte (get-seed-bits seed (:s1_hi elite-index) 0 8)))
+  (utility/bin-to-byte (utility/get-seed-bits seed (:s1_hi utility/elite-index) 0 8)))
 
 (defn galactic-y [seed]
-  (bin-to-byte (get-seed-bits seed (:s0_hi elite-index) 0 8)))
+  (utility/bin-to-byte (utility/get-seed-bits seed (:s0_hi utility/elite-index) 0 8)))
 
 (defn size-on-map [seed]
-  (bin-to-byte (mapv max [0 1 0 1 0 0 0 0] (get-seed-bits seed (:s2_lo elite-index) 0 7))))
+  (utility/bin-to-byte (mapv max [0 1 0 1 0 0 0 0] (utility/get-seed-bits seed (:s2_lo utility/elite-index) 0 8))))
 
 (defn planet-government
   "Planet government is a number from 0 to 7, extracted directly from the bits in the seed.
 
   The first operation in the original code, and the most basic."  
   [planet-seed]  
-  (bin-to-byte
-   (get-seed-bits planet-seed 
-                  (:s1_lo elite-index)
+  (utility/bin-to-byte
+   (utility/get-seed-bits planet-seed 
+                  (:s1_lo utility/elite-index)
                   2 3)))
 
-(defn invert-bits
-  "Invert the bits in a boolean vector.
-  There's probably a built-in way to do this more succinctly that I'm forgetting."
-  [bits]
-  (map #(if (= % 0) 1 0) bits))
-
-(defn left-trim
-  "Trim leading zeros from a collection."
-  [col]
-  (subvec (into [] col) 
-          (first (positions #{1} col))))
 
 
-(defn invert-byte
-  "Given a number, break it down to its bit representation, invert the bits, and return it as a number."
-  [number-byte size]
 
-  (bin-to-byte
-   (invert-bits
-    (subvec (into [] (byte-to-bin number-byte)) (- 8 size) 8))))
 
 ;; (byte-to-bin 5)
 ;; (invert-byte 5 3)
@@ -532,16 +378,16 @@
   [planet-seed planet-government]
   (let [eco-base
         (try 
-          (get-seed-bits planet-seed
-                         (:s0_hi elite-index)
+          (utility/get-seed-bits planet-seed
+                         (:s0_hi utility/elite-index)
                          5 3)
           (catch js/Error e
-            (println "An economic errort occurred:" e)
+            (println "An economic error occurred:" e)
               0))
         adjusted (assoc eco-base 1 (if (< planet-government 2) 1 (nth eco-base 1)))
         type (nth eco-base 0)
         prosperity (try
-                     (bin-to-byte adjusted)
+                     (utility/bin-to-byte adjusted)
                      (catch js/Error e
                        (println "An economic error occurred: " e)
                        0
@@ -562,9 +408,9 @@
   "The tech level formula is:
        flipped_economy + (s1_hi AND %11) + (government / 2)" 
   [planet-seed economy government]
-  (+ (invert-byte (second economy) 3)
-     (bin-to-byte
-      (get-seed-bits planet-seed (:s1_hi elite-index) 6 2))
+  (+ (utility/invert-byte (second economy) 3)
+     (utility/bin-to-byte
+      (utility/get-seed-bits planet-seed (:s1_hi utility/elite-index) 6 2))
      (clojure.math/ceil (/ government 2))))
 
 
@@ -575,10 +421,10 @@
   There are two of these functions because the ecological query was
   easier to write if it used prosperity directly." 
   [planet-seed prosperity government]
-  (+ (invert-byte prosperity 3)
-     (bin-to-byte
-      (get-seed-bits planet-seed
-                     (:s1_hi elite-index)
+  (+ (utility/invert-byte prosperity 3)
+     (utility/bin-to-byte
+      (utility/get-seed-bits planet-seed
+                     (:s1_hi utility/elite-index)
                      6
                      2))
      (clojure.math/ceil (/ government 2))))
@@ -602,13 +448,13 @@
    "Insects"]
    ])
 
-(defn bitwise-add-vec
- "take two boolean vectors and add them, emulating the BBC micro behavior"
- [one two]
- (byte-to-bin
-  (+
-   (bin-to-byte one)
-   (bin-to-byte two))))
+;; (defn bitwise-add-vec
+;;  "take two boolean vectors and add them, emulating the BBC micro behavior"
+;;  [one two]
+;;  (byte-to-bin
+;;   (+
+;;    (bin-to-byte one)
+;;    (bin-to-byte two))))
 
 ;; 01234567
 ;; 76543210
@@ -617,7 +463,7 @@
   "Generate the 'goat soup' planet description string"
   [seed system-name]
   "goat soup"
-  (egrammar/goat-soup seed system-name)
+  ;;(egrammar/goat-soup seed system-name)
   )
 
 (defn planet-species
@@ -625,41 +471,41 @@
   [seed]
    ;; Check it 7 of s2_lo - if it is zero return "Human Colonials"
   (if (= 0 
-         (first (get-seed-bits seed (:s2_lo elite-index) 0 1))
+         (first (utility/get-seed-bits seed (:s2_lo utility/elite-index) 0 1))
          )
     "Human Colonials"
     (let [;; A bunch of fiddly bitmapping operations. Remember that our subvec indexing is counting from the opposite direction as the notes on the BBC Elite site...
           ;; register-A = s2_hi
           register-A 
           (vec (concat [0 0]
-                       (into [] (get-seed-bits seed (:s2_hi elite-index) 0 6))))
+                       (into [] (utility/get-seed-bits seed (:s2_hi utility/elite-index) 0 6))))
           ;; bits 2-4 of A, by using a mask which multiplies the bit strings together 
-          species-size  (bin-to-byte (mapv * [0 0 0 0 0 1 1 1] register-A))
+          species-size  (utility/bin-to-byte (mapv * [0 0 0 0 0 1 1 1] register-A))
           ;; bits 5-7 of A, by just grabbing the subvec 
           species-color (subvec register-A 3 5)
           ;; A = bits 0-2 of (s0_hi EOR s1_hi)
           register-A-new
           (mapv (fn [a b] (if (not= a b) 1 0))
-                (get-seed-bits seed (:s0_hi elite-index) 0 8)
-                (get-seed-bits seed (:s1_hi elite-index) 0 8))
+                (utility/get-seed-bits seed (:s0_hi utility/elite-index) 0 8)
+                (utility/get-seed-bits seed (:s1_hi utility/elite-index) 0 8))
           ;; texture = bits 0-2 of the new A
           texture (mapv * [0 0 0 0 0 1 1 1]
                         register-A-new)
           ;; bits 0-1 of s2_hi
           intermediate-B (mapv * [0 0 0 0 0 0 1 1]
-                           (get-seed-bits seed (:s2_hi elite-index) 0 8))
+                           (utility/get-seed-bits seed (:s2_hi utility/elite-index) 0 8))
           ;; add register B to A-new
-          intermediate-B-plus (bitwise-add-vec texture
+          intermediate-B-plus (utility/bitwise-add-vec texture
                                            (mapv * [0 0 0 0 0 0 1 1]
                                                  intermediate-B))
           ;; take bits 0-2 of B-plus
           species-name (mapv * [0 0 0 0 0 1 1 1]
                              intermediate-B-plus)         
-          species-type (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 6 2))
-          species-id  [(bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 3 3)) ;; size
-                       (bin-to-byte (get-seed-bits seed (:s2_hi elite-index) 0 3)) ;; color
-                       (bin-to-byte (subvec texture 5)) ;; texture                  
-                       (bin-to-byte species-name)]] ;; type
+          species-type (utility/bin-to-byte (utility/get-seed-bits seed (:s2_hi utility/elite-index) 6 2))
+          species-id  [(utility/bin-to-byte (utility/get-seed-bits seed (:s2_hi utility/elite-index) 3 3)) ;; size
+                       (utility/bin-to-byte (utility/get-seed-bits seed (:s2_hi utility/elite-index) 0 3)) ;; color
+                       (utility/bin-to-byte (subvec texture 5)) ;; texture                  
+                       (utility/bin-to-byte species-name)]] ;; type
       (apply str 
        (map #(get %2 %1) species-id species-table)))))
 
@@ -667,14 +513,14 @@
 
 ;; Test generating species descriptions and planet names...
 (comment
-  (planet-species (make-seed [0x57fa 0x1d30 0x17b3]))
-  (planet-species (make-seed [0x588a 0x476c 0x02db]))
+  (planet-species (utility/make-seed [0x57fa 0x1d30 0x17b3]))
+  (planet-species (utility/make-seed [0x588a 0x476c 0x02db]))
   (last (take 6
               (iterate
-               generate-name (generate-name-start (make-seed [0xfa57 0x301d 0xb317])))))
+               generate-name (generate-name-start (utility/make-seed [0xfa57 0x301d 0xb317])))))
   (last (take 6
               (iterate
-               generate-name (generate-name-start (make-seed [0x57fa 0x1d30 0x17b3]))))))
+               generate-name (generate-name-start (utility/make-seed [0x57fa 0x1d30 0x17b3]))))))
 
 
 (defn planet-population-size [tech-level economy government]
@@ -700,7 +546,7 @@
           (second economy)
           economy)]
   (* 8
-     (+ (invert-byte econ-prosperity 3) 3)
+     (+ (utility/invert-byte econ-prosperity 3) 3)
      (+ government 4)
      population
      )))
@@ -732,9 +578,9 @@
   "Given an indexed list of planet coordinates, return a list of planets within jump range."
   [system-coordinates list-of-planet-coordinates jump-range]
   (filterv (fn [p] (and (< 0 (second p)) (<= (second p) jump-range)))
-           (mapv (fn [p] [(first p) (distance-2d-bbc-elite system-coordinates (second p))]) list-of-planet-coordinates)))
+           (mapv (fn [p] [(first p) (utility/distance-2d-bbc-elite system-coordinates (second p))]) list-of-planet-coordinates)))
 
-(test-galaxy-generator)
+;;(test-galaxy-generator)
 
 (defn calculate-hub-count
   "Given a list of x,y galactic coordinates, figure out how many systems are in jump range of this system"
@@ -749,18 +595,18 @@
 ;;(calculate-hub-count [45 21] (test-galaxy-locations) 7.0)
 
 ;; The seed for the orignal game, chosen after searching through many possibilities...
-(def elite-seed (make-seed [0x5A4A 0x0248 0xB753]))
+(def elite-seed (utility/make-seed [0x5A4A 0x0248 0xB753]))
 
 ;; test twisting the seed
 (def planet-two (-> elite-seed
-                    twist-seed
-                    twist-seed
-                    twist-seed
-                    twist-seed))
+                    utility/twist-seed
+                    utility/twist-seed
+                    utility/twist-seed
+                    utility/twist-seed))
 
 ;; test getting all of the planets
 (def planet-seed-list
-  (reduce (fn [current next-id] (concat current [(twist-to-next-planet (last current))]))
+  (reduce (fn [current next-id] (concat current [(utility/twist-to-next-planet (last current))]))
           [elite-seed]
           (range 255)))
 
@@ -802,8 +648,8 @@
   (mapv (fn [p] [(galactic-x p) (galactic-y p)]) planet-seed-list))
 
 (test-galaxy-locations)
-(mapv #(distance-2d [0 0] %) (test-galaxy-locations))
-(distance-2d [0 0] [5 7])
+(mapv #(utility/distance-2d [0 0] %) (test-galaxy-locations))
+(utility/distance-2d [0 0] [5 7])
 
 (js/Math.sqrt 4)
 
@@ -841,7 +687,7 @@
             ["id" "name" "seed" "species" "government" "economy" "tech-level" "pop. size" "productivity" "gal. coords" "neighbors" "hub count"]
             [r
              name
-             (map #(. % toString 16) (get-seed-bytes p))
+             (map #(. % toString 16) (utility/get-seed-bytes p))
              species
              [gov (government-name gov)]
              [econ (economy-name econ)]
@@ -853,7 +699,10 @@
              hub-count
              ])))))))
 
+
+
 (test-galaxy-generator)
+
 
 ;;(pprint/cl-format nil "~,1f" 3.0001)
 ;;(+ 0.1 0.2)
@@ -896,91 +745,91 @@
 
 
 
-(defn is-seed? [possible-seed]
-  true ;; TODO: actually check
-  )
-
-{:input
- {:int-seed/planet-seed #(and integer?
-                              is-seed?)}
- :output
- {:int-parameter/name-length
-  (fn [n] (and integer?
-               (< 2 n 5)))}}
-
-
-
-(spec/def ::xplanet-seed
-  (fn [n]
-    (and (integer? n)
-         
-         )))
-
-(spec/valid? ::xplanet-seed 866)
-
-
-(egrammar/goat-soup 0 "Santa Cruz")
-
-
-(defn run []
-  (.log js/console "Hello")
-  (println "World"))
-
-
-
-
-
-;; (def elite-db-conn (d/create-conn elite-schema))
-;; (swap! current-database assoc-in [:db-conn]
-;;        elite-db-conn)
-;; (swap! current-database assoc-in [:db-schema]
-;;        elite-schema)
-
-;; (d/transact! elite-db-conn [{:test/name "Name of Test"}])
-;; ;(log-db elite-db-conn)
-;; (d/transact! elite-db-conn [{:seed/galaxy (make-seed [0x5A4A 0x0248 0xB753])}])
-;; (d/q '[:find ?e ?v
-;;        :where
-;;        [?e :seed/planet-seed ?v]]
-;;      @elite-db-conn)
-
-(defn make-planet
-  "Returns the seed for the planet at planet-index."
-  [galaxy-seed galaxy-index planet-index]
-  [{:db/id -1
-    :planet/galaxy galaxy-index
-    :planet/index planet-index
-    :seed/planet
-    (if (> 0 planet-index)
-      (last (take planet-index (iterate twist-to-next-planet galaxy-seed)))
-      galaxy-seed)}])
-
-(make-planet [0x5A4A 0x0248 0xB753] 0 62)
-
-
-;; (make-seed [0x5A4A 0x0248 0xB753])
-
-
-;; (let [galaxy-seed (d/q '[:find ?gal-seed
-;;                         ;;:in $ %
-;;                         :where [?e :seed/galaxy ?gal-seed]]
-;;                        @elite-db-conn)
-;;       planet-index-number 7
-       
-;;       parameters [galaxy-seed planet-index-number]]
-;;   (d/transact! elite-db-conn
-;;                (make-planet galaxy-seed planet-index-number))
-
+;; (defn is-seed? [possible-seed]
+;;   true ;; TODO: actually check
 ;;   )
 
+;; {:input
+;;  {:int-seed/planet-seed #(and integer?
+;;                               is-seed?)}
+;;  :output
+;;  {:int-parameter/name-length
+;;   (fn [n] (and integer?
+;;                (< 2 n 5)))}}
 
-;; (d/q '[:find ?e ?v
-;;        :where
-;;        [?e :seed/planet-seed ?v]]
-;;      @elite-db-conn)
 
-;; (d/q '[:find ?e ?v
-;;        :where
-;;        [3  ?v]]
-;;      @elite-db-conn)
+
+;; (spec/def ::xplanet-seed
+;;   (fn [n]
+;;     (and (integer? n)
+         
+;;          )))
+
+;; (spec/valid? ::xplanet-seed 866)
+
+
+;; (egrammar/goat-soup 0 "Santa Cruz")
+
+
+;; (defn run []
+;;   (.log js/console "Hello")
+;;   (println "World"))
+
+
+
+
+
+;; ;; (def elite-db-conn (d/create-conn elite-schema))
+;; ;; (swap! current-database assoc-in [:db-conn]
+;; ;;        elite-db-conn)
+;; ;; (swap! current-database assoc-in [:db-schema]
+;; ;;        elite-schema)
+
+;; ;; (d/transact! elite-db-conn [{:test/name "Name of Test"}])
+;; ;; ;(log-db elite-db-conn)
+;; ;; (d/transact! elite-db-conn [{:seed/galaxy (make-seed [0x5A4A 0x0248 0xB753])}])
+;; ;; (d/q '[:find ?e ?v
+;; ;;        :where
+;; ;;        [?e :seed/planet-seed ?v]]
+;; ;;      @elite-db-conn)
+
+;; (defn make-planet
+;;   "Returns the seed for the planet at planet-index."
+;;   [galaxy-seed galaxy-index planet-index]
+;;   [{:db/id -1
+;;     :planet/galaxy galaxy-index
+;;     :planet/index planet-index
+;;     :seed/planet
+;;     (if (> 0 planet-index)
+;;       (last (take planet-index (iterate twist-to-next-planet galaxy-seed)))
+;;       galaxy-seed)}])
+
+;; (make-planet [0x5A4A 0x0248 0xB753] 0 62)
+
+
+;; ;; (make-seed [0x5A4A 0x0248 0xB753])
+
+
+;; ;; (let [galaxy-seed (d/q '[:find ?gal-seed
+;; ;;                         ;;:in $ %
+;; ;;                         :where [?e :seed/galaxy ?gal-seed]]
+;; ;;                        @elite-db-conn)
+;; ;;       planet-index-number 7
+       
+;; ;;       parameters [galaxy-seed planet-index-number]]
+;; ;;   (d/transact! elite-db-conn
+;; ;;                (make-planet galaxy-seed planet-index-number))
+
+;; ;;   )
+
+
+;; ;; (d/q '[:find ?e ?v
+;; ;;        :where
+;; ;;        [?e :seed/planet-seed ?v]]
+;; ;;      @elite-db-conn)
+
+;; ;; (d/q '[:find ?e ?v
+;; ;;        :where
+;; ;;        [3  ?v]]
+;; ;;      @elite-db-conn)
 

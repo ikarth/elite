@@ -1591,6 +1591,7 @@ SHADOW_IMPORT("goog.disposable.disposable.js");
 SHADOW_IMPORT("goog.testing.pseudorandom.js");
 SHADOW_IMPORT("rand_cljc.core.js");
 SHADOW_IMPORT("ijk.elite_grammar.js");
+SHADOW_IMPORT("ijk.elite_utility.js");
 SHADOW_IMPORT("clojure.data.js");
 SHADOW_IMPORT("datascript.lru.js");
 SHADOW_IMPORT("me.tonsky.persistent_sorted_set.arrays.js");
