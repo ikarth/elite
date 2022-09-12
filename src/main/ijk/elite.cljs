@@ -545,12 +545,13 @@
             reachable-systems (list-reachable-systems [galactic-x galactic-y] planet-coord-list jump-range)
             ;;hub-count (calculate-hub-count [galactic-x galactic-y] planet-coord-list jump-range)
             hub-count (count reachable-systems)
+            goat-soup-string (egrammar/generate-goat-soup p name)
             ]
         (if true;(< 245 r )
           (println 
            (map 
             #(str %1 ":\t "%2 "\n")
-            ["id" "name" "seed" "species" "government" "economy" "tech-level" "pop. size" "productivity" "gal. coords" "neighbors" "hub count"]
+            ["id" "name" "seed" "species" "government" "economy" "tech-level" "pop. size" "productivity" "gal. coords" "neighbors" "hub count" "description"]
             [r
              name
              (map #(. % toString 16) (utility/get-seed-bytes p))
@@ -563,6 +564,7 @@
              [galactic-x galactic-y]
              reachable-systems
              hub-count
+             goat-soup-string
              ])))))))
 
 
