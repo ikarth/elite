@@ -244,6 +244,11 @@
    (bin-to-byte one)
    (bin-to-byte two))))
 
+(defn bitwise-and [one two]
+  (mapv (fn [[a b]]
+          (if (and (= a 1) (= b 1) ) 1 0))
+        (map vector one two)))
+
 (defn elite-bit-shift-left [data]
   (into [] cat [[] (drop 1 data) [0]]))
 
@@ -260,3 +265,5 @@
         new-seed [rand-a new-a-bit f2 (get rand-seed 1)]
         ]
     [(bin-to-byte new-a-bit) new-seed]))
+
+
