@@ -25,6 +25,7 @@
 (equb-range 6)
 
 
+
 (def text-tokens-extended
 {
 :TKN1_0 ""
@@ -460,7 +461,7 @@
 ;;   )
 
 (def elite-seed (utility/make-seed [0x5A4A 0x0248 0xB753]))
-(goat-soup elite-seed "Tibedied")
+;;(goat-soup elite-seed "Tibedied")
 
 ;; (mapv #(get-seed-bits elite-seed % 0 8) [2 3 4 5])
 
@@ -506,13 +507,12 @@
 
 (defn next-expand [tokens rand-seed]
   (println tokens)
-  (let [variances-remaining (count (filter #(or (cstring/starts-with? % "TKN1")
-                                                (cstring/starts-with? % "EQUB"))
+  (let [variances-remaining (count (filter #(cstring/starts-with? % "EQUB")
                                            tokens))]
     (println variances-remaining)
     (if (< 0 variances-remaining)
       (let [first-variance (some #(when (cstring/starts-with? % "EQUB") %) tokens)
-            variance-indexes 0;(.indexOf tokens first-variance)
+            variance-indexes (.indexOf tokens first-variance)
             ]
         (if first-variance
           (let [[rnd-choice next-seed] (utility/goat-soup-next-rand rand-seed)
@@ -521,27 +521,87 @@
                 new-token (nth choices choice-index)
                 new-token-list (assoc tokens variance-indexes new-token)
                 ]
-                                        ;(goat-soup-recurse (cstring/join "α" new-token-list) next-seed)
+            
             [(cstring/join "α" new-token-list) next-seed]
             )
-          ;(goat-soup-recurse tokens rand-seed )
-          [tokens rand-seed]))
-      [tokens rand-seed])))
+          [tokens rand-seed]
+          ;;["X" rand-seed]
+          ))
+      [tokens rand-seed]
+      ;;["Y" rand-seed]
+      )))
 
 
 
 (> 0 1)
 
 (defn goat-soup-split-terms [tokens]
-  (cstring/split (cstring/replace tokens
-                                  #"#([A-Za-z0-9_]*?)#"
-                                  "α$1α") ""))
+  (if (string? tokens)
+    (cstring/split (cstring/replace tokens
+                                    #"#([A-Za-z0-9_]*?)#"
+                                    "α$1α") "α")
+    (goat-soup-split-terms
+     (cstring/join "α" tokens))))
 
 (goat-soup-split-terms "#EQUB_86# more text #TKN1_140#")
 
 ()
 
-(next-expand (goat-soup-split-terms "#EQUB_86# more text #TKN1_140#") goat-soup-seed)
+(defn goat-soup-recurse [data-start data-seed]
+  (let [;;data-seed goat-soup-seed
+        ;;data-start "#EQUB_86# more text #TKN1_140#"
+        data-split (goat-soup-split-terms data-start)
+        finished (= 1 (count data-split))]
+    (println data-split)
+    (if finished
+      (first data-split)
+      (let [data-expanded (mapv (fn [word]
+                                 (if (cstring/starts-with? word "TKN1")
+                                   word ;;(goat-soup-invoke word)
+                                   word))
+                               data-split)
+            [new-data new-seed] (next-expand data-expanded data-seed)]
+        (println [new-data new-seed])
+        ;;(goat-soup-recurse new-data new-seed)
+        [new-data new-seed]
+        ))))
+
+
+
+;; (->
+;;  (goat-soup-recurse "#EQUB_86# more text #TKN1_140#" goat-soup-seed)
+;;  (fn [a] (goat-soup-recurse (first a) (second a)))
+;;  )
+
+(goat-soup-split-terms
+ (goat-soup-split-terms "no splits left#TKN1_140#"))
+
+(let [[d s] (goat-soup-recurse "#EQUB_86# more text #TKN1_140#" goat-soup-seed)
+      [d s] (goat-soup-recurse d s)
+      [d s] (goat-soup-recurse d s)
+      [d s] (goat-soup-recurse d s)
+      [d s] (goat-soup-recurse d s)      
+      ]
+  (goat-soup-recurse d s)
+  )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ;; (defn goat-soup-recurse [tokens rand-seed]
 ;;   (let [split-tokens (cond (string? tokens)
@@ -569,8 +629,8 @@
 
 
 
-;(doc sample)
-;(keys)
+                                        ;(doc sample)
+                                        ;(keys)
 ;; (goat-soup 5090 "Lave")
 ;; (:TKN1_5 (:rules (goat-soup 0 "Lave")))
 
