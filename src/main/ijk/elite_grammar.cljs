@@ -392,7 +392,8 @@
                 (cond (= (nth mode 2) :lower-case)
                       [(cstring/lower-case cursor) mode]
                       (= (nth mode 2) :sentence-case)
-                      (let [_ (println mode " -> " (= "" (nth mode 3)))]
+                      (let [;;_ (println mode " -> " (= "" (nth mode 3)))
+                            ]
                         (if (or
                              (= " " (nth mode 3))
                              (= "" (nth mode 3)))
@@ -417,7 +418,7 @@
                     ]
                 ["" [(nth mode 0) accum mode-switch cursor]
                  ])))
-          _ (println (str "<" add-to-parsed ">"))
+          ;;_ (println (str "<" add-to-parsed ">"))
           mode-change (assoc-in mode-change [3] add-to-parsed)]
       (parse-goat-soup (rest unparsed) (str parsed add-to-parsed) mode-change)
       )))
