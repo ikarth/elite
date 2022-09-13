@@ -20,7 +20,7 @@
 (defn equb-range
   "Returns a list of numbers from start to start+4 (inclusive), for use in constructing Elite's grammar rules"
   [start]
-  (into [] (map (fn [n] (str "#TKN1_" n "#")) (take 5 (range start (+ start 5))))))
+  (into [] (map (fn [n] (str "<TKN1_" n ">")) (take 5 (range start (+ start 5))))))
 
 (equb-range 6)
 
@@ -36,7 +36,7 @@
    222     "ST"
    223     "ON"
    224     "LO"
-   225     "NU"
+   225     "NU" ; 225
    226     "TH"
    227     "NO"
    228     "AL"
@@ -49,7 +49,7 @@
    235     "SO"
    236     "US"
    237     "ES"
-   238     "AR"
+   238     "AR" ; 238
    239     "MA"
    240     "IN"
    241     "DI"
@@ -102,7 +102,7 @@
 :TKN1_28 "GREAT"
 :TKN1_29 "VAST"
 :TKN1_30 "PINK"
-:TKN1_31 "{sentence-case}<EQUB_190> <EQUB_185> {lower-case} PLANTATIONS"
+:TKN1_31 "{sentence-case}<EQUB_190> <EQUB_185> {lower-case}PLANTATIONS"
 :TKN1_32 "MOUNTAINS"
 :TKN1_33 "<EQUB_180>"
 :TKN1_34 "<EQUB_125> FORESTS"
@@ -374,6 +374,7 @@
 
 (defn parse-goat-soup
   [unparsed parsed mode]
+  ;;(println unparsed)
   (if (<= (count unparsed) 0)
     parsed
     (let [cursor (first unparsed)
@@ -411,7 +412,9 @@
                       (= accum "sentence-case")
                       :sentence-case
                       (= accum "single cap")
-                      :single-cap                        
+                      (if (= :sentence-case (nth mode 2))
+                        :sentence-case
+                        :single-cap)                        
                       :else
                       :lower-case)
                     ;;_ (println mode-switch)
@@ -603,17 +606,25 @@
 
 ;; (apply + [1 1 ])
 
+(defn capitalize-word [word]
+  (str (cstring/upper-case (first word)) (cstring/lower-case (apply str (rest word)))))
+
+(capitalize-word "udyidi")
+
 (defn generate-random-word [rand-seed name-length name-exp]
   ;;(println "generate-random-word: " name-exp " = " name-length)
-  (if (> 1 name-length)
-    [(cstring/join "" [name-exp]) rand-seed]
+  (if (> 0 name-length)
+    [(str "{single cap}" (capitalize-word (cstring/join "" [name-exp]))) rand-seed]
     (let [[rnd-choice next-seed] (utility/goat-soup-next-rand rand-seed)
-          word-choice (/(utility/bin-to-byte
-                         (mapv *
-                               (utility/byte-to-bin rnd-choice)
-                               [0 0 1 1 1 1 1 0]))
-                        2)
-          chosen-token (get two-letter-tokens (+ 215 word-choice) [0 "**"])
+          word-choice
+          ;; (/(utility/bin-to-byte
+          ;;                (mapv *
+          ;;                      (utility/byte-to-bin rnd-choice)
+          ;;                      [0 0 1 1 1 1 1 0]))
+          ;;               2)
+          (/ (bit-and rnd-choice 0x3e) 2)
+          ;;_ (println (str "word-choice: " word-choice))
+          chosen-token (get two-letter-tokens (+ 216 word-choice) [0 "**"])
           ;;_ (println chosen-token)
           name-exp (cstring/join "" [name-exp chosen-token])
           [recurse-expand next-seed] (generate-random-word next-seed (- name-length 1) name-exp)
@@ -649,112 +660,112 @@
 ;; (count "ABOUSEITILETSTONLONUTHNOALLEXEGEZACEBISOUSESARMAINDIREA.ERATENBERALAVETIEDORQUANTEISRION")
 
 
-(defn next-expand [tokens rand-seed planet-name]
-  (println "(next-expand " tokens ")")
-  ;;(mapv (fn [x] (print x "+")) tokens)
-  (let [variances-remaining (count (filter #(or (cstring/starts-with? % "EQUB")
-                                                (cstring/starts-with? % "TKN1")
-                                                (cstring/starts-with? % "GENR"))
-                                           tokens))]
-    (if (< 0 variances-remaining)
-      (let [first-variance (some #(when (or
-                                         (cstring/starts-with? % "TKN1")
-                                         (cstring/starts-with? % "EQUB")
-                                         (cstring/starts-with? % "GENR")) %) tokens)
-            variance-indexes (.indexOf tokens first-variance)]
-        (if first-variance
-          (cond (cstring/starts-with? first-variance "TKN1")
-                [tokens rand-seed]
-                (cstring/starts-with? first-variance "EQUB")
-                (let [_ (println first-variance)
-                      [rnd-choice next-seed] (utility/goat-soup-next-rand rand-seed)
-                      _ (println "\tnext-seed: " next-seed)
-                      _ (println "\t int-seed: " (mapv utility/bin-to-byte next-seed))
-                      choice-index (apply + (mapv #(>= rnd-choice %) [0x33 0x66 0x99 0xCC]))
-                      choices (get text-tokens-extended (keyword first-variance))
-                      new-token (nth choices choice-index)
-                      new-token-list (assoc tokens variance-indexes new-token)]
-                  (println (str rnd-choice) " = " (str choice-index) " -> " new-token)
-                 [(cstring/join "#" new-token-list) next-seed])
+;; (defn next-expand [tokens rand-seed planet-name]
+;;   (println "(next-expand " tokens ")")
+;;   ;;(mapv (fn [x] (print x "+")) tokens)
+;;   (let [variances-remaining (count (filter #(or (cstring/starts-with? % "EQUB")
+;;                                                 (cstring/starts-with? % "TKN1")
+;;                                                 (cstring/starts-with? % "GENR"))
+;;                                            tokens))]
+;;     (if (< 0 variances-remaining)
+;;       (let [first-variance (some #(when (or
+;;                                          (cstring/starts-with? % "TKN1")
+;;                                          (cstring/starts-with? % "EQUB")
+;;                                          (cstring/starts-with? % "GENR")) %) tokens)
+;;             variance-indexes (.indexOf tokens first-variance)]
+;;         (if first-variance
+;;           (cond (cstring/starts-with? first-variance "TKN1")
+;;                 [tokens rand-seed]
+;;                 (cstring/starts-with? first-variance "EQUB")
+;;                 (let [_ (println first-variance)
+;;                       [rnd-choice next-seed] (utility/goat-soup-next-rand rand-seed)
+;;                       _ (println "\tnext-seed: " next-seed)
+;;                       _ (println "\t int-seed: " (mapv utility/bin-to-byte next-seed))
+;;                       choice-index (apply + (mapv #(>= rnd-choice %) [0x33 0x66 0x99 0xCC]))
+;;                       choices (get text-tokens-extended (keyword first-variance))
+;;                       new-token (nth choices choice-index)
+;;                       new-token-list (assoc tokens variance-indexes new-token)]
+;;                   (println (str rnd-choice) " = " (str choice-index) " -> " new-token)
+;;                  [(cstring/join "#" new-token-list) next-seed])
                 
-                (cstring/starts-with? first-variance "GENR")
-                (let [[new-token new-seed]
-                      (cond
-                        (cstring/starts-with? first-variance "GENR_system_name")
-                        [(str planet-name) rand-seed]
-                        (cstring/starts-with? first-variance "GENR_system_adjective")
-                        [(str planet-name "ian") rand-seed]
-                        (cstring/starts-with? first-variance "GENR_8")
-                        (let [[rnd-choice next-seed] (utility/goat-soup-next-rand rand-seed)
-                              name-length (utility/bin-to-byte
-                                           (mapv * (utility/byte-to-bin rnd-choice) [0 0 0 0 0 0 1 1]))
-                              [gen-word next-seed] (generate-random-word next-seed name-length "")]
-                          [gen-word next-seed]                          )
-                        :else
-                        ["<GENERATED WORD>" rand-seed])]
-                  [(cstring/join "#"
-                                 (assoc tokens variance-indexes new-token))
-                   new-seed])                  
-                :else
-                (let [new-token "<UNKNOWN>"
-                      new-token-list (assoc tokens variance-indexes new-token)]
-                  [(cstring/join "#" new-token-list) rand-seed])
-                )
-          [tokens rand-seed] ))
-      [tokens rand-seed] )))
+;;                 (cstring/starts-with? first-variance "GENR")
+;;                 (let [[new-token new-seed]
+;;                       (cond
+;;                         (cstring/starts-with? first-variance "GENR_system_name")
+;;                         [(str planet-name) rand-seed]
+;;                         (cstring/starts-with? first-variance "GENR_system_adjective")
+;;                         [(str planet-name "ian") rand-seed]
+;;                         (cstring/starts-with? first-variance "GENR_8")
+;;                         (let [[rnd-choice next-seed] (utility/goat-soup-next-rand rand-seed)
+;;                               name-length (utility/bin-to-byte
+;;                                            (mapv * (utility/byte-to-bin rnd-choice) [0 0 0 0 0 0 1 1]))
+;;                               [gen-word next-seed] (generate-random-word next-seed name-length "")]
+;;                           [gen-word next-seed]                          )
+;;                         :else
+;;                         ["<GENERATED WORD>" rand-seed])]
+;;                   [(cstring/join "#"
+;;                                  (assoc tokens variance-indexes new-token))
+;;                    new-seed])                  
+;;                 :else
+;;                 (let [new-token "<UNKNOWN>"
+;;                       new-token-list (assoc tokens variance-indexes new-token)]
+;;                   [(cstring/join "#" new-token-list) rand-seed])
+;;                 )
+;;           [tokens rand-seed] ))
+;;       [tokens rand-seed] )))
 
-(defn goat-soup-split-terms [tokens]
-  (if (string? tokens)
-    (cstring/split (cstring/replace
-                    (cstring/replace tokens
-                                     #"#([A-Za-z0-9_]*?)#"
-                                     "#$1#") "##" "#") "#")
-    (goat-soup-split-terms
-     (cstring/join "#" tokens))))
+;; (defn goat-soup-split-terms [tokens]
+;;   (if (string? tokens)
+;;     (cstring/split (cstring/replace
+;;                     (cstring/replace tokens
+;;                                      #"#([A-Za-z0-9_]*?)#"
+;;                                      "#$1#") "##" "#") "#")
+;;     (goat-soup-split-terms
+;;      (cstring/join "#" tokens))))
 
-;;(goat-soup-split-terms "#EQUB_86# more text #TKN1_140# #GENR_8#")
+;; ;;(goat-soup-split-terms "#EQUB_86# more text #TKN1_140# #GENR_8#")
 
 
 
-(defn goat-soup-parse-expand [data-start data-seed planet-name])
+;; (defn goat-soup-parse-expand [data-start data-seed planet-name])
 
-(defn goat-soup-recurse [data-start data-seed planet-name]
-  (println "(goat-soup-recurse " data-start ")")
-  (let [;;data-seed goat-soup-seed
-        ;;data-start "#EQUB_86# more text #TKN1_140#"
-        _ (println data-seed)
-        data-start (goat-soup-split-terms data-start)
-        pending-replacements (filter (fn [word] (or
-                                                 (cstring/starts-with? word "TKN1")
-                                                 (cstring/starts-with? word "GENR")
-                                                 (cstring/starts-with? word "EQUB")))
-                                     data-start)
-        ;;_ (println pending-replacements)
-        data-start (if (= 0 (count pending-replacements))
-                     (cstring/join data-start)
-                     data-start
-                     )
-        data-split (goat-soup-split-terms data-start)
-        _ (println data-split)
-        finished (= 1 (count data-split))
-        ]
-    ;;(println data-split)
-    ;;(println finished)
-    (if finished
-      data-split
-      ;; (if (string? data-split)
-      ;;   data-split
-      ;;   (first data-split))
-      (let [data-expanded (mapv (fn [word]
-                                 (if (cstring/starts-with? word "TKN1")
-                                   (get text-tokens-extended (keyword word))
-                                   word))
-                               data-split)
-            [new-data new-seed] (next-expand data-expanded data-seed planet-name)]
-        ;;(println [new-data new-seed])
-        (goat-soup-recurse new-data new-seed planet-name)
-        ;;[new-data new-seed]
-        ))))
+;; (defn goat-soup-recurse [data-start data-seed planet-name]
+;;   (println "(goat-soup-recurse " data-start ")")
+;;   (let [;;data-seed goat-soup-seed
+;;         ;;data-start "#EQUB_86# more text #TKN1_140#"
+;;         _ (println data-seed)
+;;         data-start (goat-soup-split-terms data-start)
+;;         pending-replacements (filter (fn [word] (or
+;;                                                  (cstring/starts-with? word "TKN1")
+;;                                                  (cstring/starts-with? word "GENR")
+;;                                                  (cstring/starts-with? word "EQUB")))
+;;                                      data-start)
+;;         ;;_ (println pending-replacements)
+;;         data-start (if (= 0 (count pending-replacements))
+;;                      (cstring/join data-start)
+;;                      data-start
+;;                      )
+;;         data-split (goat-soup-split-terms data-start)
+;;         _ (println data-split)
+;;         finished (= 1 (count data-split))
+;;         ]
+;;     ;;(println data-split)
+;;     ;;(println finished)
+;;     (if finished
+;;       data-split
+;;       ;; (if (string? data-split)
+;;       ;;   data-split
+;;       ;;   (first data-split))
+;;       (let [data-expanded (mapv (fn [word]
+;;                                  (if (cstring/starts-with? word "TKN1")
+;;                                    (get text-tokens-extended (keyword word))
+;;                                    word))
+;;                                data-split)
+;;             [new-data new-seed] (next-expand data-expanded data-seed planet-name)]
+;;         ;;(println [new-data new-seed])
+;;         (goat-soup-recurse new-data new-seed planet-name)
+;;         ;;[new-data new-seed]
+;;         ))))
 
 
 
@@ -766,14 +777,14 @@
 ;; (goat-soup-split-terms
 ;;  (goat-soup-split-terms "no splits left#TKN1_140#"))
 
-(defn generate-goat-soup [planet-seed planet-name]
-  (parse-goat-soup
-   (let [planet-goat-soup-seed
-         (mapv #(utility/get-seed-bits planet-seed % 0 8) [2 3 4 5])]
-     (println (str "seed: " planet-goat-soup-seed))
-     (cstring/join ""
-                   (goat-soup-recurse "#TKN1_5#" planet-goat-soup-seed planet-name)))
-   "" [0 "" :lower-case ""]))
+;; (defn generate-goat-soup [planet-seed planet-name]
+;;   (parse-goat-soup
+;;    (let [planet-goat-soup-seed
+;;          (mapv #(utility/get-seed-bits planet-seed % 0 8) [2 3 4 5])]
+;;      (println (str "seed: " planet-goat-soup-seed))
+;;      (cstring/join ""
+;;                    (goat-soup-recurse "#TKN1_5#" planet-goat-soup-seed planet-name)))
+;;    "" [0 "" :lower-case ""]))
 
 ;; (let [x (generate-goat-soup elite-seed "TIBEDIED")]
 ;;   (println x)
@@ -856,39 +867,89 @@
 ;;   (map #(goat-soup % "Lave") (range 200))))
 
 
-(defn parse-expand-grammar [unparsed parsed seed planet-name mode]
-  (if (<= (count unparsed) 0)
-    parsed
-    (let [cursor (first unparsed)
-          [add-to-parsed new-seed updated-mode]
-          (cond
-            (= (first mode) :token)
-            (cond
-              (= cursor ">")
-              ["resolved-token" seed (assoc-in mode [0] :text)]
-              :else
-              ["" seed (update-in mode [1] #(str % cursor))]
-              )
-            (= (first mode) :text)
-            (cond
-            (= cursor "<")
-            ["" seed (assoc-in
-                      (assoc-in mode [0] :token)
-                      [1]
-                      "")]
-            :else
-            [cursor seed mode]
-            )
-            :else
-            [cursor seed mode]
-            )
+(defn resolve-token [token seed planet-name]
+  ;;(println (str "resolve-token: " token "\t\t" (mapv utility/bin-to-byte seed)))
+  (cond
+    (cstring/starts-with? token "TKN1")
+    ["" (get text-tokens-extended (keyword token)) seed]
+    (cstring/starts-with? token "EQUB")
+    (let [[rnd-choice next-seed] (utility/goat-soup-next-rand seed)
+          choice-index (apply + (mapv #(>= rnd-choice %) [0x33 0x66 0x99 0xCC]))
+          choices (get text-tokens-extended (keyword token))
+          new-token (nth choices choice-index)
+          ;;_ (println (str "chosing new token: " rnd-choice " > " choice-index " = " new-token))
           ]
-      (parse-expand-grammar (rest unparsed) (str parsed add-to-parsed) new-seed planet-name updated-mode))))
+      ["" new-token next-seed])
+    (cstring/starts-with? token "GENR")
+    (let [[new-token new-seed]
+          (cond
+            (cstring/starts-with? token "GENR_system_name")
+            [(str "{single cap}" (capitalize-word (str planet-name))) seed]
+            (cstring/starts-with? token "GENR_system_adjective")
+            [(str "{single cap}" (capitalize-word (str planet-name "ian"))) seed]
+            (cstring/starts-with? token "GENR_8")
+            (let [[rnd-choice next-seed] (utility/goat-soup-next-rand seed)
+                  ;;_ (println (str "rnd-choice: " rnd-choice))
+                  name-length
+                  (bit-and rnd-choice 3)
+                  ;; (utility/bin-to-byte
+                  ;;  (mapv * (utility/byte-to-bin rnd-choice) [0 0 0 0 0 0 1 1]))
+                  ;;_ (println (str "name-length: " name-length))
+                  [gen-word next-seed] (generate-random-word next-seed name-length "")]
+              [gen-word next-seed])            
+            :else
+            ["" seed])
+          ]      
+      ["" new-token new-seed])
+    :else
+    [(str "(unknown token: " token ")") "" seed]))
+
+(defn parse-expand-grammar [unparsed parsed seed planet-name mode]
+  ;;(println (str parsed " <- " unparsed " : " mode))
+  (if (< 955 (nth mode 2))
+    [unparsed parsed]    
+    (if (<= (count unparsed) 0)
+      parsed
+      (let [cursor (first unparsed)
+            [add-to-parsed add-to-unparsed new-seed updated-mode]
+            (cond
+              (= (first mode) :token)
+              (cond
+                (= cursor ">")
+                (let [[resolved-token resolved-unparsed resolved-seed]
+                      (resolve-token (nth mode 1) seed planet-name)]
+                  [resolved-token
+                   resolved-unparsed
+                   resolved-seed
+                   (assoc-in mode [0] :text)])
+                :else
+                ["" "" seed (update-in mode [1] #(str % cursor))]
+                )
+              (= (first mode) :text)
+              (cond
+                (= cursor "<")
+                ["" "" seed (assoc-in
+                             (assoc-in mode [0] :token)
+                             [1]
+                             "")]
+                :else
+                [cursor "" seed mode]
+                )
+              :else
+              [cursor "" seed mode]
+              )
+            ]
+        (parse-expand-grammar (str add-to-unparsed (apply str (rest unparsed)))
+                              (str parsed add-to-parsed)
+                              new-seed
+                              planet-name
+                              (update-in updated-mode [2] inc))))))
 
 (defn generate-goat-soup [planet-seed planet-name]
   (let [planet-goat-soup-seed (mapv #(utility/get-seed-bits planet-seed % 0 8) [2 3 4 5])
-        expand (parse-expand-grammar "<TKN1_5>" "" planet-goat-soup-seed planet-name [:text ""])
-        result (parse-goat-soup expand "" [0 "" :lower-case ""])]
+        expand (parse-expand-grammar "<TKN1_5>" "" planet-goat-soup-seed planet-name [:text "" 0])
+        result (parse-goat-soup expand "" [0 "" :lower-case ""])
+        ]
     result)
   ;; (parse-goat-soup
   ;;  (let [planet-goat-soup-seed
@@ -899,6 +960,18 @@
   ;;  "" [0 "" :lower-case ""])
   )
 
+(str "X" (apply str (rest "test")))
+
 (let [x (generate-goat-soup elite-seed "TIBEDIED")]
   (println x)
   x)
+
+(let [x (generate-goat-soup (utility/twist-to-next-planet elite-seed) "TIBEDIED")]
+  (println x)
+  x)
+
+(let [x (generate-goat-soup (utility/twist-to-next-planet (utility/twist-to-next-planet elite-seed)) "TIBEDIED")]
+  (println x)
+  x)
+
+(println "grammar")

@@ -270,27 +270,28 @@
 (defn goat-soup-next-rand [rand-seed]
   (let [int-seed (mapv bin-to-byte rand-seed)
         x (* 2 (nth int-seed 0))
-        _ (println "x " x (rem x 256))
+        ;;_ (println "x " x (rem x 256))
         x (bit-and x 0xFF)
-        _ (println "x " x)
+        ;;_ (println "x " x)
         a (+ (nth int-seed 2) x)
-        _ (println "a " a)        
+        ;;_ (println "a " a)        
         a (if (> (nth int-seed 0) 127)
             (+ a 1)
             a)
-        _ (println "a " a)                
+        ;;_ (println "a " a)                
         one (bit-and a 0xFF)
         three x
-        _ (println "one " one)                
+        ;;_ (println "one " one)                
         a-carry  (quot a 256)
-        _ (println "a-carry " a-carry)        
+        ;;_ (println "a-carry " a-carry)        
         x2 (nth int-seed 1)
         a2 (+ a-carry x2 (nth int-seed 3))
-        _ (println "a2 " a2)        
+        ;;_ (println "a2 " a2)        
         a2 (bit-and a2 0xFF)
         two a2        
         four x2
         new-seed [one two three four]]
+    ;;(println new-seed)
     [two (mapv byte-to-bin new-seed);; new-seed
      ]))
 
