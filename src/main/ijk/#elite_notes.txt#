@@ -1,0 +1,200 @@
+
+
+
+[ TKN1_5]
+
+[ TKN1_176  EQUB_86  TKN1_202  EQUB_140 .
+]
+"lowercase, etc." EQUB_86 " is " EQUB_140
+
+86 = [:TKN1_86 "#GENR_system_name#"
+      :TKN1_87 "THE PLANET #GENR_system_name#"
+      :TKN1_88 "THE WORLD #GENR_system_name#"
+      :TKN1_89 "THIS PLANET" *correct choice*
+      :TKN1_90 "THIS WORLD"]
+140 = [:TKN1_140 "#EQUB_21# #EQUB_16# FOR #EQUB_61#"
+       :TKN1_141 "#TKN1_140##TKN1_178##EQUB_61#"
+       :TKN1_142 "#EQUB_51# BY #EQUB_56#"
+       :TKN1_143 "#TKN1_140# BUT #TKN1_142#" *correct choice*
+       :TKN1_144 "A#EQUB_96# #EQUB_101#"]
+
+"#TKN1_140# BUT #TKN1_142#"
+
+"#EQUB_21# #EQUB_16# FOR #EQUB_61#" BUT "#EQUB_51# BY #EQUB_56#"
+
+
+
+
+[227 185 144   2] = 185 = 3 * T_89    "this planet"
+[ 87 188 198 185] = 188 = 3 * T_143   "T_140 BUT T_142"
+[116 118 174 188] = 118 = 2 * T_23    "most"
+[150  51 232 118] =  51 = 1 * T_17    "notable"
+[ 21 170  44  51] = 170 = 3 * T_64    E_235 > []
+[ 86 221  42 170] = 221 = 4 * T_55    
+[214 135 172 221] = 135 = 2 * T_237
+[ 89 101 172 135] = 101 = 1 * T_57    (E_76 E_230 E_240)
+[ 94 237 178 101] = 237 = 4 = T_80
+[110  83 188 237] =  83 = 1 = t_231
+
+[227  71 144   2] =  71 = 1
+[ 87 201 198  71] = 201 = 3
+[116 246 174 201] = 246 = 4
+[150 178 232 246] = 178 = 3
+
+
+
+[156 185 144   2] = 185 = 3
+[ 44 188  56 185] = 188 = 3
+[100 117  88 188] = 117 = 2
+[189  49 200 117] =  49 = 0 (we want 1?)
+[133 167 122  49] = 167 = 3 
+[255 216  10 167] = 216 = 4
+[ 10 128 254 216] = 128 = 2 (we want 0 or 4)
+[  8  89  20 128] =  89 = 1 (we want 
+
+
+[61?=64][66?=67]
+[64->{[71? 66?] [adj 225? 240?] [its 76? 230? 240?] [245? 250?] [71? 66?]}
+71
+
+21 = [:TKN1_21 "VERY"
+      :TKN1_22 "MILDLY"
+      :TKN1_23 "MOST" *correct*
+      :TKN1_24 "REASONABLY"
+      :TKN1_25 ""]
+16 = [:TKN1_16 "FABLED" <-*
+      :TKN1_17 "NOTABLE" *correct*
+      :TKN1_18 "WELL KNOWN"
+      :TKN1_19 "FAMOUS"
+      :TKN1_20 "NOTED"]
+61 = [:TKN1_61 "ITS #EQUB_26# #EQUB_31#"
+      :TKN1_62 "THE #GENR_system_adjective# #EQUB_155# #EQUB_160#"
+      :TKN1_63 "ITS INHABITANTS' #EQUB_165# #EQUB_36#"
+      :TKN1_64 "{sentence-case}#EQUB_235#{lower-case}"
+      :TKN1_65 "ITS #EQUB_76# #EQUB_81#"]
+51 = [:TKN1_51 "BESET"
+      :TKN1_52 "PLAGUED"
+      :TKN1_53 "RAVAGED"
+      :TKN1_54 "CURSED"
+      :TKN1_55 "SCOURGED"]
+56 = [:TKN1_56 "#EQUB_135# CIVIL WAR"
+      :TKN1_57 "#EQUB_170# #EQUB_155# #EQUB_160#S"
+      :TKN1_58 "A #EQUB_170# DISEASE"
+      :TKN1_59 "#EQUB_135# EARTHQUAKES"
+      :TKN1_60 "#EQUB_135# SOLAR ACTIVITY"]
+      
+
+
+
+
+
+;; The extract-seed-for- operations are basically "roll a die of size X" only drawing the die result directly from the seed.
+
+(defn extract-seed-for-name-length
+  "Given a planet seed, determine the length of the name (3 or 4 digraphs)"
+  [:int/seed/planet-seed]
+  ;;->
+  :int/parameter/name-length [3-4])
+
+(defn start-new-planet-name-string
+  "Given a planet seed, extract the token and prepare to generate the name"
+  [:int/seed/planet-seed]
+  ;;->
+  :int/seed/token-seed
+  :str/planet-name/empty-string)
+
+;; we *could* make twisting the seed into its own operation, but instead I'm opting to model it as a non-op function that these operations call.
+(defn assemble-name
+  "Given a token-seed, name-length, and name-in-progress string, plus the table of digraphs, 
+  generate the next step of the name generation. Return either the partially-completed string
+  (seed + string) or the final planet name."
+  [;;consumed!:int/seed/token-seed
+   :int/parameter/name-length
+   ;;consumed!:str/planet-name/assembling-string
+   :list/table/digraph-token-table]
+  ;;->
+  :int/seed/twisted-seed 
+  :str/planet-name/updated-string
+  OR ; once length exceeds name-length
+  :str/parameter/planet-name)
+
+(defn extract-seed-for-economy
+  "Given a planet-seed, generate the economic properties of the planet."
+  [:int/seed/planet-seed]
+  ->
+  :int/parameter/economy [0-7] 
+  :int/parameter/prosperity {0 :rich 1 :average 2 :poor 3 :mainly}
+  :int/parameter/economy-type {0 :industrial 1 :agricultural}
+  )
+
+(defn extract-seed-for-government
+  "Given a planet-seed, generated the government type, from a table of eight possibilities."
+  [:int/seed/planet-seed]
+  ->
+  :int/parameter/government-type [0-7] [:anarchy :feudal :multi-government :dictatorship :communist :confederacy :democracy :corporate-state])
+
+(defn extract-seed-for-tech-level
+  "Given a planet-seed, economy, and governement-type, generate the tech-level of the planet."
+
+  [:int/seed/planet-seed :int/parameter/economy :int/parameter/government]
+  ->
+  :int/parameter/tech-level [0-14] ; rounded up
+  )
+
+(defn extract-seed-for-population
+  "Given the tech-level, economy, and government-type, generate the planet's population, in hundreds of millions."
+  [:int/parameter/tech-level :int/parameter/economy :int/parameter/government]
+  ->
+  :int/parameter/population [1-71] ; ((tech level * 4) + economy + government + 1)
+                                   ; divide by ten to get population in billions
+  )
+
+(defn extract-seed-for-productivity
+  "Given the economy, government-type, and population, generate the planet's productivity level."
+  [:int/parameter/economy :int/parameter/government :int/parameter/population]
+  ->
+  :int/parameter/productivity [96-62480] ; ((flip economy) + 3) * (government + 4) * population * 8
+                                         ; in millions of credits
+  )
+
+(defn extract-seed-for-species-type
+  "Given the planet-seed, generate the species type."
+  [:int/seed/planet-seed]
+  ->
+  :str/species-type ; "Human Colonials" or "Large Green Slimy Rodents" et cetera
+  )
+
+(defn extract-seed-for-planet-radius
+  "Given the planet-seed, generate the planet's radius. (The average radius - because David Braben was an astronomy major and cared about those details.)"
+  [:int/seed/planet-seed]
+  ->
+  :int/parameter/planet-average-radius
+  )
+
+(defn market-price-for-item
+  "Given an item-type and its base stats, plus the planet's economy and the current planet-temporary-seed (for the changing state), generate the market price and availability."
+  [:int/item-type
+   :table/item-base-price
+   :table/item-price-mask
+   :int/current-temp-random-seed
+   :int/parameter/economy
+   :table/item-economic-factor] ; economic factor -9 to +29
+  ->
+  :int/item-market-price ; in CR
+  :str/item-unit-name ; tonnes, grammes, kilograms, etc.
+  )
+
+(defn start-goat-soup-string
+  "Given a planet-seed and grammar, generate a 'goat soup' planet description by invoking the grammar."
+  [:int/seed/planet-seed]
+  ->
+  :grammar/planet-description-grammar)
+
+;; (defn goat-soup-string [:int/seed/token-seed
+;;                         :str/partial-planet-description
+;;                         :grammar/planet-description-grammar]
+;;   [:int/seed/token-seed :str/partial-planet-description :grammar/planet-description-grammar]
+;;   )
+
+
+

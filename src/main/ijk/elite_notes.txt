@@ -1,4 +1,93 @@
 
+
+
+[ TKN1_5]
+
+[ TKN1_176  EQUB_86  TKN1_202  EQUB_140 .
+]
+"lowercase, etc." EQUB_86 " is " EQUB_140
+
+86 = [:TKN1_86 "#GENR_system_name#"
+      :TKN1_87 "THE PLANET #GENR_system_name#"
+      :TKN1_88 "THE WORLD #GENR_system_name#"
+      :TKN1_89 "THIS PLANET" *correct choice*
+      :TKN1_90 "THIS WORLD"]
+140 = [:TKN1_140 "#EQUB_21# #EQUB_16# FOR #EQUB_61#"
+       :TKN1_141 "#TKN1_140##TKN1_178##EQUB_61#"
+       :TKN1_142 "#EQUB_51# BY #EQUB_56#"
+       :TKN1_143 "#TKN1_140# BUT #TKN1_142#" *correct choice*
+       :TKN1_144 "A#EQUB_96# #EQUB_101#"]
+
+"#TKN1_140# BUT #TKN1_142#"
+
+"#EQUB_21# #EQUB_16# FOR #EQUB_61#" BUT "#EQUB_51# BY #EQUB_56#"
+
+
+
+
+[227 185 144   2] = 185 = 3 * T_89
+[ 87 188 198 185] = 188 = 3 * T_143
+[116 118 174 188] = 118 = 2 * T_23
+[150  51 232 118] =  51 = 1 * T_17
+[ 21 170  44  51] = 170 = 3 * T_64
+[ 86 221  42 170] = 221 = 4 * T_55
+[214 135 172 221] = 135 = 2 * T_237
+[ 89 101 172 135] = 101 = 1 * T_57 (E_76 E_230 E_240)
+[ 94 237 178 101] = 237 = 4 = T_80
+[110  83 188 237] =  83 = 1 = t_231
+
+[227  71 144   2] =  71 = 1
+[ 87 201 198  71] = 201 = 3
+[116 246 174 201] = 246 = 4
+[150 178 232 246] = 178 = 3
+
+
+
+[156 185 144   2] = 185 = 3
+[ 44 188  56 185] = 188 = 3
+[100 117  88 188] = 117 = 2
+[189  49 200 117] =  49 = 0 (we want 1?)
+[133 167 122  49] = 167 = 3 
+[255 216  10 167] = 216 = 4
+[ 10 128 254 216] = 128 = 2 (we want 0 or 4)
+[  8  89  20 128] =  89 = 1 (we want 
+
+
+[61?=64][66?=67]
+[64->{[71? 66?] [adj 225? 240?] [its 76? 230? 240?] [245? 250?] [71? 66?]}
+71
+
+21 = [:TKN1_21 "VERY"
+      :TKN1_22 "MILDLY"
+      :TKN1_23 "MOST" *correct*
+      :TKN1_24 "REASONABLY"
+      :TKN1_25 ""]
+16 = [:TKN1_16 "FABLED" <-*
+      :TKN1_17 "NOTABLE" *correct*
+      :TKN1_18 "WELL KNOWN"
+      :TKN1_19 "FAMOUS"
+      :TKN1_20 "NOTED"]
+61 = [:TKN1_61 "ITS #EQUB_26# #EQUB_31#"
+      :TKN1_62 "THE #GENR_system_adjective# #EQUB_155# #EQUB_160#"
+      :TKN1_63 "ITS INHABITANTS' #EQUB_165# #EQUB_36#"
+      :TKN1_64 "{sentence-case}#EQUB_235#{lower-case}"
+      :TKN1_65 "ITS #EQUB_76# #EQUB_81#"]
+51 = [:TKN1_51 "BESET"
+      :TKN1_52 "PLAGUED"
+      :TKN1_53 "RAVAGED"
+      :TKN1_54 "CURSED"
+      :TKN1_55 "SCOURGED"]
+56 = [:TKN1_56 "#EQUB_135# CIVIL WAR"
+      :TKN1_57 "#EQUB_170# #EQUB_155# #EQUB_160#S"
+      :TKN1_58 "A #EQUB_170# DISEASE"
+      :TKN1_59 "#EQUB_135# EARTHQUAKES"
+      :TKN1_60 "#EQUB_135# SOLAR ACTIVITY"]
+      
+
+
+
+
+
 ;; The extract-seed-for- operations are basically "roll a die of size X" only drawing the die result directly from the seed.
 
 (defn extract-seed-for-name-length

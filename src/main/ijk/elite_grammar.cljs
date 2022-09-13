@@ -76,7 +76,7 @@
 :TKN1_2 "\nWHICH DRIVE?"
 :TKN1_3 "COMPETITION NUMBER:"
 :TKN1_4 "{clear screen}{draw box around title}{all caps}{tab 6}DRIVE {drive number} CATALOGUE{crlf}"
-:TKN1_5 "#TKN1_176##EQUB_86##TKN1_202##EQUB_140#.\n" ; "{lower-case}{justify}{single cap}#EQUB_86# IS #EQUB_140#.\n{left align}"
+:TKN1_5 "<TKN1_176><EQUB_86><TKN1_202><EQUB_140>.\n" ; "{lower-case}{justify}{single cap}<EQUB_86> IS <EQUB_140>.\n{left align}"
 :TKN1_6 "  LOAD NEW {single cap}COMMANDER {all caps}(Y/N)?#sentence-case#\n\n"
 :TKN1_7 "PRESS SPACE OR FIRE,{single cap}COMMANDER.\n\n"
 :TKN1_8 "{single cap}COMMANDER'S NAME? "
@@ -98,55 +98,55 @@
 :TKN1_24 "REASONABLY"
 :TKN1_25 ""
 :TKN1_26 "ANCIENT"
-:TKN1_27 "#EQUB_130#"
+:TKN1_27 "<EQUB_130>"
 :TKN1_28 "GREAT"
 :TKN1_29 "VAST"
 :TKN1_30 "PINK"
-:TKN1_31 "{sentence-case}#EQUB_190# #EQUB_185# {lower-case} PLANTATIONS"
+:TKN1_31 "{sentence-case}<EQUB_190> <EQUB_185> {lower-case} PLANTATIONS"
 :TKN1_32 "MOUNTAINS"
-:TKN1_33 "#EQUB_180#"
-:TKN1_34 "#EQUB_125# FORESTS"
+:TKN1_33 "<EQUB_180>"
+:TKN1_34 "<EQUB_125> FORESTS"
 :TKN1_35 "OCEANS"
 :TKN1_36 "SHYNESS"
 :TKN1_37 "SILLINESS"
 :TKN1_38 "MATING TRADITIONS"
-:TKN1_39 "LOATHING OF #EQUB_41#"
-:TKN1_40 "LOVE FOR #EQUB_41#"
+:TKN1_39 "LOATHING OF <EQUB_41>"
+:TKN1_40 "LOVE FOR <EQUB_41>"
 :TKN1_41 "FOOD BLENDERS"
 :TKN1_42 "TOURISTS"
 :TKN1_43 "POETRY"
 :TKN1_44 "DISCOS"
-:TKN1_45 "#EQUB_81#"
+:TKN1_45 "<EQUB_81>"
 :TKN1_46 "WALKING TREE"
 :TKN1_47 "CRAB"
 :TKN1_48 "BAT"
 :TKN1_49 "LOBST"
-:TKN1_50 "#GENR_8#" ; {18}
+:TKN1_50 "<GENR_8>" ; {18}
 :TKN1_51 "BESET"
 :TKN1_52 "PLAGUED"
 :TKN1_53 "RAVAGED"
 :TKN1_54 "CURSED"
 :TKN1_55 "SCOURGED"
-:TKN1_56 "#EQUB_135# CIVIL WAR"
-:TKN1_57 "#EQUB_170# #EQUB_155# #EQUB_160#S"
-:TKN1_58 "A #EQUB_170# DISEASE"
-:TKN1_59 "#EQUB_135# EARTHQUAKES"
-:TKN1_60 "#EQUB_135# SOLAR ACTIVITY"
-:TKN1_61 "ITS #EQUB_26# #EQUB_31#"
-:TKN1_62 "THE #GENR_system_adjective# #EQUB_155# #EQUB_160#"
-:TKN1_63 "ITS INHABITANTS' #EQUB_165# #EQUB_36#"
-:TKN1_64 "{sentence-case}#EQUB_235#{lower-case}"
-:TKN1_65 "ITS #EQUB_76# #EQUB_81#"
+:TKN1_56 "<EQUB_135> CIVIL WAR"
+:TKN1_57 "<EQUB_170> <EQUB_155> <EQUB_160>S"
+:TKN1_58 "A <EQUB_170> DISEASE"
+:TKN1_59 "<EQUB_135> EARTHQUAKES"
+:TKN1_60 "<EQUB_135> SOLAR ACTIVITY"
+:TKN1_61 "ITS <EQUB_26> <EQUB_31>"
+:TKN1_62 "THE <GENR_system_adjective> <EQUB_155> <EQUB_160>"
+:TKN1_63 "ITS INHABITANTS' <EQUB_165> <EQUB_36>"
+:TKN1_64 "{sentence-case}<EQUB_235>{lower-case}"
+:TKN1_65 "ITS <EQUB_76> <EQUB_81>"
 :TKN1_66 "JUICE"
 :TKN1_67 "BRANDY"
 :TKN1_68 "WATER"
 :TKN1_69 "BREW"
 :TKN1_70 "GARGLE BLASTERS"
-:TKN1_71 "#GENR_8#"
-:TKN1_72 "#GENR_system_adjective# #EQUB_160#"
-:TKN1_73 "#GENR_system_adjective# #GENR_8#"
-:TKN1_74 "#GENR_system_adjective# #EQUB_170#" ; "{17}"
-:TKN1_75 "#EQUB_170# #GENR_8#"
+:TKN1_71 "<GENR_8>"
+:TKN1_72 "<GENR_system_adjective> <EQUB_160>"
+:TKN1_73 "<GENR_system_adjective> <GENR_8>"
+:TKN1_74 "<GENR_system_adjective> <EQUB_170>" ; "{17}"
+:TKN1_75 "<EQUB_170> <GENR_8>"
 :TKN1_76 "FABULOUS"
 :TKN1_77 "EXOTIC"
 :TKN1_78 "HOOPY"
@@ -156,10 +156,10 @@
 :TKN1_82 "NIGHT LIFE"
 :TKN1_83 "CASINOS"
 :TKN1_84 "SIT COMS"
-:TKN1_85 "{sentence-case}#EQUB_235#{lower-case}"
-:TKN1_86 "#GENR_system_name#"
-:TKN1_87 "THE PLANET #GENR_system_name#"
-:TKN1_88 "THE WORLD #GENR_system_name#"
+:TKN1_85 "{sentence-case}<EQUB_235>{lower-case}"
+:TKN1_86 "<GENR_system_name>"
+:TKN1_87 "THE PLANET <GENR_system_name>"
+:TKN1_88 "THE WORLD <GENR_system_name>"
 :TKN1_89 "THIS PLANET"
 :TKN1_90 "THIS WORLD"
 :TKN1_91 "SON OF A BITCH"
@@ -177,10 +177,10 @@
 :TKN1_103 "PLACE"
 :TKN1_104 "LITTLE PLANET"
 :TKN1_105 "DUMP"
-:TKN1_106 "I HEAR A #EQUB_130# LOOKING SHIP APPEARED AT ERRIUS"
-:TKN1_107 "YEAH, I HEAR A #EQUB_130# SHIP LEFT ERRIUS A WHILE BACK"
+:TKN1_106 "I HEAR A <EQUB_130> LOOKING SHIP APPEARED AT ERRIUS"
+:TKN1_107 "YEAH, I HEAR A <EQUB_130> SHIP LEFT ERRIUS A WHILE BACK"
 :TKN1_108 "GET YOUR IRON ASS OVER TO ERRIUS"
-:TKN1_109 "SOME #EQUB_91# NEW SHIP WAS SEEN AT ERRIUS"
+:TKN1_109 "SOME <EQUB_91> NEW SHIP WAS SEEN AT ERRIUS"
 :TKN1_110 "TRY ERRIUS"
 :TKN1_111 ""
 :TKN1_112 ""
@@ -190,7 +190,7 @@
 :TKN1_116 "MOTH"
 :TKN1_117 "GRUB"
 :TKN1_118 "ANT"
-:TKN1_119 "#GENR_8#"
+:TKN1_119 "<GENR_8>"
 :TKN1_120 "POET"
 :TKN1_121 "ARTS GRADUATE"
 :TKN1_122 "YAK"
@@ -211,11 +211,11 @@
 :TKN1_137 "UNPREDICTABLE"
 :TKN1_138 "DREADFUL"
 :TKN1_139 "DEADLY"
-:TKN1_140 "#EQUB_21# #EQUB_16# FOR #EQUB_61#"
-:TKN1_141 "#TKN1_140##TKN1_178##EQUB_61#"
-:TKN1_142 "#EQUB_51# BY #EQUB_56#"
-:TKN1_143 "#TKN1_140# BUT #TKN1_142#"
-:TKN1_144 "A#EQUB_96# #EQUB_101#"
+:TKN1_140 "<EQUB_21> <EQUB_16> FOR <EQUB_61>"
+:TKN1_141 "<TKN1_140><TKN1_178><EQUB_61>"
+:TKN1_142 "<EQUB_51> BY <EQUB_56>"
+:TKN1_143 "<TKN1_140> BUT <TKN1_142>"
+:TKN1_144 "A<EQUB_96> <EQUB_101>"
 :TKN1_145 "PLANET"
 :TKN1_146 "WORLD"
 :TKN1_147 "THE "
@@ -225,21 +225,21 @@
 :TKN1_152 " CATALOGUE"
 :TKN1_153 "IAN"
 :TKN1_154 "{single cap}COMMANDER"
-:TKN1_155 "#EQUB_170#"
+:TKN1_155 "<EQUB_170>"
 :TKN1_156 "MOUNTAIN"
 :TKN1_157 "EDIBLE"
 :TKN1_158 "TREE"
 :TKN1_159 "SPOTTED"
-:TKN1_160 "#EQUB_225#"
-:TKN1_161 "#EQUB_230#"
-:TKN1_162 "#EQUB_46#OID"
-:TKN1_163 "#EQUB_120#"
-:TKN1_164 "#EQUB_115#"
+:TKN1_160 "<EQUB_225>"
+:TKN1_161 "<EQUB_230>"
+:TKN1_162 "<EQUB_46>OID"
+:TKN1_163 "<EQUB_120>"
+:TKN1_164 "<EQUB_115>"
 :TKN1_165 "ANCIENT"
 :TKN1_166 "EXCEPTIONAL"
 :TKN1_167 "ECCENTRIC"
 :TKN1_168 "INGRAINED"
-:TKN1_169 "#EQUB_130#"
+:TKN1_169 "<EQUB_130>"
 :TKN1_170 "KILLER"
 :TKN1_171 "DEADLY"
 :TKN1_172 "EVIL"
@@ -259,12 +259,12 @@
 :TKN1_186 "TULIP"
 :TKN1_187 "BANANA"
 :TKN1_188 "CORN"
-:TKN1_189 "#GENR_8#WEED"
-:TKN1_190 "#GENR_8#"
-:TKN1_191 "#GENR_system_adjective# #GENR_8#"
-:TKN1_192 "#GENR_system_adjective# #EQUB_170#"
+:TKN1_189 "<GENR_8>WEED"
+:TKN1_190 "<GENR_8>"
+:TKN1_191 "<GENR_system_adjective> <GENR_8>"
+:TKN1_192 "<GENR_system_adjective> <EQUB_170>"
 :TKN1_193 "INHABITANT"
-:TKN1_194 "#TKN1_191#"
+:TKN1_194 "<TKN1_191>"
 :TKN1_195 "ING "
 :TKN1_196 "ED "
 :TKN1_197 ""
@@ -305,11 +305,11 @@
 :TKN1_232 "MONKEY"
 :TKN1_233 "GOAT"
 :TKN1_234 "FISH"
-:TKN1_235 "#EQUB_71# #EQUB_66#"
-:TKN1_236 "#GENR_system_adjective# #EQUB_225# #EQUB_240#"
-:TKN1_237 "ITS #EQUB_76# #EQUB_230# #EQUB_240#"
-:TKN1_238 "#EQUB_245# #EQUB_250#"
-:TKN1_239 "#EQUB_71# #EQUB_66#"
+:TKN1_235 "<EQUB_71> <EQUB_66>"
+:TKN1_236 "<GENR_system_adjective> <EQUB_225> <EQUB_240>"
+:TKN1_237 "ITS <EQUB_76> <EQUB_230> <EQUB_240>"
+:TKN1_238 "<EQUB_245> <EQUB_250>"
+:TKN1_239 "<EQUB_71> <EQUB_66>"
 :TKN1_240 "MEAT"
 :TKN1_241 "CUTLET"
 :TKN1_242 "STEAK"
@@ -319,7 +319,7 @@
 :TKN1_246 "MUD"
 :TKN1_247 "ZERO-{single-cap}G"
 :TKN1_248 "VACUUM"
-:TKN1_249 "#GENR_system_adjective# ULTRA"
+:TKN1_249 "<GENR_system_adjective> ULTRA"
 :TKN1_250 "HOCKEY"
 :TKN1_251 "CRICKET"
 :TKN1_252 "KARATE"
@@ -650,22 +650,33 @@
 
 
 (defn next-expand [tokens rand-seed planet-name]
+  (println "(next-expand " tokens ")")
+  ;;(mapv (fn [x] (print x "+")) tokens)
   (let [variances-remaining (count (filter #(or (cstring/starts-with? % "EQUB")
+                                                (cstring/starts-with? % "TKN1")
                                                 (cstring/starts-with? % "GENR"))
                                            tokens))]
     (if (< 0 variances-remaining)
       (let [first-variance (some #(when (or
+                                         (cstring/starts-with? % "TKN1")
                                          (cstring/starts-with? % "EQUB")
                                          (cstring/starts-with? % "GENR")) %) tokens)
             variance-indexes (.indexOf tokens first-variance)]
         (if first-variance
-          (cond (cstring/starts-with? first-variance "EQUB")
-                (let [[rnd-choice next-seed] (utility/goat-soup-next-rand rand-seed)
+          (cond (cstring/starts-with? first-variance "TKN1")
+                [tokens rand-seed]
+                (cstring/starts-with? first-variance "EQUB")
+                (let [_ (println first-variance)
+                      [rnd-choice next-seed] (utility/goat-soup-next-rand rand-seed)
+                      _ (println "\tnext-seed: " next-seed)
+                      _ (println "\t int-seed: " (mapv utility/bin-to-byte next-seed))
                       choice-index (apply + (mapv #(>= rnd-choice %) [0x33 0x66 0x99 0xCC]))
                       choices (get text-tokens-extended (keyword first-variance))
                       new-token (nth choices choice-index)
-                      new-token-list (assoc tokens variance-indexes new-token)]              
-                  [(cstring/join "α" new-token-list) next-seed])
+                      new-token-list (assoc tokens variance-indexes new-token)]
+                  (println (str rnd-choice) " = " (str choice-index) " -> " new-token)
+                 [(cstring/join "#" new-token-list) next-seed])
+                
                 (cstring/starts-with? first-variance "GENR")
                 (let [[new-token new-seed]
                       (cond
@@ -681,32 +692,38 @@
                           [gen-word next-seed]                          )
                         :else
                         ["<GENERATED WORD>" rand-seed])]
-                  [(cstring/join "α"
+                  [(cstring/join "#"
                                  (assoc tokens variance-indexes new-token))
                    new-seed])                  
                 :else
                 (let [new-token "<UNKNOWN>"
                       new-token-list (assoc tokens variance-indexes new-token)]
-                  [(cstring/join "α" new-token-list) rand-seed])
+                  [(cstring/join "#" new-token-list) rand-seed])
                 )
           [tokens rand-seed] ))
       [tokens rand-seed] )))
 
 (defn goat-soup-split-terms [tokens]
   (if (string? tokens)
-    (cstring/split (cstring/replace tokens
-                                    #"#([A-Za-z0-9_]*?)#"
-                                    "α$1α") "α")
+    (cstring/split (cstring/replace
+                    (cstring/replace tokens
+                                     #"#([A-Za-z0-9_]*?)#"
+                                     "#$1#") "##" "#") "#")
     (goat-soup-split-terms
-     (cstring/join "α" tokens))))
+     (cstring/join "#" tokens))))
 
 ;;(goat-soup-split-terms "#EQUB_86# more text #TKN1_140# #GENR_8#")
 
 
 
+(defn goat-soup-parse-expand [data-start data-seed planet-name])
+
 (defn goat-soup-recurse [data-start data-seed planet-name]
+  (println "(goat-soup-recurse " data-start ")")
   (let [;;data-seed goat-soup-seed
         ;;data-start "#EQUB_86# more text #TKN1_140#"
+        _ (println data-seed)
+        data-start (goat-soup-split-terms data-start)
         pending-replacements (filter (fn [word] (or
                                                  (cstring/starts-with? word "TKN1")
                                                  (cstring/starts-with? word "GENR")
@@ -718,7 +735,7 @@
                      data-start
                      )
         data-split (goat-soup-split-terms data-start)
-        ;;_ (println data-split)
+        _ (println data-split)
         finished (= 1 (count data-split))
         ]
     ;;(println data-split)
@@ -753,11 +770,17 @@
   (parse-goat-soup
    (let [planet-goat-soup-seed
          (mapv #(utility/get-seed-bits planet-seed % 0 8) [2 3 4 5])]
+     (println (str "seed: " planet-goat-soup-seed))
      (cstring/join ""
-                   (goat-soup-recurse "#TKN1_5#." planet-goat-soup-seed planet-name)))
+                   (goat-soup-recurse "#TKN1_5#" planet-goat-soup-seed planet-name)))
    "" [0 "" :lower-case ""]))
 
-(println (generate-goat-soup elite-seed "test-planet"))
+;; (let [x (generate-goat-soup elite-seed "TIBEDIED")]
+;;   (println x)
+;;   x)
+
+;;      "This planet is most fabled for Its Exciting Leopard Meat but scourged by deadly mountain bienceoids.\n"
+;;      "This planet is most notable for Tibediedian Arnu brandy but ravaged by unpredictable solar activity."]
 
 ;; (let [[d s] (goat-soup-recurse "#EQUB_86# more text #TKN1_140#" goat-soup-seed)
 ;;       [d s] (goat-soup-recurse d s)
@@ -831,3 +854,51 @@
 ;; (println
 ;;  (frequencies 
 ;;   (map #(goat-soup % "Lave") (range 200))))
+
+
+(defn parse-expand-grammar [unparsed parsed seed planet-name mode]
+  (if (<= (count unparsed) 0)
+    parsed
+    (let [cursor (first unparsed)
+          [add-to-parsed new-seed updated-mode]
+          (cond
+            (= (first mode) :token)
+            (cond
+              (= cursor ">")
+              ["resolved-token" seed (assoc-in mode [0] :text)]
+              :else
+              ["" seed (update-in mode [1] #(str % cursor))]
+              )
+            (= (first mode) :text)
+            (cond
+            (= cursor "<")
+            ["" seed (assoc-in
+                      (assoc-in mode [0] :token)
+                      [1]
+                      "")]
+            :else
+            [cursor seed mode]
+            )
+            :else
+            [cursor seed mode]
+            )
+          ]
+      (parse-expand-grammar (rest unparsed) (str parsed add-to-parsed) new-seed planet-name updated-mode))))
+
+(defn generate-goat-soup [planet-seed planet-name]
+  (let [planet-goat-soup-seed (mapv #(utility/get-seed-bits planet-seed % 0 8) [2 3 4 5])
+        expand (parse-expand-grammar "<TKN1_5>" "" planet-goat-soup-seed planet-name [:text ""])
+        result (parse-goat-soup expand "" [0 "" :lower-case ""])]
+    result)
+  ;; (parse-goat-soup
+  ;;  (let [planet-goat-soup-seed
+  ;;        (mapv #(utility/get-seed-bits planet-seed % 0 8) [2 3 4 5])]
+  ;;    (println (str "seed: " planet-goat-soup-seed))
+  ;;    (cstring/join ""
+  ;;                  (goat-soup-recurse "#TKN1_5#" planet-goat-soup-seed planet-name)))
+  ;;  "" [0 "" :lower-case ""])
+  )
+
+(let [x (generate-goat-soup elite-seed "TIBEDIED")]
+  (println x)
+  x)

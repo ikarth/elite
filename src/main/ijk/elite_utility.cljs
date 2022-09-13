@@ -252,18 +252,55 @@
 (defn elite-bit-shift-left [data]
   (into [] cat [[] (drop 1 data) [0]]))
 
+;; (defn goat-soup-next-rand [rand-seed]
+;;   (let [f2 (elite-bit-shift-left (get rand-seed 0))
+;;         carry-bit (get f2 0)
+;;         f3 (+ (bin-to-byte (get rand-seed 0))
+;;               (bin-to-byte (get rand-seed 2)) carry-bit)
+;;         rand-a (byte-to-bin (bit-and f3 255))
+;;         reg-a  (/ f3 256)
+;;         x (bin-to-byte (get rand-seed 1))
+;;         new-a (+ reg-a x (bin-to-byte (get rand-seed 3)))
+;;         new-a-bit (byte-to-bin (bit-and new-a 255))
+;;         new-seed [rand-a new-a-bit f2 (get rand-seed 1)]
+;;         ]
+;;     [(bin-to-byte new-a-bit) new-seed]))
+
+
 (defn goat-soup-next-rand [rand-seed]
-  (let [f2 (elite-bit-shift-left (get rand-seed 0))
-        carry-bit (get f2 0)
-        f3 (+ (bin-to-byte (get rand-seed 0))
-              (bin-to-byte (get rand-seed 2)) carry-bit)
-        rand-a (byte-to-bin (bit-and f3 255))
-        reg-a  (/ f3 256)
-        x (bin-to-byte (get rand-seed 1))
-        new-a (+ reg-a x (bin-to-byte (get rand-seed 3)))
-        new-a-bit (byte-to-bin (bit-and new-a 255))
-        new-seed [rand-a new-a-bit f2 (get rand-seed 1)]
-        ]
-    [(bin-to-byte new-a-bit) new-seed]))
+  (let [int-seed (mapv bin-to-byte rand-seed)
+        x (* 2 (nth int-seed 0))
+        _ (println "x " x (rem x 256))
+        x (bit-and x 0xFF)
+        _ (println "x " x)
+        a (+ (nth int-seed 2) x)
+        _ (println "a " a)        
+        a (if (> (nth int-seed 0) 127)
+            (+ a 1)
+            a)
+        _ (println "a " a)                
+        one (bit-and a 0xFF)
+        three x
+        _ (println "one " one)                
+        a-carry  (quot a 256)
+        _ (println "a-carry " a-carry)        
+        x2 (nth int-seed 1)
+        a2 (+ a-carry x2 (nth int-seed 3))
+        _ (println "a2 " a2)        
+        a2 (bit-and a2 0xFF)
+        two a2        
+        four x2
+        new-seed [one two three four]]
+    [two (mapv byte-to-bin new-seed);; new-seed
+     ]))
 
+(quot 3000 256)
 
+(goat-soup-next-rand (mapv byte-to-bin [156 185 144   2]))
+;; => [58  [(1 1 0 0 1 0 0 1) (0 0 1 1 1 0 1 0) (0 0 1 1 1 0 0 0) (1 0 1 1 1 0 0 1)] [201 58 56 185]]
+;; => [188 [(0 0 1 0 1 1 0 0) (1 0 1 1 1 1 0 0) [0 0 1 1 1 0 0 0] (1 0 1 1 1 0 0 1)]]
+;; => [201 [201 201 56 185]]
+(goat-soup-next-rand (mapv byte-to-bin [201 201 56 185]))
+
+(update-in (goat-soup-next-rand (mapv byte-to-bin [156 185 144   2])) [1] (fn [x] (mapv bin-to-byte x)))
+(update-in (goat-soup-next-rand (mapv byte-to-bin [100 117  88 188])) [1] (fn [x] (mapv bin-to-byte x)))
