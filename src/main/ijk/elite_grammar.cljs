@@ -317,7 +317,7 @@
 :TKN1_244 "SOUP"
 :TKN1_245 "ICE"
 :TKN1_246 "MUD"
-:TKN1_247 "ZERO-{single-cap}G"
+:TKN1_247 "ZERO-{single cap}G"
 :TKN1_248 "VACUUM"
 :TKN1_249 "<GENR_system_adjective> ULTRA"
 :TKN1_250 "HOCKEY"
@@ -389,6 +389,8 @@
               (let [;;_ (println [unparsed parsed mode])
                     ;;_ (println mode (<= (first mode) 0))
                     ;;_ (println mode)
+                    is-double-space (and (= " " cursor )(= " " (nth mode 3)))
+                    cursor (if is-double-space "" cursor)
                     ]
                 (cond (= (nth mode 2) :lower-case)
                       [(cstring/lower-case cursor) mode]
@@ -411,7 +413,7 @@
                       :lower-case
                       (= accum "sentence-case")
                       :sentence-case
-                      (= accum "single cap")
+                      (or (= accum "single cap") (= accum "single-cap"))
                       (if (= :sentence-case (nth mode 2))
                         :sentence-case
                         :single-cap)                        
@@ -905,7 +907,7 @@
     [(str "(unknown token: " token ")") "" seed]))
 
 (defn parse-expand-grammar [unparsed parsed seed planet-name mode]
-  ;;(println (str parsed " <- " unparsed " : " mode))
+  ;;(println (str parsed "<-:" unparsed ":" mode))
   (if (< 955 (nth mode 2))
     [unparsed parsed]    
     (if (<= (count unparsed) 0)
@@ -962,15 +964,20 @@
 
 (str "X" (apply str (rest "test")))
 
-(let [x (generate-goat-soup elite-seed "TIBEDIED")]
-  (println x)
-  x)
+;; (let [x (generate-goat-soup elite-seed "TIBEDIED")]
+;;   (println x)
+;;   x)
 
-(let [x (generate-goat-soup (utility/twist-to-next-planet elite-seed) "TIBEDIED")]
-  (println x)
-  x)
+;; (let [x (generate-goat-soup (utility/twist-to-next-planet elite-seed) "TIBEDIED")]
+;;   (println x)
+;;   x)
 
-(let [x (generate-goat-soup (utility/twist-to-next-planet (utility/twist-to-next-planet elite-seed)) "TIBEDIED")]
+(let [x (generate-goat-soup
+         (utility/twist-to-next-planet
+          (utility/twist-to-next-planet
+           (utility/twist-to-next-planet
+            (utility/twist-to-next-planet
+             elite-seed)))) "TIBEDIED")]
   (println x)
   x)
 

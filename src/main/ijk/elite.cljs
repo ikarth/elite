@@ -878,6 +878,2567 @@
 ;;     [true
 ;;      false
 ;;      "XEQUERIN"
+;;      "The world Xequerin is fabled for its wierd volcanoes and the Xequerinian mountain lobstoid.\n"
+;;      "The world Xequerin is fabled for its weird volcanoes and the Xequerinian mountain lobstoid."]
+;;     [true
+;;      true
+;;      "TIRAOR"
+;;      "Tiraor is a revolting little planet.\n"
+;;      "Tiraor is a revolting little planet."]
+;;     [true
+;;      true
+;;      "RABEDIRA"
+;;      "The planet Rabedira is well known for its inhabitants' ancient loathing of sit coms but ravaged by dreadful civil war.\n"
+;;      "The planet Rabedira is well known for its inhabitants' ancient loathing of sit coms but ravaged by dreadful civil war."]
+;;     [true
+;;      false
+;;      "LAVE"
+;;      "Lave is most famous for its vast rain forests and the Laveian tree grub.\n"
+;;      "Lave is most famous for its vast rain forests and the Lavian tree grub."]
+;;     [true
+;;      false
+;;      "ZAATXE"
+;;      "This planet is mildly noted for the Zaatxeian deadly Atlenooid but ravaged by lethal lethal yaks.\n"
+;;      "This planet is mildly noted for the Zaatxian deadly Atlenooid but ravaged by lethal lethal yaks."]
+;;     [true
+;;      true
+;;      "DIUSREZA"
+;;      "This planet is mildly fabled for its inhabitants' eccentric love for tourists but beset by deadly edible moths.\n"
+;;      "This planet is mildly fabled for its inhabitants' eccentric love for tourists but beset by deadly edible moths."]
+;;     [true
+;;      true
+;;      "TEAATIS"
+;;      "Teaatis is mildly well known for Teaatisian vicious brew.\n"
+;;      "Teaatis is mildly well known for Teaatisian vicious brew."]
+;;     [true
+;;      true
+;;      "RIINUS"
+;;      "This world is mildly famous for its vast rain forests and the Riinusian tree grub.\n"
+;;      "This world is mildly famous for its vast rain forests and the Riinusian tree grub."]
+;;     [true
+;;      true
+;;      "ESBIZA"
+;;      "The planet Esbiza is most famous for its vast rain forests.\n"
+;;      "The planet Esbiza is most famous for its vast rain forests."]
+;;     [true
+;;      true
+;;      "ONTIMAXE"
+;;      "This planet is reasonably famous for its inhabitants' exceptional love for food blenders.\n"
+;;      "This planet is reasonably famous for its inhabitants' exceptional love for food blenders."]
+;;     [true
+;;      false
+;;      "CEBETELA"
+;;      "This world is most notable for its fabulous Cebetelaian lethal brandy but scourged by killer mountain Esbionoids.\n"
+;;      "This world is most notable for its fabulous Cebetelian lethal brandy but scourged by killer mountain Esbionoids."]
+;;     [true
+;;      true
+;;      "CEEDRA"
+;;      "This planet is most fabled for its inhabitants' ingrained silliness but scourged by deadly civil war.\n"
+;;      "This planet is most fabled for its inhabitants' ingrained silliness but scourged by deadly civil war."]
+;;     [true
+;;      false
+;;      "RIZALA"
+;;      "The planet Rizala is mildly notable for Rizalaian lethal brandy.\n"
+;;      "The planet Rizala is mildly notable for Rizalian lethal brandy."]
+;;     [true
+;;      true
+;;      "ATRISO"
+;;      "Atriso is mildly well known for its exotic cuisine and its inhabitants' ingrained silliness.\n"
+;;      "Atriso is mildly well known for its exotic cuisine and its inhabitants' ingrained silliness."]
+;;     [true
+;;      true
+;;      "TEANREBI"
+;;      "This planet is plagued by frequent earthquakes.\n"
+;;      "This planet is plagued by frequent earthquakes."]
+;;     [true
+;;      true
+;;      "AZAQU"
+;;      "The planet Azaqu is most famous for its pink oceans and Zero-g cricket.\n"
+;;      "The planet Azaqu is most famous for its pink oceans and Zero-G cricket."]
+;;     [true
+;;      true
+;;      "RETILA"
+;;      "This world is ravaged by occasional solar activity.\n"
+;;      "This world is ravaged by occasional solar activity."]
+;;     [true
+;;      true
+;;      "SOTIQU"
+;;      "The planet Sotiqu is famous for Its Exotic Goat Soup but ravaged by a killer disease.\n"
+;;      "The planet Sotiqu is famous for its exotic goat soup but ravaged by a killer disease."]
+;;     [true
+;;      true
+;;      "INLEUS"
+;;      "The world Inleus is most famous for the Inleusian spotted wolf.\n"
+;;      "The world Inleus is most famous for the Inleusian spotted wolf."]
+;;     [true
+;;      false
+;;      "ONRIRA"
+;;      "The world Onrira is mildly noted for the Onriraian deadly Seoid but cursed by dreadful solar activity.\n"
+;;      "The world Onrira is mildly noted for the Onririan deadly Seoid but cursed by dreadful solar activity."]
+;;     [true
+;;      true
+;;      "CEINZALA"
+;;      "This planet is most notable for Vicious Numaab juice but cursed by unpredictable solar activity.\n"
+;;      "This planet is most notable for vicious Numaab juice but cursed by unpredictable solar activity."]
+;;     [true
+;;      true
+;;      "BIISZA"
+;;      "The planet Biisza is most famous for its vast rain forests.\n"
+;;      "The planet Biisza is most famous for its vast rain forests."]
+;;     [true
+;;      true
+;;      "LEGEES"
+;;      "This planet is most notable for its exotic night life but ravaged by frequent earthquakes.\n"
+;;      "This planet is most notable for its exotic night life but ravaged by frequent earthquakes."]
+;;     [true
+;;      true
+;;      "QUATOR"
+;;      "The world Quator is scourged by deadly edible arts graduates.\n"
+;;      "The world Quator is scourged by deadly edible arts graduates."]
+;;     [true
+;;      true
+;;      "AREXE"
+;;      "The world Arexe is fabled for its exciting sit coms and its inhabitants' ancient loathing of sit coms.\n"
+;;      "The world Arexe is fabled for its exciting sit coms and its inhabitants' ancient loathing of sit coms."]
+;;     [true
+;;      true
+;;      "ATRABIIN"
+;;      "Atrabiin is cursed by killer edible Nuatoids.\n"
+;;      "Atrabiin is cursed by killer edible Nuatoids."]
+;;     [true
+;;      true
+;;      "USANAT"
+;;      "The world Usanat is a boring world.\n"
+;;      "The world Usanat is a boring world."]
+;;     [true
+;;      true
+;;      "XEESLE"
+;;      "The world Xeesle is a boring planet.\n"
+;;      "The world Xeesle is a boring planet."]
+;;     [true
+;;      true
+;;      "ORESEREN"
+;;      "Oreseren is a revolting little planet.\n"
+;;      "Oreseren is a revolting little planet."]
+;;     [true
+;;      true
+;;      "INERA"
+;;      "This planet is noted for Its Exotic Fish Meat.\n"
+;;      "This planet is noted for its exotic fish meat."]
+;;     [true
+;;      true
+;;      "INUS"
+;;      "This world is reasonably well known for the Inusian tree wolf but scourged by unpredictable earthquakes.\n"
+;;      "This world is reasonably well known for the Inusian tree wolf but scourged by unpredictable earthquakes."]
+;;     [true
+;;      true
+;;      "ISENCE"
+;;      "The world Isence is very famous for its unusual casinos but beset by a evil disease.\n"
+;;      "The world Isence is very famous for its unusual casinos but beset by a evil disease."]
+;;     [true
+;;      false
+;;      "REESDICE"
+;;      "The world Reesdice is reasonably famous for the Reesdiceian deadly lobstoid.\n"
+;;      "The world Reesdice is reasonably famous for the Reesdician deadly lobstoid."]
+;;     [true
+;;      false
+;;      "TEREA"
+;;      "This world is very fabled for the Tereaian edible poet.\n"
+;;      "This world is very fabled for the Terian edible poet."]
+;;     [true
+;;      true
+;;      "ORGETIBE"
+;;      "This planet is a dull world.\n"
+;;      "This planet is a dull world."]
+;;     [true
+;;      true
+;;      "REORTE"
+;;      "This planet is mildly fabled for its inhabitants' eccentric love for tourists but plagued by deadly earthquakes.\n"
+;;      "This planet is mildly fabled for its inhabitants' eccentric love for tourists but plagued by deadly earthquakes."]
+;;     [true
+;;      true
+;;      "QUQUOR"
+;;      "The planet Ququor is mildly well known for its exotic cuisine.\n"
+;;      "The planet Ququor is mildly well known for its exotic cuisine."]
+;;     [true
+;;      true
+;;      "GEINONA"
+;;      "This world is ravaged by unpredictable solar activity.\n"
+;;      "This world is ravaged by unpredictable solar activity."]
+;;     [true
+;;      true
+;;      "ANARLAQU"
+;;      "This world is mildly famous for its hoopy night life and its exotic night life.\n"
+;;      "This world is mildly famous for its hoopy night life and its exotic night life."]
+;;     [true
+;;      true
+;;      "ORESRI"
+;;      "The planet Oresri is cursed by dreadful civil war.\n"
+;;      "The planet Oresri is cursed by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ESESLA"
+;;      "This planet is noted for Zero-g hockey.\n"
+;;      "This planet is noted for Zero-G hockey."]
+;;     [true
+;;      true
+;;      "SOCELAGE"
+;;      "This planet is reasonably noted for Its Exotic Goat Meat.\n"
+;;      "This planet is reasonably noted for its exotic goat meat."]
+;;     [true
+;;      true
+;;      "RIEDQUAT"
+;;      "This planet is most notable for its fabulous cuisine but beset by occasional civil war.\n"
+;;      "This planet is most notable for its fabulous cuisine but beset by occasional civil war."]
+;;     [true
+;;      false
+;;      "GEREGE"
+;;      "The world Gerege is reasonably famous for the Geregeian spotted wolf.\n"
+;;      "The world Gerege is reasonably famous for the Geregian spotted wolf."]
+;;     [true
+;;      false
+;;      "USLE"
+;;      "This world is very notable for the Usleian tree ant and its inhabitants' exceptional loathing of sit coms.\n"
+;;      "This world is very notable for the Uslian tree ant and its inhabitants' exceptional loathing of sit coms."]
+;;     [true
+;;      true
+;;      "MALAMA"
+;;      "The planet Malama is mildly well known for its exotic cuisine.\n"
+;;      "The planet Malama is mildly well known for its exotic cuisine."]
+;;     [true
+;;      true
+;;      "AESBION"
+;;      "The planet Aesbion is cursed by dreadful civil war.\n"
+;;      "The planet Aesbion is cursed by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ALAZA"
+;;      "The world Alaza is scourged by a evil disease.\n"
+;;      "The world Alaza is scourged by a evil disease."]
+;;     [true
+;;      true
+;;      "XEAQU"
+;;      "The world Xeaqu is a dull place.\n"
+;;      "The world Xeaqu is a dull place."]
+;;     [true
+;;      false
+;;      "RAOROR"
+;;      "This world is very fabled for its wierd volcanoes.\n"
+;;      "This world is very fabled for its weird volcanoes."]
+;;     [true
+;;      true
+;;      "ORORQU"
+;;      "The planet Ororqu is well known for its inhabitants' ancient mating traditions but ravaged by unpredictable solar activity.\n"
+;;      "The planet Ororqu is well known for its inhabitants' ancient mating traditions but ravaged by unpredictable solar activity."]
+;;     [true
+;;      false
+;;      "LEESTI"
+;;      "The planet Leesti is reasonably fabled for Zero-g cricket and Leestiian evil juice.\n"
+;;      "The planet Leesti is reasonably fabled for Zero-G cricket and Leestian evil juice."]
+;;     [true
+;;      false
+;;      "GEISGEZA"
+;;      "This planet is notable for its unusual oceans and the Geisgezaian mountain slug.\n"
+;;      "This planet is notable for its unusual oceans and the Geisgezian mountain slug."]
+;;     [true
+;;      true
+;;      "ZAINLABI"
+;;      "This world is ravaged by unpredictable civil war.\n"
+;;      "This world is ravaged by unpredictable civil war."]
+;;     [true
+;;      true
+;;      "USCELA"
+;;      "The world Uscela is a boring world.\n"
+;;      "The world Uscela is a boring world."]
+;;     [true
+;;      true
+;;      "ISVEVE"
+;;      "The planet Isveve is reasonably noted for its inhabitants' eccentric shyness and its inhabitants' eccentric shyness.\n"
+;;      "The planet Isveve is reasonably noted for its inhabitants' eccentric shyness and its inhabitants' eccentric shyness."]
+;;     [true
+;;      true
+;;      "TIORANIN"
+;;      "This world is most notable for Tioraninian vicious brew but ravaged by unpredictable civil war.\n"
+;;      "This world is most notable for Tioraninian vicious brew but ravaged by unpredictable civil war."]
+;;     [true
+;;      true
+;;      "LEARORCE"
+;;      "Learorce is reasonably notable for its great dense forests but scourged by deadly edible poets.\n"
+;;      "Learorce is reasonably notable for its great dense forests but scourged by deadly edible poets."]
+;;     [true
+;;      false
+;;      "ESUSTI"
+;;      "This world is very well known for its inhabitants' ancient loathing of discos and the Esustiian spotted cat.\n"
+;;      "This world is very well known for its inhabitants' ancient loathing of discos and the Esustian spotted cat."]
+;;     [true
+;;      false
+;;      "USUSOR"
+;;      "This planet is very notable for its inhabitants' wierd shyness and the Ususorian edible poet.\n"
+;;      "This planet is very notable for its inhabitants' weird shyness and the Ususorian edible poet."]
+;;     [true
+;;      true
+;;      "MAREGEIS"
+;;      "This world is fabled for its ancient Maregeisian Onbidi tulip plantations.\n"
+;;      "This world is fabled for its ancient Maregeisian Onbidi tulip plantations."]
+;;     [true
+;;      true
+;;      "AATE"
+;;      "The world Aate is scourged by killer mountain lobstoids.\n"
+;;      "The world Aate is scourged by killer mountain lobstoids."]
+;;     [true
+;;      true
+;;      "SORI"
+;;      "The world Sori is beset by a evil disease.\n"
+;;      "The world Sori is beset by a evil disease."]
+;;     [true
+;;      true
+;;      "CEMAVE"
+;;      "The world Cemave is beset by dreadful earthquakes.\n"
+;;      "The world Cemave is beset by dreadful earthquakes."]
+;;     [true
+;;      true
+;;      "ARUSQUDI"
+;;      "This world is very fabled for its unusual oceans.\n"
+;;      "This world is very fabled for its unusual oceans."]
+;;     [true
+;;      true
+;;      "EREDVE"
+;;      "This planet is beset by a evil disease.\n"
+;;      "This planet is beset by a evil disease."]
+;;     [true
+;;      true
+;;      "REGEATGE"
+;;      "Regeatge is reasonably well known for its great dense forests but scourged by frequent civil war.\n"
+;;      "Regeatge is reasonably well known for its great dense forests but scourged by frequent civil war."]
+;;     [true
+;;      false
+;;      "EDINSO"
+;;      "This planet is mildly noted for its pink Edinsoian Ge Bemaarleweed plantations but ravaged by vicious mountain monkeys.\n"
+;;      "This planet is mildly noted for its pink Edinsian Ge Bemaarleweed plantations but ravaged by vicious mountain monkeys."]
+;;     [true
+;;      true
+;;      "RA"
+;;      "The world Ra is beset by deadly earthquakes.\n"
+;;      "The world Ra is beset by deadly earthquakes."]
+;;     [true
+;;      true
+;;      "ARONAR"
+;;      "Aronar is most famous for the Aronarian deadly goat and its hoopy casinos.\n"
+;;      "Aronar is most famous for the Aronarian deadly goat and its hoopy casinos."]
+;;     [true
+;;      true
+;;      "ARRAESSO"
+;;      "This planet is notable for its unusual oceans and its inhabitants' exceptional loathing of food blenders.\n"
+;;      "This planet is notable for its unusual oceans and its inhabitants' exceptional loathing of food blenders."]
+;;     [true
+;;      true
+;;      "CEVEGE"
+;;      "This world is a revolting dump.\n"
+;;      "This world is a revolting dump."]
+;;     [true
+;;      false
+;;      "ORTEVE"
+;;      "This world is fabled for its fabulous Vicious Ougeza gargle blasters.\n"
+;;      "This world is fabled for its fabulous vicious Ougeza juice."]
+;;     [true
+;;      true
+;;      "GEERRA"
+;;      "This planet is reasonably noted for Its Exotic Goat Soup.\n"
+;;      "This planet is reasonably noted for its exotic goat soup."]
+;;     [true
+;;      true
+;;      "SOINUSTE"
+;;      "This planet is beset by deadly earthquakes.\n"
+;;      "This planet is beset by deadly earthquakes."]
+;;     [true
+;;      false
+;;      "ERLAGE"
+;;      "This world is reasonably well known for the Erlageian tree ant but cursed by vicious mountain goats.\n"
+;;      "This world is reasonably well known for the Erlagian tree ant but cursed by vicious mountain goats."]
+;;     [true
+;;      true
+;;      "XEAAN"
+;;      "This world is ravaged by unpredictable civil war.\n"
+;;      "This world is ravaged by unpredictable civil war."]
+;;     [true
+;;      true
+;;      "VEIS"
+;;      "The planet Veis is a boring world.\n"
+;;      "The planet Veis is a boring world."]
+;;     [true
+;;      true
+;;      "ENSOREUS"
+;;      "This planet is a tedious little planet.\n"
+;;      "This planet is a tedious little planet."]
+;;     [true
+;;      true
+;;      "RIVEIS"
+;;      "The world Riveis is most well known for its hoopy casinos.\n"
+;;      "The world Riveis is most well known for its hoopy casinos."]
+;;     [true
+;;      true
+;;      "BIVEA"
+;;      "This planet is plagued by frequent solar activity.\n"
+;;      "This planet is plagued by frequent solar activity."]
+;;     [true
+;;      false
+;;      "ERMASO"
+;;      "This planet is very notable for the Ermasoian edible grub and the Ermasoian tree ant.\n"
+;;      "This planet is very notable for the Ermasian edible grub and the Ermasian tree ant."]
+;;     [true
+;;      true
+;;      "VELETE"
+;;      "Velete is a revolting dump.\n"
+;;      "Velete is a revolting dump."]
+;;     [true
+;;      true
+;;      "ENGEMA"
+;;      "The world Engema is beset by a evil disease.\n"
+;;      "The world Engema is beset by a evil disease."]
+;;     [true
+;;      true
+;;      "ATRIENXE"
+;;      "Atrienxe is an unremarkable dump.\n"
+;;      "Atrienxe is an unremarkable dump."]
+;;     [true
+;;      true
+;;      "BEUSRIOR"
+;;      "The world Beusrior is a dull world.\n"
+;;      "The world Beusrior is a dull world."]
+;;     [true
+;;      true
+;;      "ONTIAT"
+;;      "The planet Ontiat is scourged by a evil disease.\n"
+;;      "The planet Ontiat is scourged by a evil disease."]
+;;     [true
+;;      true
+;;      "ATARZA"
+;;      "This world is plagued by occasional solar activity.\n"
+;;      "This world is plagued by occasional solar activity."]
+;;     [true
+;;      true
+;;      "ARAZAES"
+;;      "This planet is very notable for the Arazaesian tree ant and Arazaesian wolf meat.\n"
+;;      "This planet is very notable for the Arazaesian tree ant and Arazaesian wolf meat."]
+;;     [true
+;;      true
+;;      "XEERANRE"
+;;      "Xeeranre is cursed by killer mountain Reetaboids.\n"
+;;      "Xeeranre is cursed by killer mountain Reetaboids."]
+;;     [true
+;;      true
+;;      "QUZADI"
+;;      "Quzadi is cursed by dreadful civil war.\n"
+;;      "Quzadi is cursed by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ISTI"
+;;      "The planet Isti is reasonably noted for its inhabitants' eccentric shyness and Zero-g hockey.\n"
+;;      "The planet Isti is reasonably noted for its inhabitants' eccentric shyness and Zero-G hockey."]
+;;     [true
+;;      true
+;;      "DIGEBITI"
+;;      "Digebiti is cursed by killer mountain Seoids.\n"
+;;      "Digebiti is cursed by killer mountain Seoids."]
+;;     [true
+;;      true
+;;      "LEONED"
+;;      "Leoned is reasonably well known for the Leonedian tree snake but scourged by unpredictable earthquakes.\n"
+;;      "Leoned is reasonably well known for the Leonedian tree snake but scourged by unpredictable earthquakes."]
+;;     [true
+;;      true
+;;      "ENZAER"
+;;      "Enzaer is a revolting dump.\n"
+;;      "Enzaer is a revolting dump."]
+;;     [true
+;;      true
+;;      "TERAED"
+;;      "Teraed is an unremarkable dump.\n"
+;;      "Teraed is an unremarkable dump."]
+;;     [true
+;;      false
+;;      "VETITICE"
+;;      "This world is very well known for Vetiticeian lethal brandy and its great parking meters.\n"
+;;      "This world is very well known for Vetitician lethal brandy and its great parking meters."]
+;;     [true
+;;      true
+;;      "LAENIN"
+;;      "The planet Laenin is famous for its inhabitants' ancient loathing of sit coms but cursed by a killer disease.\n"
+;;      "The planet Laenin is famous for its inhabitants' ancient loathing of sit coms but cursed by a killer disease."]
+;;     [true
+;;      true
+;;      "BERAANXE"
+;;      "The world Beraanxe is reasonably noted for its inhabitants' exceptional love for tourists and its unusual oceans.\n"
+;;      "The world Beraanxe is reasonably noted for its inhabitants' exceptional love for tourists and its unusual oceans."]
+;;     [true
+;;      true
+;;      "ATAGE"
+;;      "Atage is an unremarkable planet.\n"
+;;      "Atage is an unremarkable planet."]
+;;     [true
+;;      true
+;;      "VEISTI"
+;;      "The planet Veisti is reasonably noted for its inhabitants' eccentric shyness and Zero-g cricket.\n"
+;;      "The planet Veisti is reasonably noted for its inhabitants' eccentric shyness and Zero-G cricket."]
+;;     [true
+;;      true
+;;      "ZAERLA"
+;;      "The planet Zaerla is mildly well known for its exotic cuisine.\n"
+;;      "The planet Zaerla is mildly well known for its exotic cuisine."]
+;;     [true
+;;      true
+;;      "ESREDICE"
+;;      "The world Esredice is a boring planet.\n"
+;;      "The world Esredice is a boring planet."]
+;;     [true
+;;      true
+;;      "BEOR"
+;;      "Beor is an unremarkable dump.\n"
+;;      "Beor is an unremarkable dump."]
+;;     [true
+;;      true
+;;      "ORSO"
+;;      "The world Orso is reasonably fabled for its exciting sit coms and its inhabitants' exceptional love for food blenders.\n"
+;;      "The world Orso is reasonably fabled for its exciting sit coms and its inhabitants' exceptional love for food blenders."]
+;;     [true
+;;      true
+;;      "USATQURA"
+;;      "This planet is reasonably famous for its inhabitants' exceptional loathing of sit coms.\n"
+;;      "This planet is reasonably famous for its inhabitants' exceptional loathing of sit coms."]
+;;     [true
+;;      true
+;;      "ERBITI"
+;;      "The world Erbiti is most well known for its great dense forests.\n"
+;;      "The world Erbiti is most well known for its great dense forests."]
+;;     [true
+;;      true
+;;      "REINEN"
+;;      "This planet is a tedious little planet.\n"
+;;      "This planet is a tedious little planet."]
+;;     [true
+;;      true
+;;      "ININBI"
+;;      "The world Ininbi is reasonably famous for its inhabitants' exceptional loathing of casinos.\n"
+;;      "The world Ininbi is reasonably famous for its inhabitants' exceptional loathing of casinos."]
+;;     [true
+;;      true
+;;      "ERLAZA"
+;;      "The world Erlaza is mildly noted for its ancient mountains but plagued by a lethal disease.\n"
+;;      "The world Erlaza is mildly noted for its ancient mountains but plagued by a lethal disease."]
+;;     [true
+;;      false
+;;      "CELABILE"
+;;      "The planet Celabile is most famous for the Celabileian evil poet and Zero-g hockey.\n"
+;;      "The planet Celabile is most famous for the Celabilian evil poet and Zero-G hockey."]
+;;     [true
+;;      true
+;;      "RIBISO"
+;;      "This planet is fabled for its exciting Vacuum Cricket.\n"
+;;      "This planet is fabled for its exciting vacuum cricket."]
+;;     [true
+;;      false
+;;      "QUDIRA"
+;;      "The world Qudira is reasonably fabled for Qudiraian Ouarma gargle blasters and the Qudiraian evil walking treeoid.\n"
+;;      "The world Qudira is reasonably fabled for Qudirian Ouarma gargle blasters and the Qudirian evil talking treeoid."]
+;;     [true
+;;      true
+;;      "ISDIBI"
+;;      "The world Isdibi is scourged by deadly tree ants.\n"
+;;      "The world Isdibi is scourged by deadly tree ants."]
+;;     [true
+;;      false
+;;      "GEQURE"
+;;      "This world is reasonably well known for the Gequreian tree ant but ravaged by dreadful civil war.\n"
+;;      "This world is reasonably well known for the Gequrian tree ant but ravaged by dreadful civil war."]
+;;     [true
+;;      false
+;;      "RARERE"
+;;      "The planet Rarere is mildly notable for Rarereian lethal brandy.\n"
+;;      "The planet Rarere is mildly notable for Rarerian lethal brandy."]
+;;     [true
+;;      true
+;;      "AERATER"
+;;      "Aerater is a revolting little planet.\n"
+;;      "Aerater is a revolting little planet."]
+;;     [true
+;;      true
+;;      "ATBEVETE"
+;;      "The planet Atbevete is mildly well known for Killer Ou gargle blasters.\n"
+;;      "The planet Atbevete is mildly well known for killer Ou gargle blasters."]
+;;     [true
+;;      true
+;;      "BIORIS"
+;;      "Bioris is very fabled for the Biorisian edible poet.\n"
+;;      "Bioris is very fabled for the Biorisian edible poet."]
+;;     [true
+;;      false
+;;      "RAALE"
+;;      "This world is very fabled for the Raaleian edible poet.\n"
+;;      "This world is very fabled for the Raalian edible poet."]
+;;     [true
+;;      true
+;;      "TIONISLA"
+;;      "This world is very notable for its inhabitants' ingrained shyness.\n"
+;;      "This world is very notable for its inhabitants' ingrained shyness."]
+;;     [true
+;;      true
+;;      "ENCERESO"
+;;      "Encereso is cursed by dreadful civil war.\n"
+;;      "Encereso is cursed by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ANERBE"
+;;      "The world Anerbe is reasonably fabled for its exciting Vacuum Karate and its great volcanoes.\n"
+;;      "The world Anerbe is reasonably fabled for its exciting vacuum karate and its great volcanoes."]
+;;     [true
+;;      true
+;;      "GELAED"
+;;      "The planet Gelaed is very noted for its pink Gelaedian Ines Soweed plantations but ravaged by unpredictable civil war.\n"
+;;      "The planet Gelaed is very noted for its pink Gelaedian Ines Soweed plantations but ravaged by unpredictable civil war."]
+;;     [true
+;;      false
+;;      "ONUSORLE"
+;;      "This world is mildly well known for Onusorleian vicious brew and Onusorleian wolf cutlet.\n"
+;;      "This world is mildly well known for Onusorlian vicious brew and Onusorlian wolf cutlet."]
+;;     [true
+;;      true
+;;      "ZAONCE"
+;;      "This planet is a tedious place.\n"
+;;      "This planet is a tedious place."]
+;;     [true
+;;      true
+;;      "DIQUER"
+;;      "The world Diquer is a dull place.\n"
+;;      "The world Diquer is a dull place."]
+;;     [true
+;;      true
+;;      "ZADIES"
+;;      "The planet Zadies is famous for its inhabitants' exceptional love for food blenders but scourged by dreadful solar activity.\n"
+;;      "The planet Zadies is famous for its inhabitants' exceptional love for food blenders but scourged by dreadful solar activity."]
+;;     [true
+;;      true
+;;      "ENTIZADI"
+;;      "The planet Entizadi is famous for its inhabitants' exceptional love for food blenders but scourged by dreadful solar activity.\n"
+;;      "The planet Entizadi is famous for its inhabitants' exceptional love for food blenders but scourged by dreadful solar activity."]
+;;     [true
+;;      true
+;;      "ESANBE"
+;;      "Esanbe is famous for its inhabitants' ancient loathing of casinos but plagued by deadly earthquakes.\n"
+;;      "Esanbe is famous for its inhabitants' ancient loathing of casinos but plagued by deadly earthquakes."]
+;;     [true
+;;      true
+;;      "USRALAAT"
+;;      "This planet is plagued by deadly earthquakes.\n"
+;;      "This planet is plagued by deadly earthquakes."]
+;;     [true
+;;      false
+;;      "ANLERE"
+;;      "Anlere is reasonably well known for the Anlereian spotted shrew but plagued by evil tree leopards.\n"
+;;      "Anlere is reasonably well known for the Anlerian spotted shrew but plagued by evil tree leopards."]
+;;     [true
+;;      false
+;;      "TEVERI"
+;;      "The world Teveri is reasonably fabled for Teveriian evil juice and its inhabitants' ingrained shyness.\n"
+;;      "The world Teveri is reasonably fabled for Teverian evil juice and its inhabitants' ingrained shyness."]
+;;     [true
+;;      false
+;;      "SOTIERA"
+;;      "The world Sotiera is mildly fabled for the Sotieraian mountain poet but cursed by unpredictable earthquakes.\n"
+;;      "The world Sotiera is mildly fabled for the Sotierian mountain poet but cursed by unpredictable earthquakes."]
+;;     [true
+;;      true
+;;      "EDEDLEEN"
+;;      "The planet Ededleen is mildly well known for its exotic cuisine.\n"
+;;      "The planet Ededleen is mildly well known for its exotic cuisine."]
+;;     [true
+;;      false
+;;      "INONRI"
+;;      "This world is very well known for Inonriian wolf meat and its wierd volcanoes.\n"
+;;      "This world is very well known for Inonrian wolf meat and its weird volcanoes."]
+;;     [true
+;;      true
+;;      "ESBEUS"
+;;      "The world Esbeus is mildly noted for its ancient mountains but plagued by frequent earthquakes.\n"
+;;      "The world Esbeus is mildly noted for its ancient mountains but plagued by frequent earthquakes."]
+;;     [true
+;;      true
+;;      "LERELACE"
+;;      "This planet is a dull place.\n"
+;;      "This planet is a dull place."]
+;;     [true
+;;      false
+;;      "ESZARAXE"
+;;      "The planet Eszaraxe is most famous for the Eszaraxeian spotted shrew and the Eszaraxeian mountain poet.\n"
+;;      "The planet Eszaraxe is most famous for the Eszaraxian spotted shrew and the Eszaraxian mountain poet."]
+;;     [true
+;;      true
+;;      "ANBEEN"
+;;      "Anbeen is reasonably notable for its great tropical forests but cursed by dreadful solar activity.\n"
+;;      "Anbeen is reasonably notable for its great tropical forests but cursed by dreadful solar activity."]
+;;     [true
+;;      true
+;;      "BIORLE"
+;;      "The world Biorle is a dull world.\n"
+;;      "The world Biorle is a dull world."]
+;;     [true
+;;      true
+;;      "ANISOR"
+;;      "This planet is very well known for its inhabitants' ancient mating traditions and its inhabitants' ancient loathing of casinos.\n"
+;;      "This planet is very well known for its inhabitants' ancient mating traditions and its inhabitants' ancient loathing of casinos."]
+;;     [true
+;;      false
+;;      "USRAREMA"
+;;      "This world is very notable for the Usraremaian edible poet.\n"
+;;      "This world is very notable for the Usraremian edible poet."]
+;;     [true
+;;      true
+;;      "DISO"
+;;      "This planet is mildly noted for its ancient Ma corn plantations but beset by frequent solar activity.\n"
+;;      "This planet is mildly noted for its ancient Ma corn plantations but beset by frequent solar activity."]
+;;     [true
+;;      false
+;;      "RIRAES"
+;;      "The world Riraes is fabled for its wierd rock formations and its pink oceans.\n"
+;;      "The world Riraes is fabled for its weird rock formations and its pink oceans."]
+;;     [true
+;;      false
+;;      "ORRIRA"
+;;      "The planet Orrira is cursed by killer edible walking treeoids.\n"
+;;      "The planet Orrira is cursed by killer edible talking treeoids."]
+;;     [true
+;;      true
+;;      "XEER"
+;;      "This world is very well known for Xeerian wolf meat and its fabulous cuisine.\n"
+;;      "This world is very well known for Xeerian wolf meat and its fabulous cuisine."]
+;;     [true
+;;      true
+;;      "CEESXE"
+;;      "The world Ceesxe is most well known for its vast rain forests.\n"
+;;      "The world Ceesxe is most well known for its vast rain forests."]
+;;     [true
+;;      true
+;;      "ISATRE"
+;;      "The world Isatre is a boring planet.\n"
+;;      "The world Isatre is a boring planet."]
+;;     [true
+;;      false
+;;      "AONA"
+;;      "This world is very well known for Aonaian lethal brandy and its great volcanoes.\n"
+;;      "This world is very well known for Aonian lethal brandy and its great volcanoes."]
+;;     [true
+;;      true
+;;      "ISINOR"
+;;      "This world is very fabled for its unusual oceans.\n"
+;;      "This world is very fabled for its unusual oceans."]
+;;     [true
+;;      false
+;;      "USZAA"
+;;      "The planet Uszaa is reasonably noted for its inhabitants' eccentric love for tourists and the Uszaaian tree grub.\n"
+;;      "The planet Uszaa is reasonably noted for its inhabitants' eccentric love for tourists and the Uszaian tree grub."]
+;;     [true
+;;      true
+;;      "AANBIAT"
+;;      "This planet is fabled for its ancient Aanbiatian Noalin banana plantations.\n"
+;;      "This planet is fabled for its ancient Aanbiatian Noalin banana plantations."]
+;;     [true
+;;      false
+;;      "BEMAERA"
+;;      "Bemaera is most noted for the Bemaeraian deadly Xesooid and its inhabitants' unusual silliness.\n"
+;;      "Bemaera is most noted for the Bemaerian deadly Xesooid and its inhabitants' unusual silliness."]
+;;     [true
+;;      true
+;;      "ININES"
+;;      "This world is a tedious place.\n"
+;;      "This world is a tedious place."]
+;;     [true
+;;      true
+;;      "EDZAON"
+;;      "This world is most notable for Edzaonian lethal water but plagued by occasional solar activity.\n"
+;;      "This world is most notable for Edzaonian lethal water but plagued by occasional solar activity."]
+;;     [true
+;;      true
+;;      "LERITEAN"
+;;      "The planet Leritean is mildly well known for its exotic cuisine.\n"
+;;      "The planet Leritean is mildly well known for its exotic cuisine."]
+;;     [true
+;;      true
+;;      "VEALE"
+;;      "The world Veale is most well known for its vast dense forests.\n"
+;;      "The world Veale is most well known for its vast dense forests."]
+;;     [true
+;;      true
+;;      "EDLE"
+;;      "Edle is famous for its inhabitants' exceptional love for food blenders but scourged by frequent civil war.\n"
+;;      "Edle is famous for its inhabitants' exceptional love for food blenders but scourged by frequent civil war."]
+;;     [true
+;;      true
+;;      "ANLAMA"
+;;      "This world is a tedious little planet.\n"
+;;      "This world is a tedious little planet."]
+;;     [true
+;;      true
+;;      "RIBILEBI"
+;;      "The planet Ribilebi is most famous for its vast oceans and Its Fabulous Goat Soup.\n"
+;;      "The planet Ribilebi is most famous for its vast oceans and its fabulous goat soup."]
+;;     [true
+;;      true
+;;      "RELAES"
+;;      "This world is a tedious place.\n"
+;;      "This world is a tedious place."]
+;;     [true
+;;      true
+;;      "DIZAONER"
+;;      "Dizaoner is ravaged by unpredictable solar activity.\n"
+;;      "Dizaoner is ravaged by unpredictable solar activity."]
+;;     [true
+;;      true
+;;      "RAZAAR"
+;;      "The world Razaar is a dull place.\n"
+;;      "The world Razaar is a dull place."]
+;;     [true
+;;      true
+;;      "ENONLA"
+;;      "Enonla is ravaged by dreadful civil war.\n"
+;;      "Enonla is ravaged by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ISANLEQU"
+;;      "This planet is beset by a evil disease.\n"
+;;      "This planet is beset by a evil disease."]
+;;     [true
+;;      false
+;;      "TIBECEA"
+;;      "Tibecea is very fabled for the Tibeceaian edible poet.\n"
+;;      "Tibecea is very fabled for the Tibecian edible poet."]
+;;     [true
+;;      false
+;;      "SOTERA"
+;;      "Sotera is mildly notable for Soteraian lethal brandy.\n"
+;;      "Sotera is mildly notable for Soterian lethal brandy."]
+;;     [true
+;;      true
+;;      "ESVEOR"
+;;      "Esveor is mildly famous for its pink oceans and Zero-g hockey.\n"
+;;      "Esveor is mildly famous for its pink oceans and Zero-G hockey."]
+;;     [true
+;;      true
+;;      "ESTEONBI"
+;;      "This planet is mildly fabled for its inhabitants' ingrained shyness but cursed by unpredictable solar activity.\n"
+;;      "This planet is mildly fabled for its inhabitants' ingrained shyness but cursed by unpredictable solar activity."]
+;;     [true
+;;      false
+;;      "XEESENRI"
+;;      "Xeesenri is mildly notable for its inhabitants' wierd shyness.\n"
+;;      "Xeesenri is mildly notable for its inhabitants' weird shyness."]
+;;     [true
+;;      true
+;;      "ORESLE"
+;;      "This world is reasonably notable for its great volcanoes but ravaged by a vicious disease.\n"
+;;      "This world is reasonably notable for its great volcanoes but ravaged by a vicious disease."]
+;;     [true
+;;      true
+;;      "ERVEIN"
+;;      "Ervein is a revolting little planet.\n"
+;;      "Ervein is a revolting little planet."]
+;;     [true
+;;      true
+;;      "LARAIS"
+;;      "This world is a revolting dump.\n"
+;;      "This world is a revolting dump."]
+;;     [true
+;;      true
+;;      "ANXEBIZA"
+;;      "The planet Anxebiza is an unremarkable dump.\n"
+;;      "The planet Anxebiza is an unremarkable dump."]
+;;     [true
+;;      true
+;;      "DIEDAR"
+;;      "This world is ravaged by dreadful civil war.\n"
+;;      "This world is ravaged by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ENINRE"
+;;      "The planet Eninre is cursed by deadly civil war.\n"
+;;      "The planet Eninre is cursed by deadly civil war."]
+;;     [true
+;;      false
+;;      "BIBE"
+;;      "This world is most fabled for Bibeian lethal brandy but beset by a evil disease.\n"
+;;      "This world is most fabled for Bibian lethal brandy but beset by a evil disease."]
+;;     [true
+;;      true
+;;      "DIQUXE"
+;;      "This planet is mildly noted for its ancient mountains but plagued by frequent earthquakes.\n"
+;;      "This planet is mildly noted for its ancient mountains but plagued by frequent earthquakes."]
+;;     [true
+;;      true
+;;      "SORACE"
+;;      "Sorace is cursed by deadly civil war.\n"
+;;      "Sorace is cursed by deadly civil war."]
+;;     [true
+;;      true
+;;      "ANXEONIS"
+;;      "The planet Anxeonis is most famous for its vast rain forests.\n"
+;;      "The planet Anxeonis is most famous for its vast rain forests."]
+;;     [true
+;;      true
+;;      "RIANTIAT"
+;;      "This planet is notable for the Riantiatian edible grub and the Riantiatian spotted wolf.\n"
+;;      "This planet is notable for the Riantiatian edible grub and the Riantiatian spotted wolf."]
+;;     [true
+;;      true
+;;      "ZARECE"
+;;      "This planet is a tedious place.\n"
+;;      "This planet is a tedious place."]
+;;     [true
+;;      true
+;;      "MAESIN"
+;;      "The planet Maesin is an unremarkable dump.\n"
+;;      "The planet Maesin is an unremarkable dump."]
+;;     [true
+;;      true
+;;      "TIBIONIS"
+;;      "Tibionis is most noted for the Tibionisian deadly goat and its vast rain forests.\n"
+;;      "Tibionis is most noted for the Tibionisian deadly goat and its vast rain forests."]
+;;     [true
+;;      true
+;;      "GELEGEUS"
+;;      "Gelegeus is mildly notable for Gelegeusian Bidialst brandy.\n"
+;;      "Gelegeus is mildly notable for Gelegeusian Bidialst brandy."]
+;;     [true
+;;      true
+;;      "DIORA"
+;;      "The planet Diora is an unremarkable planet.\n"
+;;      "The planet Diora is an unremarkable planet."]
+;;     [true
+;;      true
+;;      "RIGETI"
+;;      "Rigeti is a revolting dump.\n"
+;;      "Rigeti is a revolting dump."]
+;;     [true
+;;      false
+;;      "BEGEABI"
+;;      "Begeabi is very notable for its inhabitants' wierd silliness.\n"
+;;      "Begeabi is very notable for its inhabitants' weird silliness."]
+;;     [true
+;;      false
+;;      "ORRERE"
+;;      "Orrere is mildly well known for Orrereian vicious brew.\n"
+;;      "Orrere is mildly well known for Orrerian vicious brew."]
+;;     [true
+;;      false
+;;      "BETI"
+;;      "This planet is fabled for its wierd volcanoes and the Betiian mountain lobstoid.\n"
+;;      "This planet is fabled for its weird volcanoes and the Betian mountain lobstoid."]
+;;     [true
+;;      true
+;;      "GERETE"
+;;      "This world is most fabled for Zero-g cricket but cursed by unpredictable solar activity.\n"
+;;      "This world is most fabled for Zero-G cricket but cursed by unpredictable solar activity."]
+;;     [true
+;;      true
+;;      "QUCERERE"
+;;      "This planet is a tedious place.\n"
+;;      "This planet is a tedious place."]
+;;     [true
+;;      true
+;;      "XEONER"
+;;      "The world Xeoner is a dull world.\n"
+;;      "The world Xeoner is a dull world."]
+;;     [true
+;;      true
+;;      "XEZAOR"
+;;      "The world Xezaor is most well known for its hoopy casinos.\n"
+;;      "The world Xezaor is most well known for its hoopy casinos."]
+;;     [true
+;;      true
+;;      "RITILA"
+;;      "The world Ritila is very famous for its hoopy casinos but beset by a evil disease.\n"
+;;      "The world Ritila is very famous for its hoopy casinos but beset by a evil disease."]
+;;     [true
+;;      true
+;;      "EDORTE"
+;;      "The planet Edorte is an unremarkable dump.\n"
+;;      "The planet Edorte is an unremarkable dump."]
+;;     [true
+;;      true
+;;      "ZAALELA"
+;;      "This world is noted for Its Fabulous Goat Soup.\n"
+;;      "This world is noted for its fabulous goat soup."]
+;;     [true
+;;      false
+;;      "BIISORTE"
+;;      "This world is most notable for its fabulous Biisorteian lethal water but beset by a lethal disease.\n"
+;;      "This world is most notable for its fabulous Biisortian lethal water but beset by a lethal disease."]
+;;     [true
+;;      true
+;;      "BEESOR"
+;;      "This world is plagued by deadly earthquakes.\n"
+;;      "This world is plagued by deadly earthquakes."]
+;;     [true
+;;      true
+;;      "ORESQU"
+;;      "Oresqu is mildly notable for its inhabitants' unusual mating traditions.\n"
+;;      "Oresqu is mildly notable for its inhabitants' unusual mating traditions."]
+;;     [true
+;;      true
+;;      "XEQUQUTI"
+;;      "This planet is beset by dreadful earthquakes.\n"
+;;      "This planet is beset by dreadful earthquakes."]
+;;     [true
+;;      true
+;;      "MAISES"
+;;      "Maises is reasonably notable for its fabulous Maisesian lethal water but beset by a lethal disease.\n"
+;;      "Maises is reasonably notable for its fabulous Maisesian lethal water but beset by a lethal disease."]
+;;     [true
+;;      false
+;;      "BIERLE"
+;;      "The planet Bierle is most famous for the Bierleian deadly Inoid and its inhabitants' ingrained silliness.\n"
+;;      "The planet Bierle is most famous for the Bierlian deadly Inoid and its inhabitants' ingrained silliness."]
+;;     [true
+;;      true
+;;      "ARZASO"
+;;      "Arzaso is an unremarkable planet.\n"
+;;      "Arzaso is an unremarkable planet."]
+;;     [true
+;;      true
+;;      "TEEN"
+;;      "Teen is cursed by deadly civil war.\n"
+;;      "Teen is cursed by deadly civil war."]
+;;     [true
+;;      false
+;;      "RIREDI"
+;;      "This world is very fabled for the Rirediian mountain slug.\n"
+;;      "This world is very fabled for the Riredian mountain slug."]
+;;     [true
+;;      true
+;;      "TEORGE"
+;;      "This planet is a tedious little planet.\n"
+;;      "This planet is a tedious little planet."]
+;;     [true
+;;      false
+;;      "VEBEGE"
+;;      "The world Vebege is mildly fabled for the Vebegeian mountain lobstoid but beset by deadly solar activity.\n"
+;;      "The world Vebege is mildly fabled for the Vebegian mountain lobstoid but beset by deadly solar activity."]
+;;     [true
+;;      true
+;;      "XEENLE"
+;;      "This planet is mildly noted for its ancient mountains but plagued by a lethal disease.\n"
+;;      "This planet is mildly noted for its ancient mountains but plagued by a lethal disease."]
+;;     [true
+;;      true
+;;      "ARXEZA"
+;;      "The world Arxeza is beset by dreadful earthquakes.\n"
+;;      "The world Arxeza is beset by dreadful earthquakes."]
+;;     [true
+;;      false
+;;      "EDREOR"
+;;      "The world Edreor is reasonably fabled for its fabulous Killer Sese juice and its ancient Edreorian Us plant plantations.\n"
+;;      "The world Edreor is reasonably fabled for its fabulous killer Sese juice and its ancient Edreorian Esnu corn plantations."]
+;;     [true
+;;      true
+;;      "ESGEREAN"
+;;      "This planet is plagued by occasional solar activity.\n"
+;;      "This planet is plagued by occasional solar activity."]
+;;     [true
+;;      false
+;;      "DITIZA"
+;;      "The planet Ditiza is reasonably fabled for Ditizaian evil juice and its inhabitants' ingrained silliness.\n"
+;;      "The planet Ditiza is reasonably fabled for Ditizian evil juice and its inhabitants' ingrained silliness."]
+;;     [true
+;;      false
+;;      "ANLE"
+;;      "The world Anle is notable for its great tropical forests and Anleian evil brandy.\n"
+;;      "The world Anle is notable for its great tropical forests and Anlian evil brandy."]
+;;     [true
+;;      true
+;;      "ONISQU"
+;;      "This planet is a dull place.\n"
+;;      "This planet is a dull place."]
+;;     [true
+;;      true
+;;      "ALEUSQU"
+;;      "This world is reasonably notable for its great volcanoes but ravaged by vicious vicious shrews.\n"
+;;      "This world is reasonably notable for its great volcanoes but ravaged by vicious vicious shrews."]
+;;     [true
+;;      true
+;;      "ZASOCEAT"
+;;      "Zasoceat is a revolting dump.\n"
+;;      "Zasoceat is a revolting dump."]
+;;     [true
+;;      true
+;;      "RILACE"
+;;      "The world Rilace is a dull world.\n"
+;;      "The world Rilace is a dull world."]
+;;     [true
+;;      false
+;;      "BEENRI"
+;;      "This planet is mildly noted for the Beenriian mountain Esseinaoid but scourged by frequent civil war.\n"
+;;      "This planet is mildly noted for the Beenrian mountain Esseina?oid but scourged by frequent civil war."]
+;;     [true
+;;      true
+;;      "LAEDEN"
+;;      "The planet Laeden is reasonably fabled for its exciting sit coms and its inhabitants' exceptional love for food blenders.\n"
+;;      "The planet Laeden is reasonably fabled for its exciting sit coms and its inhabitants' exceptional love for food blenders."]
+;;     [true
+;;      true
+;;      "MARIAR"
+;;      "This world is fabled for its unusual tropical forests.\n"
+;;      "This world is fabled for its unusual tropical forests."]
+;;     [true
+;;      true
+;;      "RIISER"
+;;      "Riiser is cursed by dreadful civil war.\n"
+;;      "Riiser is cursed by dreadful civil war."]
+;;     [true
+;;      true
+;;      "QUTIRI"
+;;      "The world Qutiri is mildly noted for its ancient mountains but plagued by deadly earthquakes.\n"
+;;      "The world Qutiri is mildly noted for its ancient mountains but plagued by deadly earthquakes."]
+;;     [true
+;;      true
+;;      "BIRAMABI"
+;;      "The world Biramabi is a dull world.\n"
+;;      "The world Biramabi is a dull world."]
+;;     [true
+;;      true
+;;      "SOORBI"
+;;      "The planet Soorbi is an unremarkable dump.\n"
+;;      "The planet Soorbi is an unremarkable dump."]
+;;     [true
+;;      true
+;;      "SOLAGEON"
+;;      "This world is very well known for Solageonian lethal water and the Solageonian tree wolf.\n"
+;;      "This world is very well known for Solageonian lethal water and the Solageonian tree wolf."]
+;;     [true
+;;      true
+;;      "TIQUAT"
+;;      "This world is reasonably well known for its great parking meters but cursed by unpredictable earthquakes.\n"
+;;      "This world is reasonably well known for its great parking meters but cursed by unpredictable earthquakes."]
+;;     [true
+;;      true
+;;      "REXEBE"
+;;      "This world is mildly famous for its hoopy night life and its exotic cuisine.\n"
+;;      "This world is mildly famous for its hoopy night life and its exotic cuisine."]
+;;     [true
+;;      true
+;;      "QUBEEN"
+;;      "This world is ravaged by unpredictable civil war.\n"
+;;      "This world is ravaged by unpredictable civil war."]
+;;     [true
+;;      false
+;;      "CETIISQU"
+;;      "This planet is reasonably famous for the Cetiisquian evil Stoid.\n"
+;;      "This planet is reasonably famous for the Cetiisqian evil Stoid."]
+;;     [true
+;;      false
+;;      "REBIA"
+;;      "Rebia is very notable for its inhabitants' wierd shyness.\n"
+;;      "Rebia is very notable for its inhabitants' weird shyness."]
+;;     [true
+;;      true
+;;      "ORDIMA"
+;;      "This planet is reasonably noted for Its Exotic Goat Soup.\n"
+;;      "This planet is reasonably noted for its exotic goat soup."]
+;;     [true
+;;      true
+;;      "ARUSZATI"
+;;      "This planet is noted for Zero-g cricket.\n"
+;;      "This planet is noted for Zero-G cricket."]
+;;     [true
+;;      true
+;;      "ZALERIZA"
+;;      "This world is a tedious place.\n"
+;;      "This world is a tedious place."]
+;;     [true
+;;      true
+;;      "ZASOER"
+;;      "Zasoer is mildly well known for its exotic night life.\n"
+;;      "Zasoer is mildly well known for its exotic night life."]
+;;     [true
+;;      true
+;;      "RALEEN"
+;;      "This planet is notable for the Raleenian tree grub and its inhabitants' unusual silliness.\n"
+;;      "This planet is notable for the Raleenian tree grub and its inhabitants' unusual silliness."]
+;;     [true
+;;      false
+;;      "QURAVE"
+;;      "The planet Qurave is mildly notable for Quraveian Zaaronen brandy.\n"
+;;      "The planet Qurave is mildly notable for Quravian Zaaronen brandy."]
+;;     [true
+;;      false
+;;      "ATREBIBI"
+;;      "The world Atrebibi is most famous for the Atrebibiian deadly monkey.\n"
+;;      "The world Atrebibi is most famous for the Atrebibian deadly monkey."]
+;;     [true
+;;      false
+;;      "TEESDI"
+;;      "Teesdi is famous for Teesdiian shrew cutlet but ravaged by occasional solar activity.\n"
+;;      "Teesdi is famous for Teesdian shrew cutlet but ravaged by occasional solar activity."]
+;;     [true
+;;      false
+;;      "ARARUS"
+;;      "Ararus is most famous for its pink Esoneril tulip plantations and its wierd exuberant forests.\n"
+;;      "Ararus is most famous for its pink Esoneril tulip plantations and its weird exuberant forests."]
+;;     [true
+;;      true
+;;      "ARA"
+;;      "The world Ara is scourged by a evil disease.\n"
+;;      "The world Ara is scourged by a evil disease."]
+;;     [true
+;;      true
+;;      "TIANVE"
+;;      "The planet Tianve is reasonably noted for its inhabitants' exceptional loathing of food blenders and Zero-g cricket.\n"
+;;      "The planet Tianve is reasonably noted for its inhabitants' exceptional loathing of food blenders and Zero-G cricket."]
+;;     [true
+;;      false
+;;      "QUORTE"
+;;      "Quorte is well known for the Quorteian tree wolf but scourged by dreadful solar activity.\n"
+;;      "Quorte is well known for the Quortian tree wolf but scourged by dreadful solar activity."]
+;;     [true
+;;      true
+;;      "SOLADIES"
+;;      "This planet is fabled for its exciting Soladiesian evil brandy.\n"
+;;      "This planet is fabled for its exciting Soladiesian evil brandy."]
+;;     [true
+;;      false
+;;      "MAXEEDSO"
+;;      "This world is mildly famous for its vast rain forests and the Maxeedsoian tree wolf.\n"
+;;      "This world is mildly famous for its vast rain forests and the Maxeedsian tree wolf."]
+;;     [true
+;;      true
+;;      "XEXEDI"
+;;      "The planet Xexedi is scourged by a deadly disease.\n"
+;;      "The planet Xexedi is scourged by a deadly disease."]
+;;     [true
+;;      false
+;;      "XEXETI"
+;;      "This planet is notable for the Xexetiian edible arts graduate and its great volcanoes.\n"
+;;      "This planet is notable for the Xexetian edible arts graduate and its great volcanoes."]
+;;     [true
+;;      false
+;;      "TIINLEBI"
+;;      "The planet Tiinlebi is most noted for the Tiinlebiian mountain slug and its inhabitants' exceptional loathing of food blenders.\n"
+;;      "The planet Tiinlebi is most noted for the Tiinlebian mountain slug and its inhabitants' exceptional loathing of food blenders."]
+;;     [true
+;;      true
+;;      "RATEEDAR"
+;;      "Rateedar is cursed by dreadful civil war.\n"
+;;      "Rateedar is cursed by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ONLEMA"
+;;      "This world is plagued by frequent solar activity.\n"
+;;      "This world is plagued by frequent solar activity."]
+;;     [true
+;;      true
+;;      "ORERVE"
+;;      "This planet is a dull place.\n"
+;;      "This planet is a dull place."])
+
+;; => ([true
+;;      true
+;;      "TIBEDIED"
+;;      "This planet is most notable for Tibediedian Arnu brandy but ravaged by unpredictable solar activity.\n"
+;;      "This planet is most notable for Tibediedian Arnu brandy but ravaged by unpredictable solar activity."]
+;;     [true
+;;      true
+;;      "QUBE"
+;;      "Qube is reasonably well known for its great dense forests but scourged by deadly civil war.\n"
+;;      "Qube is reasonably well known for its great dense forests but scourged by deadly civil war."]
+;;     [true
+;;      false
+;;      "LELEER"
+;;      "The world Leleer is very noted for its pink Leleerian Itonthbi tulip plantations but plagued by a vicious disease.\n"
+;;      "The world Leleer is very noted for its pink Leleerian Itonthbi tulip plantations but plagued by deadly earthquakes."]
+;;     [true
+;;      false
+;;      "BIARGE"
+;;      "This world is very fabled for the Biargeian edible poet.\n"
+;;      "This world is very fabled for the Biargian edible poet."]
+;;     [true
+;;      false
+;;      "XEQUERIN"
+;;      "The world Xequerin is fabled for its wierd volcanoes and the Xequerinian mountain lobstoid.\n"
+;;      "The world Xequerin is fabled for its weird volcanoes and the Xequerinian mountain lobstoid."]
+;;     [true
+;;      true
+;;      "TIRAOR"
+;;      "Tiraor is a revolting little planet.\n"
+;;      "Tiraor is a revolting little planet."]
+;;     [true
+;;      true
+;;      "RABEDIRA"
+;;      "The planet Rabedira is well known for its inhabitants' ancient loathing of sit coms but ravaged by dreadful civil war.\n"
+;;      "The planet Rabedira is well known for its inhabitants' ancient loathing of sit coms but ravaged by dreadful civil war."]
+;;     [true
+;;      false
+;;      "LAVE"
+;;      "Lave is most famous for its vast rain forests and the Laveian tree grub.\n"
+;;      "Lave is most famous for its vast rain forests and the Lavian tree grub."]
+;;     [true
+;;      false
+;;      "ZAATXE"
+;;      "This planet is mildly noted for the Zaatxeian deadly Atlenooid but ravaged by lethal lethal yaks.\n"
+;;      "This planet is mildly noted for the Zaatxian deadly Atlenooid but ravaged by lethal lethal yaks."]
+;;     [true
+;;      true
+;;      "DIUSREZA"
+;;      "This planet is mildly fabled for its inhabitants' eccentric love for tourists but beset by deadly edible moths.\n"
+;;      "This planet is mildly fabled for its inhabitants' eccentric love for tourists but beset by deadly edible moths."]
+;;     [true
+;;      true
+;;      "TEAATIS"
+;;      "Teaatis is mildly well known for Teaatisian vicious brew.\n"
+;;      "Teaatis is mildly well known for Teaatisian vicious brew."]
+;;     [true
+;;      true
+;;      "RIINUS"
+;;      "This world is mildly famous for its vast rain forests and the Riinusian tree grub.\n"
+;;      "This world is mildly famous for its vast rain forests and the Riinusian tree grub."]
+;;     [true
+;;      true
+;;      "ESBIZA"
+;;      "The planet Esbiza is most famous for its vast rain forests.\n"
+;;      "The planet Esbiza is most famous for its vast rain forests."]
+;;     [true
+;;      true
+;;      "ONTIMAXE"
+;;      "This planet is reasonably famous for its inhabitants' exceptional love for food blenders.\n"
+;;      "This planet is reasonably famous for its inhabitants' exceptional love for food blenders."]
+;;     [true
+;;      false
+;;      "CEBETELA"
+;;      "This world is most notable for its fabulous Cebetelaian lethal brandy but scourged by killer mountain Esbionoids.\n"
+;;      "This world is most notable for its fabulous Cebetelian lethal brandy but scourged by killer mountain Esbionoids."]
+;;     [true
+;;      true
+;;      "CEEDRA"
+;;      "This planet is most fabled for its inhabitants' ingrained silliness but scourged by deadly civil war.\n"
+;;      "This planet is most fabled for its inhabitants' ingrained silliness but scourged by deadly civil war."]
+;;     [true
+;;      false
+;;      "RIZALA"
+;;      "The planet Rizala is mildly notable for Rizalaian lethal brandy.\n"
+;;      "The planet Rizala is mildly notable for Rizalian lethal brandy."]
+;;     [true
+;;      true
+;;      "ATRISO"
+;;      "Atriso is mildly well known for its exotic cuisine and its inhabitants' ingrained silliness.\n"
+;;      "Atriso is mildly well known for its exotic cuisine and its inhabitants' ingrained silliness."]
+;;     [true
+;;      true
+;;      "TEANREBI"
+;;      "This planet is plagued by frequent earthquakes.\n"
+;;      "This planet is plagued by frequent earthquakes."]
+;;     [true
+;;      true
+;;      "AZAQU"
+;;      "The planet Azaqu is most famous for its pink oceans and Zero-g cricket.\n"
+;;      "The planet Azaqu is most famous for its pink oceans and Zero-G cricket."]
+;;     [true
+;;      true
+;;      "RETILA"
+;;      "This world is ravaged by occasional solar activity.\n"
+;;      "This world is ravaged by occasional solar activity."]
+;;     [true
+;;      true
+;;      "SOTIQU"
+;;      "The planet Sotiqu is famous for Its Exotic Goat Soup but ravaged by a killer disease.\n"
+;;      "The planet Sotiqu is famous for its exotic goat soup but ravaged by a killer disease."]
+;;     [true
+;;      true
+;;      "INLEUS"
+;;      "The world Inleus is most famous for the Inleusian spotted wolf.\n"
+;;      "The world Inleus is most famous for the Inleusian spotted wolf."]
+;;     [true
+;;      false
+;;      "ONRIRA"
+;;      "The world Onrira is mildly noted for the Onriraian deadly Seoid but cursed by dreadful solar activity.\n"
+;;      "The world Onrira is mildly noted for the Onririan deadly Seoid but cursed by dreadful solar activity."]
+;;     [true
+;;      true
+;;      "CEINZALA"
+;;      "This planet is most notable for Vicious Numaab juice but cursed by unpredictable solar activity.\n"
+;;      "This planet is most notable for vicious Numaab juice but cursed by unpredictable solar activity."]
+;;     [true
+;;      true
+;;      "BIISZA"
+;;      "The planet Biisza is most famous for its vast rain forests.\n"
+;;      "The planet Biisza is most famous for its vast rain forests."]
+;;     [true
+;;      true
+;;      "LEGEES"
+;;      "This planet is most notable for its exotic night life but ravaged by frequent earthquakes.\n"
+;;      "This planet is most notable for its exotic night life but ravaged by frequent earthquakes."]
+;;     [true
+;;      true
+;;      "QUATOR"
+;;      "The world Quator is scourged by deadly edible arts graduates.\n"
+;;      "The world Quator is scourged by deadly edible arts graduates."]
+;;     [true
+;;      true
+;;      "AREXE"
+;;      "The world Arexe is fabled for its exciting sit coms and its inhabitants' ancient loathing of sit coms.\n"
+;;      "The world Arexe is fabled for its exciting sit coms and its inhabitants' ancient loathing of sit coms."]
+;;     [true
+;;      true
+;;      "ATRABIIN"
+;;      "Atrabiin is cursed by killer edible Nuatoids.\n"
+;;      "Atrabiin is cursed by killer edible Nuatoids."]
+;;     [true
+;;      true
+;;      "USANAT"
+;;      "The world Usanat is a boring world.\n"
+;;      "The world Usanat is a boring world."]
+;;     [true
+;;      true
+;;      "XEESLE"
+;;      "The world Xeesle is a boring planet.\n"
+;;      "The world Xeesle is a boring planet."]
+;;     [true
+;;      true
+;;      "ORESEREN"
+;;      "Oreseren is a revolting little planet.\n"
+;;      "Oreseren is a revolting little planet."]
+;;     [true
+;;      true
+;;      "INERA"
+;;      "This planet is noted for Its Exotic Fish Meat.\n"
+;;      "This planet is noted for its exotic fish meat."]
+;;     [true
+;;      true
+;;      "INUS"
+;;      "This world is reasonably well known for the Inusian tree wolf but scourged by unpredictable earthquakes.\n"
+;;      "This world is reasonably well known for the Inusian tree wolf but scourged by unpredictable earthquakes."]
+;;     [true
+;;      true
+;;      "ISENCE"
+;;      "The world Isence is very famous for its unusual casinos but beset by a evil disease.\n"
+;;      "The world Isence is very famous for its unusual casinos but beset by a evil disease."]
+;;     [true
+;;      false
+;;      "REESDICE"
+;;      "The world Reesdice is reasonably famous for the Reesdiceian deadly lobstoid.\n"
+;;      "The world Reesdice is reasonably famous for the Reesdician deadly lobstoid."]
+;;     [true
+;;      false
+;;      "TEREA"
+;;      "This world is very fabled for the Tereaian edible poet.\n"
+;;      "This world is very fabled for the Terian edible poet."]
+;;     [true
+;;      true
+;;      "ORGETIBE"
+;;      "This planet is a dull world.\n"
+;;      "This planet is a dull world."]
+;;     [true
+;;      true
+;;      "REORTE"
+;;      "This planet is mildly fabled for its inhabitants' eccentric love for tourists but plagued by deadly earthquakes.\n"
+;;      "This planet is mildly fabled for its inhabitants' eccentric love for tourists but plagued by deadly earthquakes."]
+;;     [true
+;;      true
+;;      "QUQUOR"
+;;      "The planet Ququor is mildly well known for its exotic cuisine.\n"
+;;      "The planet Ququor is mildly well known for its exotic cuisine."]
+;;     [true
+;;      true
+;;      "GEINONA"
+;;      "This world is ravaged by unpredictable solar activity.\n"
+;;      "This world is ravaged by unpredictable solar activity."]
+;;     [true
+;;      true
+;;      "ANARLAQU"
+;;      "This world is mildly famous for its hoopy night life and its exotic night life.\n"
+;;      "This world is mildly famous for its hoopy night life and its exotic night life."]
+;;     [true
+;;      true
+;;      "ORESRI"
+;;      "The planet Oresri is cursed by dreadful civil war.\n"
+;;      "The planet Oresri is cursed by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ESESLA"
+;;      "This planet is noted for Zero-g hockey.\n"
+;;      "This planet is noted for Zero-G hockey."]
+;;     [true
+;;      true
+;;      "SOCELAGE"
+;;      "This planet is reasonably noted for Its Exotic Goat Meat.\n"
+;;      "This planet is reasonably noted for its exotic goat meat."]
+;;     [true
+;;      true
+;;      "RIEDQUAT"
+;;      "This planet is most notable for its fabulous cuisine but beset by occasional civil war.\n"
+;;      "This planet is most notable for its fabulous cuisine but beset by occasional civil war."]
+;;     [true
+;;      false
+;;      "GEREGE"
+;;      "The world Gerege is reasonably famous for the Geregeian spotted wolf.\n"
+;;      "The world Gerege is reasonably famous for the Geregian spotted wolf."]
+;;     [true
+;;      false
+;;      "USLE"
+;;      "This world is very notable for the Usleian tree ant and its inhabitants' exceptional loathing of sit coms.\n"
+;;      "This world is very notable for the Uslian tree ant and its inhabitants' exceptional loathing of sit coms."]
+;;     [true
+;;      true
+;;      "MALAMA"
+;;      "The planet Malama is mildly well known for its exotic cuisine.\n"
+;;      "The planet Malama is mildly well known for its exotic cuisine."]
+;;     [true
+;;      true
+;;      "AESBION"
+;;      "The planet Aesbion is cursed by dreadful civil war.\n"
+;;      "The planet Aesbion is cursed by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ALAZA"
+;;      "The world Alaza is scourged by a evil disease.\n"
+;;      "The world Alaza is scourged by a evil disease."]
+;;     [true
+;;      true
+;;      "XEAQU"
+;;      "The world Xeaqu is a dull place.\n"
+;;      "The world Xeaqu is a dull place."]
+;;     [true
+;;      false
+;;      "RAOROR"
+;;      "This world is very fabled for its wierd volcanoes.\n"
+;;      "This world is very fabled for its weird volcanoes."]
+;;     [true
+;;      true
+;;      "ORORQU"
+;;      "The planet Ororqu is well known for its inhabitants' ancient mating traditions but ravaged by unpredictable solar activity.\n"
+;;      "The planet Ororqu is well known for its inhabitants' ancient mating traditions but ravaged by unpredictable solar activity."]
+;;     [true
+;;      false
+;;      "LEESTI"
+;;      "The planet Leesti is reasonably fabled for Zero-g cricket and Leestiian evil juice.\n"
+;;      "The planet Leesti is reasonably fabled for Zero-G cricket and Leestian evil juice."]
+;;     [true
+;;      false
+;;      "GEISGEZA"
+;;      "This planet is notable for its unusual oceans and the Geisgezaian mountain slug.\n"
+;;      "This planet is notable for its unusual oceans and the Geisgezian mountain slug."]
+;;     [true
+;;      true
+;;      "ZAINLABI"
+;;      "This world is ravaged by unpredictable civil war.\n"
+;;      "This world is ravaged by unpredictable civil war."]
+;;     [true
+;;      true
+;;      "USCELA"
+;;      "The world Uscela is a boring world.\n"
+;;      "The world Uscela is a boring world."]
+;;     [true
+;;      true
+;;      "ISVEVE"
+;;      "The planet Isveve is reasonably noted for its inhabitants' eccentric shyness and its inhabitants' eccentric shyness.\n"
+;;      "The planet Isveve is reasonably noted for its inhabitants' eccentric shyness and its inhabitants' eccentric shyness."]
+;;     [true
+;;      true
+;;      "TIORANIN"
+;;      "This world is most notable for Tioraninian vicious brew but ravaged by unpredictable civil war.\n"
+;;      "This world is most notable for Tioraninian vicious brew but ravaged by unpredictable civil war."]
+;;     [true
+;;      true
+;;      "LEARORCE"
+;;      "Learorce is reasonably notable for its great dense forests but scourged by deadly edible poets.\n"
+;;      "Learorce is reasonably notable for its great dense forests but scourged by deadly edible poets."]
+;;     [true
+;;      false
+;;      "ESUSTI"
+;;      "This world is very well known for its inhabitants' ancient loathing of discos and the Esustiian spotted cat.\n"
+;;      "This world is very well known for its inhabitants' ancient loathing of discos and the Esustian spotted cat."]
+;;     [true
+;;      false
+;;      "USUSOR"
+;;      "This planet is very notable for its inhabitants' wierd shyness and the Ususorian edible poet.\n"
+;;      "This planet is very notable for its inhabitants' weird shyness and the Ususorian edible poet."]
+;;     [true
+;;      true
+;;      "MAREGEIS"
+;;      "This world is fabled for its ancient Maregeisian Onbidi tulip plantations.\n"
+;;      "This world is fabled for its ancient Maregeisian Onbidi tulip plantations."]
+;;     [true
+;;      true
+;;      "AATE"
+;;      "The world Aate is scourged by killer mountain lobstoids.\n"
+;;      "The world Aate is scourged by killer mountain lobstoids."]
+;;     [true
+;;      true
+;;      "SORI"
+;;      "The world Sori is beset by a evil disease.\n"
+;;      "The world Sori is beset by a evil disease."]
+;;     [true
+;;      true
+;;      "CEMAVE"
+;;      "The world Cemave is beset by dreadful earthquakes.\n"
+;;      "The world Cemave is beset by dreadful earthquakes."]
+;;     [true
+;;      true
+;;      "ARUSQUDI"
+;;      "This world is very fabled for its unusual oceans.\n"
+;;      "This world is very fabled for its unusual oceans."]
+;;     [true
+;;      true
+;;      "EREDVE"
+;;      "This planet is beset by a evil disease.\n"
+;;      "This planet is beset by a evil disease."]
+;;     [true
+;;      true
+;;      "REGEATGE"
+;;      "Regeatge is reasonably well known for its great dense forests but scourged by frequent civil war.\n"
+;;      "Regeatge is reasonably well known for its great dense forests but scourged by frequent civil war."]
+;;     [true
+;;      false
+;;      "EDINSO"
+;;      "This planet is mildly noted for its pink Edinsoian Ge Bemaarleweed plantations but ravaged by vicious mountain monkeys.\n"
+;;      "This planet is mildly noted for its pink Edinsian Ge Bemaarleweed plantations but ravaged by vicious mountain monkeys."]
+;;     [true
+;;      true
+;;      "RA"
+;;      "The world Ra is beset by deadly earthquakes.\n"
+;;      "The world Ra is beset by deadly earthquakes."]
+;;     [true
+;;      true
+;;      "ARONAR"
+;;      "Aronar is most famous for the Aronarian deadly goat and its hoopy casinos.\n"
+;;      "Aronar is most famous for the Aronarian deadly goat and its hoopy casinos."]
+;;     [true
+;;      true
+;;      "ARRAESSO"
+;;      "This planet is notable for its unusual oceans and its inhabitants' exceptional loathing of food blenders.\n"
+;;      "This planet is notable for its unusual oceans and its inhabitants' exceptional loathing of food blenders."]
+;;     [true
+;;      true
+;;      "CEVEGE"
+;;      "This world is a revolting dump.\n"
+;;      "This world is a revolting dump."]
+;;     [true
+;;      false
+;;      "ORTEVE"
+;;      "This world is fabled for its fabulous Vicious Ougeza gargle blasters.\n"
+;;      "This world is fabled for its fabulous vicious Ougeza juice."]
+;;     [true
+;;      true
+;;      "GEERRA"
+;;      "This planet is reasonably noted for Its Exotic Goat Soup.\n"
+;;      "This planet is reasonably noted for its exotic goat soup."]
+;;     [true
+;;      true
+;;      "SOINUSTE"
+;;      "This planet is beset by deadly earthquakes.\n"
+;;      "This planet is beset by deadly earthquakes."]
+;;     [true
+;;      false
+;;      "ERLAGE"
+;;      "This world is reasonably well known for the Erlageian tree ant but cursed by vicious mountain goats.\n"
+;;      "This world is reasonably well known for the Erlagian tree ant but cursed by vicious mountain goats."]
+;;     [true
+;;      true
+;;      "XEAAN"
+;;      "This world is ravaged by unpredictable civil war.\n"
+;;      "This world is ravaged by unpredictable civil war."]
+;;     [true
+;;      true
+;;      "VEIS"
+;;      "The planet Veis is a boring world.\n"
+;;      "The planet Veis is a boring world."]
+;;     [true
+;;      true
+;;      "ENSOREUS"
+;;      "This planet is a tedious little planet.\n"
+;;      "This planet is a tedious little planet."]
+;;     [true
+;;      true
+;;      "RIVEIS"
+;;      "The world Riveis is most well known for its hoopy casinos.\n"
+;;      "The world Riveis is most well known for its hoopy casinos."]
+;;     [true
+;;      true
+;;      "BIVEA"
+;;      "This planet is plagued by frequent solar activity.\n"
+;;      "This planet is plagued by frequent solar activity."]
+;;     [true
+;;      false
+;;      "ERMASO"
+;;      "This planet is very notable for the Ermasoian edible grub and the Ermasoian tree ant.\n"
+;;      "This planet is very notable for the Ermasian edible grub and the Ermasian tree ant."]
+;;     [true
+;;      true
+;;      "VELETE"
+;;      "Velete is a revolting dump.\n"
+;;      "Velete is a revolting dump."]
+;;     [true
+;;      true
+;;      "ENGEMA"
+;;      "The world Engema is beset by a evil disease.\n"
+;;      "The world Engema is beset by a evil disease."]
+;;     [true
+;;      true
+;;      "ATRIENXE"
+;;      "Atrienxe is an unremarkable dump.\n"
+;;      "Atrienxe is an unremarkable dump."]
+;;     [true
+;;      true
+;;      "BEUSRIOR"
+;;      "The world Beusrior is a dull world.\n"
+;;      "The world Beusrior is a dull world."]
+;;     [true
+;;      true
+;;      "ONTIAT"
+;;      "The planet Ontiat is scourged by a evil disease.\n"
+;;      "The planet Ontiat is scourged by a evil disease."]
+;;     [true
+;;      true
+;;      "ATARZA"
+;;      "This world is plagued by occasional solar activity.\n"
+;;      "This world is plagued by occasional solar activity."]
+;;     [true
+;;      true
+;;      "ARAZAES"
+;;      "This planet is very notable for the Arazaesian tree ant and Arazaesian wolf meat.\n"
+;;      "This planet is very notable for the Arazaesian tree ant and Arazaesian wolf meat."]
+;;     [true
+;;      true
+;;      "XEERANRE"
+;;      "Xeeranre is cursed by killer mountain Reetaboids.\n"
+;;      "Xeeranre is cursed by killer mountain Reetaboids."]
+;;     [true
+;;      true
+;;      "QUZADI"
+;;      "Quzadi is cursed by dreadful civil war.\n"
+;;      "Quzadi is cursed by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ISTI"
+;;      "The planet Isti is reasonably noted for its inhabitants' eccentric shyness and Zero-g hockey.\n"
+;;      "The planet Isti is reasonably noted for its inhabitants' eccentric shyness and Zero-G hockey."]
+;;     [true
+;;      true
+;;      "DIGEBITI"
+;;      "Digebiti is cursed by killer mountain Seoids.\n"
+;;      "Digebiti is cursed by killer mountain Seoids."]
+;;     [true
+;;      true
+;;      "LEONED"
+;;      "Leoned is reasonably well known for the Leonedian tree snake but scourged by unpredictable earthquakes.\n"
+;;      "Leoned is reasonably well known for the Leonedian tree snake but scourged by unpredictable earthquakes."]
+;;     [true
+;;      true
+;;      "ENZAER"
+;;      "Enzaer is a revolting dump.\n"
+;;      "Enzaer is a revolting dump."]
+;;     [true
+;;      true
+;;      "TERAED"
+;;      "Teraed is an unremarkable dump.\n"
+;;      "Teraed is an unremarkable dump."]
+;;     [true
+;;      false
+;;      "VETITICE"
+;;      "This world is very well known for Vetiticeian lethal brandy and its great parking meters.\n"
+;;      "This world is very well known for Vetitician lethal brandy and its great parking meters."]
+;;     [true
+;;      true
+;;      "LAENIN"
+;;      "The planet Laenin is famous for its inhabitants' ancient loathing of sit coms but cursed by a killer disease.\n"
+;;      "The planet Laenin is famous for its inhabitants' ancient loathing of sit coms but cursed by a killer disease."]
+;;     [true
+;;      true
+;;      "BERAANXE"
+;;      "The world Beraanxe is reasonably noted for its inhabitants' exceptional love for tourists and its unusual oceans.\n"
+;;      "The world Beraanxe is reasonably noted for its inhabitants' exceptional love for tourists and its unusual oceans."]
+;;     [true
+;;      true
+;;      "ATAGE"
+;;      "Atage is an unremarkable planet.\n"
+;;      "Atage is an unremarkable planet."]
+;;     [true
+;;      true
+;;      "VEISTI"
+;;      "The planet Veisti is reasonably noted for its inhabitants' eccentric shyness and Zero-g cricket.\n"
+;;      "The planet Veisti is reasonably noted for its inhabitants' eccentric shyness and Zero-G cricket."]
+;;     [true
+;;      true
+;;      "ZAERLA"
+;;      "The planet Zaerla is mildly well known for its exotic cuisine.\n"
+;;      "The planet Zaerla is mildly well known for its exotic cuisine."]
+;;     [true
+;;      true
+;;      "ESREDICE"
+;;      "The world Esredice is a boring planet.\n"
+;;      "The world Esredice is a boring planet."]
+;;     [true
+;;      true
+;;      "BEOR"
+;;      "Beor is an unremarkable dump.\n"
+;;      "Beor is an unremarkable dump."]
+;;     [true
+;;      true
+;;      "ORSO"
+;;      "The world Orso is reasonably fabled for its exciting sit coms and its inhabitants' exceptional love for food blenders.\n"
+;;      "The world Orso is reasonably fabled for its exciting sit coms and its inhabitants' exceptional love for food blenders."]
+;;     [true
+;;      true
+;;      "USATQURA"
+;;      "This planet is reasonably famous for its inhabitants' exceptional loathing of sit coms.\n"
+;;      "This planet is reasonably famous for its inhabitants' exceptional loathing of sit coms."]
+;;     [true
+;;      true
+;;      "ERBITI"
+;;      "The world Erbiti is most well known for its great dense forests.\n"
+;;      "The world Erbiti is most well known for its great dense forests."]
+;;     [true
+;;      true
+;;      "REINEN"
+;;      "This planet is a tedious little planet.\n"
+;;      "This planet is a tedious little planet."]
+;;     [true
+;;      true
+;;      "ININBI"
+;;      "The world Ininbi is reasonably famous for its inhabitants' exceptional loathing of casinos.\n"
+;;      "The world Ininbi is reasonably famous for its inhabitants' exceptional loathing of casinos."]
+;;     [true
+;;      true
+;;      "ERLAZA"
+;;      "The world Erlaza is mildly noted for its ancient mountains but plagued by a lethal disease.\n"
+;;      "The world Erlaza is mildly noted for its ancient mountains but plagued by a lethal disease."]
+;;     [true
+;;      false
+;;      "CELABILE"
+;;      "The planet Celabile is most famous for the Celabileian evil poet and Zero-g hockey.\n"
+;;      "The planet Celabile is most famous for the Celabilian evil poet and Zero-G hockey."]
+;;     [true
+;;      true
+;;      "RIBISO"
+;;      "This planet is fabled for its exciting Vacuum Cricket.\n"
+;;      "This planet is fabled for its exciting vacuum cricket."]
+;;     [true
+;;      false
+;;      "QUDIRA"
+;;      "The world Qudira is reasonably fabled for Qudiraian Ouarma gargle blasters and the Qudiraian evil walking treeoid.\n"
+;;      "The world Qudira is reasonably fabled for Qudirian Ouarma gargle blasters and the Qudirian evil talking treeoid."]
+;;     [true
+;;      true
+;;      "ISDIBI"
+;;      "The world Isdibi is scourged by deadly tree ants.\n"
+;;      "The world Isdibi is scourged by deadly tree ants."]
+;;     [true
+;;      false
+;;      "GEQURE"
+;;      "This world is reasonably well known for the Gequreian tree ant but ravaged by dreadful civil war.\n"
+;;      "This world is reasonably well known for the Gequrian tree ant but ravaged by dreadful civil war."]
+;;     [true
+;;      false
+;;      "RARERE"
+;;      "The planet Rarere is mildly notable for Rarereian lethal brandy.\n"
+;;      "The planet Rarere is mildly notable for Rarerian lethal brandy."]
+;;     [true
+;;      true
+;;      "AERATER"
+;;      "Aerater is a revolting little planet.\n"
+;;      "Aerater is a revolting little planet."]
+;;     [true
+;;      true
+;;      "ATBEVETE"
+;;      "The planet Atbevete is mildly well known for Killer Ou gargle blasters.\n"
+;;      "The planet Atbevete is mildly well known for killer Ou gargle blasters."]
+;;     [true
+;;      true
+;;      "BIORIS"
+;;      "Bioris is very fabled for the Biorisian edible poet.\n"
+;;      "Bioris is very fabled for the Biorisian edible poet."]
+;;     [true
+;;      false
+;;      "RAALE"
+;;      "This world is very fabled for the Raaleian edible poet.\n"
+;;      "This world is very fabled for the Raalian edible poet."]
+;;     [true
+;;      true
+;;      "TIONISLA"
+;;      "This world is very notable for its inhabitants' ingrained shyness.\n"
+;;      "This world is very notable for its inhabitants' ingrained shyness."]
+;;     [true
+;;      true
+;;      "ENCERESO"
+;;      "Encereso is cursed by dreadful civil war.\n"
+;;      "Encereso is cursed by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ANERBE"
+;;      "The world Anerbe is reasonably fabled for its exciting Vacuum Karate and its great volcanoes.\n"
+;;      "The world Anerbe is reasonably fabled for its exciting vacuum karate and its great volcanoes."]
+;;     [true
+;;      true
+;;      "GELAED"
+;;      "The planet Gelaed is very noted for its pink Gelaedian Ines Soweed plantations but ravaged by unpredictable civil war.\n"
+;;      "The planet Gelaed is very noted for its pink Gelaedian Ines Soweed plantations but ravaged by unpredictable civil war."]
+;;     [true
+;;      false
+;;      "ONUSORLE"
+;;      "This world is mildly well known for Onusorleian vicious brew and Onusorleian wolf cutlet.\n"
+;;      "This world is mildly well known for Onusorlian vicious brew and Onusorlian wolf cutlet."]
+;;     [true
+;;      true
+;;      "ZAONCE"
+;;      "This planet is a tedious place.\n"
+;;      "This planet is a tedious place."]
+;;     [true
+;;      true
+;;      "DIQUER"
+;;      "The world Diquer is a dull place.\n"
+;;      "The world Diquer is a dull place."]
+;;     [true
+;;      true
+;;      "ZADIES"
+;;      "The planet Zadies is famous for its inhabitants' exceptional love for food blenders but scourged by dreadful solar activity.\n"
+;;      "The planet Zadies is famous for its inhabitants' exceptional love for food blenders but scourged by dreadful solar activity."]
+;;     [true
+;;      true
+;;      "ENTIZADI"
+;;      "The planet Entizadi is famous for its inhabitants' exceptional love for food blenders but scourged by dreadful solar activity.\n"
+;;      "The planet Entizadi is famous for its inhabitants' exceptional love for food blenders but scourged by dreadful solar activity."]
+;;     [true
+;;      true
+;;      "ESANBE"
+;;      "Esanbe is famous for its inhabitants' ancient loathing of casinos but plagued by deadly earthquakes.\n"
+;;      "Esanbe is famous for its inhabitants' ancient loathing of casinos but plagued by deadly earthquakes."]
+;;     [true
+;;      true
+;;      "USRALAAT"
+;;      "This planet is plagued by deadly earthquakes.\n"
+;;      "This planet is plagued by deadly earthquakes."]
+;;     [true
+;;      false
+;;      "ANLERE"
+;;      "Anlere is reasonably well known for the Anlereian spotted shrew but plagued by evil tree leopards.\n"
+;;      "Anlere is reasonably well known for the Anlerian spotted shrew but plagued by evil tree leopards."]
+;;     [true
+;;      false
+;;      "TEVERI"
+;;      "The world Teveri is reasonably fabled for Teveriian evil juice and its inhabitants' ingrained shyness.\n"
+;;      "The world Teveri is reasonably fabled for Teverian evil juice and its inhabitants' ingrained shyness."]
+;;     [true
+;;      false
+;;      "SOTIERA"
+;;      "The world Sotiera is mildly fabled for the Sotieraian mountain poet but cursed by unpredictable earthquakes.\n"
+;;      "The world Sotiera is mildly fabled for the Sotierian mountain poet but cursed by unpredictable earthquakes."]
+;;     [true
+;;      true
+;;      "EDEDLEEN"
+;;      "The planet Ededleen is mildly well known for its exotic cuisine.\n"
+;;      "The planet Ededleen is mildly well known for its exotic cuisine."]
+;;     [true
+;;      false
+;;      "INONRI"
+;;      "This world is very well known for Inonriian wolf meat and its wierd volcanoes.\n"
+;;      "This world is very well known for Inonrian wolf meat and its weird volcanoes."]
+;;     [true
+;;      true
+;;      "ESBEUS"
+;;      "The world Esbeus is mildly noted for its ancient mountains but plagued by frequent earthquakes.\n"
+;;      "The world Esbeus is mildly noted for its ancient mountains but plagued by frequent earthquakes."]
+;;     [true
+;;      true
+;;      "LERELACE"
+;;      "This planet is a dull place.\n"
+;;      "This planet is a dull place."]
+;;     [true
+;;      false
+;;      "ESZARAXE"
+;;      "The planet Eszaraxe is most famous for the Eszaraxeian spotted shrew and the Eszaraxeian mountain poet.\n"
+;;      "The planet Eszaraxe is most famous for the Eszaraxian spotted shrew and the Eszaraxian mountain poet."]
+;;     [true
+;;      true
+;;      "ANBEEN"
+;;      "Anbeen is reasonably notable for its great tropical forests but cursed by dreadful solar activity.\n"
+;;      "Anbeen is reasonably notable for its great tropical forests but cursed by dreadful solar activity."]
+;;     [true
+;;      true
+;;      "BIORLE"
+;;      "The world Biorle is a dull world.\n"
+;;      "The world Biorle is a dull world."]
+;;     [true
+;;      true
+;;      "ANISOR"
+;;      "This planet is very well known for its inhabitants' ancient mating traditions and its inhabitants' ancient loathing of casinos.\n"
+;;      "This planet is very well known for its inhabitants' ancient mating traditions and its inhabitants' ancient loathing of casinos."]
+;;     [true
+;;      false
+;;      "USRAREMA"
+;;      "This world is very notable for the Usraremaian edible poet.\n"
+;;      "This world is very notable for the Usraremian edible poet."]
+;;     [true
+;;      true
+;;      "DISO"
+;;      "This planet is mildly noted for its ancient Ma corn plantations but beset by frequent solar activity.\n"
+;;      "This planet is mildly noted for its ancient Ma corn plantations but beset by frequent solar activity."]
+;;     [true
+;;      false
+;;      "RIRAES"
+;;      "The world Riraes is fabled for its wierd rock formations and its pink oceans.\n"
+;;      "The world Riraes is fabled for its weird rock formations and its pink oceans."]
+;;     [true
+;;      false
+;;      "ORRIRA"
+;;      "The planet Orrira is cursed by killer edible walking treeoids.\n"
+;;      "The planet Orrira is cursed by killer edible talking treeoids."]
+;;     [true
+;;      true
+;;      "XEER"
+;;      "This world is very well known for Xeerian wolf meat and its fabulous cuisine.\n"
+;;      "This world is very well known for Xeerian wolf meat and its fabulous cuisine."]
+;;     [true
+;;      true
+;;      "CEESXE"
+;;      "The world Ceesxe is most well known for its vast rain forests.\n"
+;;      "The world Ceesxe is most well known for its vast rain forests."]
+;;     [true
+;;      true
+;;      "ISATRE"
+;;      "The world Isatre is a boring planet.\n"
+;;      "The world Isatre is a boring planet."]
+;;     [true
+;;      false
+;;      "AONA"
+;;      "This world is very well known for Aonaian lethal brandy and its great volcanoes.\n"
+;;      "This world is very well known for Aonian lethal brandy and its great volcanoes."]
+;;     [true
+;;      true
+;;      "ISINOR"
+;;      "This world is very fabled for its unusual oceans.\n"
+;;      "This world is very fabled for its unusual oceans."]
+;;     [true
+;;      false
+;;      "USZAA"
+;;      "The planet Uszaa is reasonably noted for its inhabitants' eccentric love for tourists and the Uszaaian tree grub.\n"
+;;      "The planet Uszaa is reasonably noted for its inhabitants' eccentric love for tourists and the Uszaian tree grub."]
+;;     [true
+;;      true
+;;      "AANBIAT"
+;;      "This planet is fabled for its ancient Aanbiatian Noalin banana plantations.\n"
+;;      "This planet is fabled for its ancient Aanbiatian Noalin banana plantations."]
+;;     [true
+;;      false
+;;      "BEMAERA"
+;;      "Bemaera is most noted for the Bemaeraian deadly Xesooid and its inhabitants' unusual silliness.\n"
+;;      "Bemaera is most noted for the Bemaerian deadly Xesooid and its inhabitants' unusual silliness."]
+;;     [true
+;;      true
+;;      "ININES"
+;;      "This world is a tedious place.\n"
+;;      "This world is a tedious place."]
+;;     [true
+;;      true
+;;      "EDZAON"
+;;      "This world is most notable for Edzaonian lethal water but plagued by occasional solar activity.\n"
+;;      "This world is most notable for Edzaonian lethal water but plagued by occasional solar activity."]
+;;     [true
+;;      true
+;;      "LERITEAN"
+;;      "The planet Leritean is mildly well known for its exotic cuisine.\n"
+;;      "The planet Leritean is mildly well known for its exotic cuisine."]
+;;     [true
+;;      true
+;;      "VEALE"
+;;      "The world Veale is most well known for its vast dense forests.\n"
+;;      "The world Veale is most well known for its vast dense forests."]
+;;     [true
+;;      true
+;;      "EDLE"
+;;      "Edle is famous for its inhabitants' exceptional love for food blenders but scourged by frequent civil war.\n"
+;;      "Edle is famous for its inhabitants' exceptional love for food blenders but scourged by frequent civil war."]
+;;     [true
+;;      true
+;;      "ANLAMA"
+;;      "This world is a tedious little planet.\n"
+;;      "This world is a tedious little planet."]
+;;     [true
+;;      true
+;;      "RIBILEBI"
+;;      "The planet Ribilebi is most famous for its vast oceans and Its Fabulous Goat Soup.\n"
+;;      "The planet Ribilebi is most famous for its vast oceans and its fabulous goat soup."]
+;;     [true
+;;      true
+;;      "RELAES"
+;;      "This world is a tedious place.\n"
+;;      "This world is a tedious place."]
+;;     [true
+;;      true
+;;      "DIZAONER"
+;;      "Dizaoner is ravaged by unpredictable solar activity.\n"
+;;      "Dizaoner is ravaged by unpredictable solar activity."]
+;;     [true
+;;      true
+;;      "RAZAAR"
+;;      "The world Razaar is a dull place.\n"
+;;      "The world Razaar is a dull place."]
+;;     [true
+;;      true
+;;      "ENONLA"
+;;      "Enonla is ravaged by dreadful civil war.\n"
+;;      "Enonla is ravaged by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ISANLEQU"
+;;      "This planet is beset by a evil disease.\n"
+;;      "This planet is beset by a evil disease."]
+;;     [true
+;;      false
+;;      "TIBECEA"
+;;      "Tibecea is very fabled for the Tibeceaian edible poet.\n"
+;;      "Tibecea is very fabled for the Tibecian edible poet."]
+;;     [true
+;;      false
+;;      "SOTERA"
+;;      "Sotera is mildly notable for Soteraian lethal brandy.\n"
+;;      "Sotera is mildly notable for Soterian lethal brandy."]
+;;     [true
+;;      true
+;;      "ESVEOR"
+;;      "Esveor is mildly famous for its pink oceans and Zero-g hockey.\n"
+;;      "Esveor is mildly famous for its pink oceans and Zero-G hockey."]
+;;     [true
+;;      true
+;;      "ESTEONBI"
+;;      "This planet is mildly fabled for its inhabitants' ingrained shyness but cursed by unpredictable solar activity.\n"
+;;      "This planet is mildly fabled for its inhabitants' ingrained shyness but cursed by unpredictable solar activity."]
+;;     [true
+;;      false
+;;      "XEESENRI"
+;;      "Xeesenri is mildly notable for its inhabitants' wierd shyness.\n"
+;;      "Xeesenri is mildly notable for its inhabitants' weird shyness."]
+;;     [true
+;;      true
+;;      "ORESLE"
+;;      "This world is reasonably notable for its great volcanoes but ravaged by a vicious disease.\n"
+;;      "This world is reasonably notable for its great volcanoes but ravaged by a vicious disease."]
+;;     [true
+;;      true
+;;      "ERVEIN"
+;;      "Ervein is a revolting little planet.\n"
+;;      "Ervein is a revolting little planet."]
+;;     [true
+;;      true
+;;      "LARAIS"
+;;      "This world is a revolting dump.\n"
+;;      "This world is a revolting dump."]
+;;     [true
+;;      true
+;;      "ANXEBIZA"
+;;      "The planet Anxebiza is an unremarkable dump.\n"
+;;      "The planet Anxebiza is an unremarkable dump."]
+;;     [true
+;;      true
+;;      "DIEDAR"
+;;      "This world is ravaged by dreadful civil war.\n"
+;;      "This world is ravaged by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ENINRE"
+;;      "The planet Eninre is cursed by deadly civil war.\n"
+;;      "The planet Eninre is cursed by deadly civil war."]
+;;     [true
+;;      false
+;;      "BIBE"
+;;      "This world is most fabled for Bibeian lethal brandy but beset by a evil disease.\n"
+;;      "This world is most fabled for Bibian lethal brandy but beset by a evil disease."]
+;;     [true
+;;      true
+;;      "DIQUXE"
+;;      "This planet is mildly noted for its ancient mountains but plagued by frequent earthquakes.\n"
+;;      "This planet is mildly noted for its ancient mountains but plagued by frequent earthquakes."]
+;;     [true
+;;      true
+;;      "SORACE"
+;;      "Sorace is cursed by deadly civil war.\n"
+;;      "Sorace is cursed by deadly civil war."]
+;;     [true
+;;      true
+;;      "ANXEONIS"
+;;      "The planet Anxeonis is most famous for its vast rain forests.\n"
+;;      "The planet Anxeonis is most famous for its vast rain forests."]
+;;     [true
+;;      true
+;;      "RIANTIAT"
+;;      "This planet is notable for the Riantiatian edible grub and the Riantiatian spotted wolf.\n"
+;;      "This planet is notable for the Riantiatian edible grub and the Riantiatian spotted wolf."]
+;;     [true
+;;      true
+;;      "ZARECE"
+;;      "This planet is a tedious place.\n"
+;;      "This planet is a tedious place."]
+;;     [true
+;;      true
+;;      "MAESIN"
+;;      "The planet Maesin is an unremarkable dump.\n"
+;;      "The planet Maesin is an unremarkable dump."]
+;;     [true
+;;      true
+;;      "TIBIONIS"
+;;      "Tibionis is most noted for the Tibionisian deadly goat and its vast rain forests.\n"
+;;      "Tibionis is most noted for the Tibionisian deadly goat and its vast rain forests."]
+;;     [true
+;;      true
+;;      "GELEGEUS"
+;;      "Gelegeus is mildly notable for Gelegeusian Bidialst brandy.\n"
+;;      "Gelegeus is mildly notable for Gelegeusian Bidialst brandy."]
+;;     [true
+;;      true
+;;      "DIORA"
+;;      "The planet Diora is an unremarkable planet.\n"
+;;      "The planet Diora is an unremarkable planet."]
+;;     [true
+;;      true
+;;      "RIGETI"
+;;      "Rigeti is a revolting dump.\n"
+;;      "Rigeti is a revolting dump."]
+;;     [true
+;;      false
+;;      "BEGEABI"
+;;      "Begeabi is very notable for its inhabitants' wierd silliness.\n"
+;;      "Begeabi is very notable for its inhabitants' weird silliness."]
+;;     [true
+;;      false
+;;      "ORRERE"
+;;      "Orrere is mildly well known for Orrereian vicious brew.\n"
+;;      "Orrere is mildly well known for Orrerian vicious brew."]
+;;     [true
+;;      false
+;;      "BETI"
+;;      "This planet is fabled for its wierd volcanoes and the Betiian mountain lobstoid.\n"
+;;      "This planet is fabled for its weird volcanoes and the Betian mountain lobstoid."]
+;;     [true
+;;      true
+;;      "GERETE"
+;;      "This world is most fabled for Zero-g cricket but cursed by unpredictable solar activity.\n"
+;;      "This world is most fabled for Zero-G cricket but cursed by unpredictable solar activity."]
+;;     [true
+;;      true
+;;      "QUCERERE"
+;;      "This planet is a tedious place.\n"
+;;      "This planet is a tedious place."]
+;;     [true
+;;      true
+;;      "XEONER"
+;;      "The world Xeoner is a dull world.\n"
+;;      "The world Xeoner is a dull world."]
+;;     [true
+;;      true
+;;      "XEZAOR"
+;;      "The world Xezaor is most well known for its hoopy casinos.\n"
+;;      "The world Xezaor is most well known for its hoopy casinos."]
+;;     [true
+;;      true
+;;      "RITILA"
+;;      "The world Ritila is very famous for its hoopy casinos but beset by a evil disease.\n"
+;;      "The world Ritila is very famous for its hoopy casinos but beset by a evil disease."]
+;;     [true
+;;      true
+;;      "EDORTE"
+;;      "The planet Edorte is an unremarkable dump.\n"
+;;      "The planet Edorte is an unremarkable dump."]
+;;     [true
+;;      true
+;;      "ZAALELA"
+;;      "This world is noted for Its Fabulous Goat Soup.\n"
+;;      "This world is noted for its fabulous goat soup."]
+;;     [true
+;;      false
+;;      "BIISORTE"
+;;      "This world is most notable for its fabulous Biisorteian lethal water but beset by a lethal disease.\n"
+;;      "This world is most notable for its fabulous Biisortian lethal water but beset by a lethal disease."]
+;;     [true
+;;      true
+;;      "BEESOR"
+;;      "This world is plagued by deadly earthquakes.\n"
+;;      "This world is plagued by deadly earthquakes."]
+;;     [true
+;;      true
+;;      "ORESQU"
+;;      "Oresqu is mildly notable for its inhabitants' unusual mating traditions.\n"
+;;      "Oresqu is mildly notable for its inhabitants' unusual mating traditions."]
+;;     [true
+;;      true
+;;      "XEQUQUTI"
+;;      "This planet is beset by dreadful earthquakes.\n"
+;;      "This planet is beset by dreadful earthquakes."]
+;;     [true
+;;      true
+;;      "MAISES"
+;;      "Maises is reasonably notable for its fabulous Maisesian lethal water but beset by a lethal disease.\n"
+;;      "Maises is reasonably notable for its fabulous Maisesian lethal water but beset by a lethal disease."]
+;;     [true
+;;      false
+;;      "BIERLE"
+;;      "The planet Bierle is most famous for the Bierleian deadly Inoid and its inhabitants' ingrained silliness.\n"
+;;      "The planet Bierle is most famous for the Bierlian deadly Inoid and its inhabitants' ingrained silliness."]
+;;     [true
+;;      true
+;;      "ARZASO"
+;;      "Arzaso is an unremarkable planet.\n"
+;;      "Arzaso is an unremarkable planet."]
+;;     [true
+;;      true
+;;      "TEEN"
+;;      "Teen is cursed by deadly civil war.\n"
+;;      "Teen is cursed by deadly civil war."]
+;;     [true
+;;      false
+;;      "RIREDI"
+;;      "This world is very fabled for the Rirediian mountain slug.\n"
+;;      "This world is very fabled for the Riredian mountain slug."]
+;;     [true
+;;      true
+;;      "TEORGE"
+;;      "This planet is a tedious little planet.\n"
+;;      "This planet is a tedious little planet."]
+;;     [true
+;;      false
+;;      "VEBEGE"
+;;      "The world Vebege is mildly fabled for the Vebegeian mountain lobstoid but beset by deadly solar activity.\n"
+;;      "The world Vebege is mildly fabled for the Vebegian mountain lobstoid but beset by deadly solar activity."]
+;;     [true
+;;      true
+;;      "XEENLE"
+;;      "This planet is mildly noted for its ancient mountains but plagued by a lethal disease.\n"
+;;      "This planet is mildly noted for its ancient mountains but plagued by a lethal disease."]
+;;     [true
+;;      true
+;;      "ARXEZA"
+;;      "The world Arxeza is beset by dreadful earthquakes.\n"
+;;      "The world Arxeza is beset by dreadful earthquakes."]
+;;     [true
+;;      false
+;;      "EDREOR"
+;;      "The world Edreor is reasonably fabled for its fabulous Killer Sese juice and its ancient Edreorian Us plant plantations.\n"
+;;      "The world Edreor is reasonably fabled for its fabulous killer Sese juice and its ancient Edreorian Esnu corn plantations."]
+;;     [true
+;;      true
+;;      "ESGEREAN"
+;;      "This planet is plagued by occasional solar activity.\n"
+;;      "This planet is plagued by occasional solar activity."]
+;;     [true
+;;      false
+;;      "DITIZA"
+;;      "The planet Ditiza is reasonably fabled for Ditizaian evil juice and its inhabitants' ingrained silliness.\n"
+;;      "The planet Ditiza is reasonably fabled for Ditizian evil juice and its inhabitants' ingrained silliness."]
+;;     [true
+;;      false
+;;      "ANLE"
+;;      "The world Anle is notable for its great tropical forests and Anleian evil brandy.\n"
+;;      "The world Anle is notable for its great tropical forests and Anlian evil brandy."]
+;;     [true
+;;      true
+;;      "ONISQU"
+;;      "This planet is a dull place.\n"
+;;      "This planet is a dull place."]
+;;     [true
+;;      true
+;;      "ALEUSQU"
+;;      "This world is reasonably notable for its great volcanoes but ravaged by vicious vicious shrews.\n"
+;;      "This world is reasonably notable for its great volcanoes but ravaged by vicious vicious shrews."]
+;;     [true
+;;      true
+;;      "ZASOCEAT"
+;;      "Zasoceat is a revolting dump.\n"
+;;      "Zasoceat is a revolting dump."]
+;;     [true
+;;      true
+;;      "RILACE"
+;;      "The world Rilace is a dull world.\n"
+;;      "The world Rilace is a dull world."]
+;;     [true
+;;      false
+;;      "BEENRI"
+;;      "This planet is mildly noted for the Beenriian mountain Esseinaoid but scourged by frequent civil war.\n"
+;;      "This planet is mildly noted for the Beenrian mountain Esseina?oid but scourged by frequent civil war."]
+;;     [true
+;;      true
+;;      "LAEDEN"
+;;      "The planet Laeden is reasonably fabled for its exciting sit coms and its inhabitants' exceptional love for food blenders.\n"
+;;      "The planet Laeden is reasonably fabled for its exciting sit coms and its inhabitants' exceptional love for food blenders."]
+;;     [true
+;;      true
+;;      "MARIAR"
+;;      "This world is fabled for its unusual tropical forests.\n"
+;;      "This world is fabled for its unusual tropical forests."]
+;;     [true
+;;      true
+;;      "RIISER"
+;;      "Riiser is cursed by dreadful civil war.\n"
+;;      "Riiser is cursed by dreadful civil war."]
+;;     [true
+;;      true
+;;      "QUTIRI"
+;;      "The world Qutiri is mildly noted for its ancient mountains but plagued by deadly earthquakes.\n"
+;;      "The world Qutiri is mildly noted for its ancient mountains but plagued by deadly earthquakes."]
+;;     [true
+;;      true
+;;      "BIRAMABI"
+;;      "The world Biramabi is a dull world.\n"
+;;      "The world Biramabi is a dull world."]
+;;     [true
+;;      true
+;;      "SOORBI"
+;;      "The planet Soorbi is an unremarkable dump.\n"
+;;      "The planet Soorbi is an unremarkable dump."]
+;;     [true
+;;      true
+;;      "SOLAGEON"
+;;      "This world is very well known for Solageonian lethal water and the Solageonian tree wolf.\n"
+;;      "This world is very well known for Solageonian lethal water and the Solageonian tree wolf."]
+;;     [true
+;;      true
+;;      "TIQUAT"
+;;      "This world is reasonably well known for its great parking meters but cursed by unpredictable earthquakes.\n"
+;;      "This world is reasonably well known for its great parking meters but cursed by unpredictable earthquakes."]
+;;     [true
+;;      true
+;;      "REXEBE"
+;;      "This world is mildly famous for its hoopy night life and its exotic cuisine.\n"
+;;      "This world is mildly famous for its hoopy night life and its exotic cuisine."]
+;;     [true
+;;      true
+;;      "QUBEEN"
+;;      "This world is ravaged by unpredictable civil war.\n"
+;;      "This world is ravaged by unpredictable civil war."]
+;;     [true
+;;      false
+;;      "CETIISQU"
+;;      "This planet is reasonably famous for the Cetiisquian evil Stoid.\n"
+;;      "This planet is reasonably famous for the Cetiisqian evil Stoid."]
+;;     [true
+;;      false
+;;      "REBIA"
+;;      "Rebia is very notable for its inhabitants' wierd shyness.\n"
+;;      "Rebia is very notable for its inhabitants' weird shyness."]
+;;     [true
+;;      true
+;;      "ORDIMA"
+;;      "This planet is reasonably noted for Its Exotic Goat Soup.\n"
+;;      "This planet is reasonably noted for its exotic goat soup."]
+;;     [true
+;;      true
+;;      "ARUSZATI"
+;;      "This planet is noted for Zero-g cricket.\n"
+;;      "This planet is noted for Zero-G cricket."]
+;;     [true
+;;      true
+;;      "ZALERIZA"
+;;      "This world is a tedious place.\n"
+;;      "This world is a tedious place."]
+;;     [true
+;;      true
+;;      "ZASOER"
+;;      "Zasoer is mildly well known for its exotic night life.\n"
+;;      "Zasoer is mildly well known for its exotic night life."]
+;;     [true
+;;      true
+;;      "RALEEN"
+;;      "This planet is notable for the Raleenian tree grub and its inhabitants' unusual silliness.\n"
+;;      "This planet is notable for the Raleenian tree grub and its inhabitants' unusual silliness."]
+;;     [true
+;;      false
+;;      "QURAVE"
+;;      "The planet Qurave is mildly notable for Quraveian Zaaronen brandy.\n"
+;;      "The planet Qurave is mildly notable for Quravian Zaaronen brandy."]
+;;     [true
+;;      false
+;;      "ATREBIBI"
+;;      "The world Atrebibi is most famous for the Atrebibiian deadly monkey.\n"
+;;      "The world Atrebibi is most famous for the Atrebibian deadly monkey."]
+;;     [true
+;;      false
+;;      "TEESDI"
+;;      "Teesdi is famous for Teesdiian shrew cutlet but ravaged by occasional solar activity.\n"
+;;      "Teesdi is famous for Teesdian shrew cutlet but ravaged by occasional solar activity."]
+;;     [true
+;;      false
+;;      "ARARUS"
+;;      "Ararus is most famous for its pink Esoneril tulip plantations and its wierd exuberant forests.\n"
+;;      "Ararus is most famous for its pink Esoneril tulip plantations and its weird exuberant forests."]
+;;     [true
+;;      true
+;;      "ARA"
+;;      "The world Ara is scourged by a evil disease.\n"
+;;      "The world Ara is scourged by a evil disease."]
+;;     [true
+;;      true
+;;      "TIANVE"
+;;      "The planet Tianve is reasonably noted for its inhabitants' exceptional loathing of food blenders and Zero-g cricket.\n"
+;;      "The planet Tianve is reasonably noted for its inhabitants' exceptional loathing of food blenders and Zero-G cricket."]
+;;     [true
+;;      false
+;;      "QUORTE"
+;;      "Quorte is well known for the Quorteian tree wolf but scourged by dreadful solar activity.\n"
+;;      "Quorte is well known for the Quortian tree wolf but scourged by dreadful solar activity."]
+;;     [true
+;;      true
+;;      "SOLADIES"
+;;      "This planet is fabled for its exciting Soladiesian evil brandy.\n"
+;;      "This planet is fabled for its exciting Soladiesian evil brandy."]
+;;     [true
+;;      false
+;;      "MAXEEDSO"
+;;      "This world is mildly famous for its vast rain forests and the Maxeedsoian tree wolf.\n"
+;;      "This world is mildly famous for its vast rain forests and the Maxeedsian tree wolf."]
+;;     [true
+;;      true
+;;      "XEXEDI"
+;;      "The planet Xexedi is scourged by a deadly disease.\n"
+;;      "The planet Xexedi is scourged by a deadly disease."]
+;;     [true
+;;      false
+;;      "XEXETI"
+;;      "This planet is notable for the Xexetiian edible arts graduate and its great volcanoes.\n"
+;;      "This planet is notable for the Xexetian edible arts graduate and its great volcanoes."]
+;;     [true
+;;      false
+;;      "TIINLEBI"
+;;      "The planet Tiinlebi is most noted for the Tiinlebiian mountain slug and its inhabitants' exceptional loathing of food blenders.\n"
+;;      "The planet Tiinlebi is most noted for the Tiinlebian mountain slug and its inhabitants' exceptional loathing of food blenders."]
+;;     [true
+;;      true
+;;      "RATEEDAR"
+;;      "Rateedar is cursed by dreadful civil war.\n"
+;;      "Rateedar is cursed by dreadful civil war."]
+;;     [true
+;;      true
+;;      "ONLEMA"
+;;      "This world is plagued by frequent solar activity.\n"
+;;      "This world is plagued by frequent solar activity."]
+;;     [true
+;;      true
+;;      "ORERVE"
+;;      "This planet is a dull place.\n"
+;;      "This planet is a dull place."])
+;; => ([true
+;;      true
+;;      "TIBEDIED"
+;;      "This planet is most notable for Tibediedian Arnu brandy but ravaged by unpredictable solar activity.\n"
+;;      "This planet is most notable for Tibediedian Arnu brandy but ravaged by unpredictable solar activity."]
+;;     [true
+;;      true
+;;      "QUBE"
+;;      "Qube is reasonably well known for its great dense forests but scourged by deadly civil war.\n"
+;;      "Qube is reasonably well known for its great dense forests but scourged by deadly civil war."]
+;;     [true
+;;      false
+;;      "LELEER"
+;;      "The world Leleer is very noted for its pink Leleerian Itonthbi tulip plantations but plagued by a vicious disease.\n"
+;;      "The world Leleer is very noted for its pink Leleerian Itonthbi tulip plantations but plagued by deadly earthquakes."]
+;;     [true
+;;      false
+;;      "BIARGE"
+;;      "This world is very fabled for the Biargeian edible poet.\n"
+;;      "This world is very fabled for the Biargian edible poet."]
+;;     [true
+;;      false
+;;      "XEQUERIN"
 ;;      "The world Xequerin is  fabled for its wierd volcanoes and the Xequerinian mountain lobstoid.\n"
 ;;      "The world Xequerin is fabled for its weird volcanoes and the Xequerinian mountain lobstoid."]
 ;;     [true
