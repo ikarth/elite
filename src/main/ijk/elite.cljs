@@ -427,6 +427,15 @@
      population
      )))
 
+000 1
+001 0
+010 1
+011 0
+100 1
+101 0
+110 1
+111 0
+
 (defn government-name [gov-type]
   (nth [:anarchy :feudal :multi-government :dictatorship :communist :confederacy :democracy :corporate-state]
        gov-type

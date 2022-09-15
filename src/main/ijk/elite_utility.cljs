@@ -9,7 +9,15 @@
    ;;[cljx-sampling.random :as random]
    ;;[cljx-sampling.core :refer [sample]]
    [rand-cljc.core :as rng]
+   [cljs-node-io.core :as io :refer [slurp spit]]
    ))
+
+(defn write-to-file
+  ([data] (write-to-file data "output.edn"))
+  ([data output-filename
+    ]
+   (if true ;; TODO: set to false if we're in a browser
+     (spit output-filename data))))
 
 (defn positions
   "Get the indexes of items in a vector.
@@ -295,13 +303,15 @@
     [two (mapv byte-to-bin new-seed);; new-seed
      ]))
 
-(quot 3000 256)
+;; (quot 3000 256)
 
-(goat-soup-next-rand (mapv byte-to-bin [156 185 144   2]))
+;; (goat-soup-next-rand (mapv byte-to-bin [156 185 144   2]))
 ;; => [58  [(1 1 0 0 1 0 0 1) (0 0 1 1 1 0 1 0) (0 0 1 1 1 0 0 0) (1 0 1 1 1 0 0 1)] [201 58 56 185]]
 ;; => [188 [(0 0 1 0 1 1 0 0) (1 0 1 1 1 1 0 0) [0 0 1 1 1 0 0 0] (1 0 1 1 1 0 0 1)]]
 ;; => [201 [201 201 56 185]]
-(goat-soup-next-rand (mapv byte-to-bin [201 201 56 185]))
+;;; 
+;; (goat-soup-next-rand (mapv byte-to-bin [201 201 56 185]))
 
-(update-in (goat-soup-next-rand (mapv byte-to-bin [156 185 144   2])) [1] (fn [x] (mapv bin-to-byte x)))
-(update-in (goat-soup-next-rand (mapv byte-to-bin [100 117  88 188])) [1] (fn [x] (mapv bin-to-byte x)))
+;; (update-in (goat-soup-next-rand (mapv byte-to-bin [156 185 144   2])) [1] (fn [x] (mapv bin-to-byte x)))
+;; (update-in (goat-soup-next-rand (mapv byte-to-bin [100 117  88 188])) [1] (fn [x] (mapv bin-to-byte x)))
+
