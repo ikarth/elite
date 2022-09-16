@@ -373,62 +373,64 @@
 (<= 1 0)
 
 (defn parse-goat-soup
-  [unparsed parsed mode]
-  ;;(println unparsed)
-  (if (<= (count unparsed) 0)
-    parsed
-    (let [cursor (first unparsed)
-          [add-to-parsed mode-change]
-          (cond
-            (= cursor "{")
-            ["" [(inc (first mode)) "" (nth mode 2) ""]]
-            (= cursor "}")
-            ["" [(dec (first mode)) "" (nth mode 2) ""]]
-            :else
-            (if (<= (first mode) 0)
-              (let [;;_ (println [unparsed parsed mode])
-                    ;;_ (println mode (<= (first mode) 0))
-                    ;;_ (println mode)
-                    is-double-space (and (= " " cursor )(= " " (nth mode 3)))
-                    cursor (if is-double-space "" cursor)
-                    ]
-                (cond (= (nth mode 2) :lower-case)
-                      [(cstring/lower-case cursor) mode]
-                      (= (nth mode 2) :sentence-case)
-                      (let [;;_ (println mode " -> " (= "" (nth mode 3)))
-                            ]
-                        (if (or
-                             (= " " (nth mode 3))
-                             (= "" (nth mode 3)))
-                          [(cstring/upper-case cursor) mode]
-                          [(cstring/lower-case cursor) mode]))
-                      (= (nth mode 2) :single-cap)
-                      [(cstring/upper-case cursor) (assoc-in mode [2] :lower-case)]
-                      :else
-                      [cursor mode]))
-              (let [accum (str (nth mode 1) cursor)                   
-                    mode-switch
-                    (cond
-                      (= accum "lower-case")
-                      :lower-case
-                      (= accum "sentence-case")
-                      :sentence-case
-                      (or (= accum "single cap") (= accum "single-cap"))
-                      (if (= :sentence-case (nth mode 2))
-                        :sentence-case
-                        :single-cap)                        
-                      :else
-                      :lower-case)
-                    ;;_ (println mode-switch)
-                    ]
-                ["" [(nth mode 0) accum mode-switch cursor]
-                 ])))
-          ;;_ (println (str "<" add-to-parsed ">"))
-          mode-change (assoc-in mode-change [3] add-to-parsed)]
-      (parse-goat-soup (rest unparsed) (str parsed add-to-parsed) mode-change)
-      )))
+  ([unparsed]
+   (parse-goat-soup unparsed "" [0 "" :lower-case ""]))
+  ([unparsed parsed mode]
+   ;;(println unparsed)
+   (if (<= (count unparsed) 0)
+     parsed
+     (let [cursor (first unparsed)
+           [add-to-parsed mode-change]
+           (cond
+             (= cursor "{")
+             ["" [(inc (first mode)) "" (nth mode 2) ""]]
+             (= cursor "}")
+             ["" [(dec (first mode)) "" (nth mode 2) ""]]
+             :else
+             (if (<= (first mode) 0)
+               (let [;;_ (println [unparsed parsed mode])
+                     ;;_ (println mode (<= (first mode) 0))
+                     ;;_ (println mode)
+                     is-double-space (and (= " " cursor )(= " " (nth mode 3)))
+                     cursor (if is-double-space "" cursor)
+                     ]
+                 (cond (= (nth mode 2) :lower-case)
+                       [(cstring/lower-case cursor) mode]
+                       (= (nth mode 2) :sentence-case)
+                       (let [;;_ (println mode " -> " (= "" (nth mode 3)))
+                             ]
+                         (if (or
+                              (= " " (nth mode 3))
+                              (= "" (nth mode 3)))
+                           [(cstring/upper-case cursor) mode]
+                           [(cstring/lower-case cursor) mode]))
+                       (= (nth mode 2) :single-cap)
+                       [(cstring/upper-case cursor) (assoc-in mode [2] :lower-case)]
+                       :else
+                       [cursor mode]))
+               (let [accum (str (nth mode 1) cursor)                   
+                     mode-switch
+                     (cond
+                       (= accum "lower-case")
+                       :lower-case
+                       (= accum "sentence-case")
+                       :sentence-case
+                       (or (= accum "single cap") (= accum "single-cap"))
+                       (if (= :sentence-case (nth mode 2))
+                         :sentence-case
+                         :single-cap)                        
+                       :else
+                       :lower-case)
+                     ;;_ (println mode-switch)
+                     ]
+                 ["" [(nth mode 0) accum mode-switch cursor]
+                  ])))
+           ;;_ (println (str "<" add-to-parsed ">"))
+           mode-change (assoc-in mode-change [3] add-to-parsed)]
+       (parse-goat-soup (rest unparsed) (str parsed add-to-parsed) mode-change)
+       ))))
 
-(parse-goat-soup "{single cap}tHIS {single cap}is a {sentence-case}string to parse {lower-case}PARSE." "" [0 "" nil ""])
+;;(parse-goat-soup "{single cap}tHIS {single cap}is a {sentence-case}string to parse {lower-case}PARSE." "" [0 "" nil ""])
 
 (defn handler-fn [grammar rule-id [_ attribute value]]
   (assoc-in grammar [:data :model attribute] value))
@@ -906,51 +908,54 @@
     :else
     [(str "(unknown token: " token ")") "" seed]))
 
-(defn parse-expand-grammar [unparsed parsed seed planet-name mode]
-  ;;(println (str parsed "<-:" unparsed ":" mode))
-  (if (< 955 (nth mode 2))
-    [unparsed parsed]    
-    (if (<= (count unparsed) 0)
-      parsed
-      (let [cursor (first unparsed)
-            [add-to-parsed add-to-unparsed new-seed updated-mode]
-            (cond
-              (= (first mode) :token)
-              (cond
-                (= cursor ">")
-                (let [[resolved-token resolved-unparsed resolved-seed]
-                      (resolve-token (nth mode 1) seed planet-name)]
-                  [resolved-token
-                   resolved-unparsed
-                   resolved-seed
-                   (assoc-in mode [0] :text)])
-                :else
-                ["" "" seed (update-in mode [1] #(str % cursor))]
-                )
-              (= (first mode) :text)
-              (cond
-                (= cursor "<")
-                ["" "" seed (assoc-in
-                             (assoc-in mode [0] :token)
-                             [1]
-                             "")]
-                :else
-                [cursor "" seed mode]
-                )
-              :else
-              [cursor "" seed mode]
-              )
-            ]
-        (parse-expand-grammar (str add-to-unparsed (apply str (rest unparsed)))
-                              (str parsed add-to-parsed)
-                              new-seed
-                              planet-name
-                              (update-in updated-mode [2] inc))))))
+(defn parse-expand-grammar
+  ([planet-name seed]
+   (parse-expand-grammar planet-name seed "<TKN1_5>" ""  [:text "" 0]))
+  ([planet-name seed unparsed parsed mode]   
+   ;;(println (str parsed "<-:" unparsed ":" mode))
+   (if (< 955 (nth mode 2))
+     [unparsed parsed]    
+     (if (<= (count unparsed) 0)
+       parsed
+       (let [cursor (first unparsed)
+             [add-to-parsed add-to-unparsed new-seed updated-mode]
+             (cond
+               (= (first mode) :token)
+               (cond
+                 (= cursor ">")
+                 (let [[resolved-token resolved-unparsed resolved-seed]
+                       (resolve-token (nth mode 1) seed planet-name)]
+                   [resolved-token
+                    resolved-unparsed
+                    resolved-seed
+                    (assoc-in mode [0] :text)])
+                 :else
+                 ["" "" seed (update-in mode [1] #(str % cursor))]
+                 )
+               (= (first mode) :text)
+               (cond
+                 (= cursor "<")
+                 ["" "" seed (assoc-in
+                              (assoc-in mode [0] :token)
+                              [1]
+                              "")]
+                 :else
+                 [cursor "" seed mode]
+                 )
+               :else
+               [cursor "" seed mode]
+               )
+             ]
+         (parse-expand-grammar planet-name
+                               new-seed  
+                               (str add-to-unparsed (apply str (rest unparsed)))
+                               (str parsed add-to-parsed)                                                          
+                               (update-in updated-mode [2] inc)))))))
 
 (defn generate-goat-soup [planet-seed planet-name]
   (let [planet-goat-soup-seed (mapv #(utility/get-seed-bits planet-seed % 0 8) [2 3 4 5])
-        expand (parse-expand-grammar "<TKN1_5>" "" planet-goat-soup-seed planet-name [:text "" 0])
-        result (parse-goat-soup expand "" [0 "" :lower-case ""])
+        expand (parse-expand-grammar planet-name planet-goat-soup-seed )
+        result (parse-goat-soup expand)
         ]
     result)
   ;; (parse-goat-soup

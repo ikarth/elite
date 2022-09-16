@@ -206,7 +206,7 @@
 (defn generate-name
   "Generate the planet name recursively, using the elite-planet-name-diagraphs table as the source data.
   
-  Having this operation be recursive follows the original BBC Elite, plus it lets us demonstrate how the generator can handle partially-constructed artifacts."
+  Having this operation be recursive across multiple calls follows the original BBC Elite, plus it lets us demonstrate how the generator can handle partially-constructed artifacts."
   [input]
   (if (string? input)
     input
@@ -235,12 +235,16 @@
      :planet/galactic-y  galactic-y
      :planet/size-on-map size-on-map}))
 
+(defn extract-bits [seed word start amount]
+  (utility/bin-to-byte (utility/get-seed-bits seed (word utility/elite-index) start amount)))
+ 
+
 
 (defn galactic-x [seed]
-  (utility/bin-to-byte (utility/get-seed-bits seed (:s1_hi utility/elite-index) 0 8)))
+  (extract-bits seed :s1_hi 0 8))
 
 (defn galactic-y [seed]
-  (utility/bin-to-byte (utility/get-seed-bits seed (:s0_hi utility/elite-index) 0 8)))
+  (extract-bits seed :s0_hi 0 8))
 
 (defn size-on-map [seed]
   (utility/bin-to-byte (mapv max [0 1 0 1 0 0 0 0] (utility/get-seed-bits seed (:s2_lo utility/elite-index) 0 8))))
