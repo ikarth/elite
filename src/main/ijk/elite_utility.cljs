@@ -17,7 +17,9 @@
   ([data output-filename
     ]
    (if true ;; TODO: set to false if we're in a browser
-     (spit output-filename data))))
+     (let [] (spit output-filename data)
+          "Wrote data to file."
+          ))))
 
 (defn positions
   "Get the indexes of items in a vector.
@@ -149,6 +151,63 @@
                       65536)]]
     ;;(map )(map byte-to-bin twisted)
     (make-seed twisted)))
+
+
+(defn galaxy-twist
+  "Cycle the seed to get the next galaxy in the sequence"
+  [old-seed]
+  (let [new-seed
+        (->> (get-seed-bytes old-seed)
+             (mapv byte-to-bin)
+             (mapv (fn [r] (concat (rest r) [(first r)])))
+             (mapv bin-to-byte))]
+    (make-seed
+     [(+ (nth new-seed 0) (* 256 (nth new-seed 1)))
+      (+ (nth new-seed 2) (* 256 (nth new-seed 3)))
+      (+ (nth new-seed 4) (* 256 (nth new-seed 5)))
+      ])))
+
+;; (let []
+;;   [0xB4 0x94 0x04 90 0x6FA6])
+;; (byte-to-bin 0xB4)
+
+;; (byte-to-bin 0x5A)
+;; (byte-to-bin 0x4A)
+;; (byte-to-bin 0x02)
+;; (byte-to-bin 0x48)
+;; (byte-to-bin 0xB7)
+;; (byte-to-bin 0x53)
+
+;; (byte-to-bin 74)
+;; (byte-to-bin 2)
+;; (byte-to-bin 83)
+
+;; (get-seed-bytes (make-seed [0x5A4A 0x0248 0xB753]))
+;; ;; => [74 90 72 2 83 183]
+
+;; (let [sb (get-seed-bytes (make-seed [0x5A4A 0x0248 0xB753]))]
+;;   (map #(nth sb %) [1 0 3 2 5 4])
+;;   )
+;; ;; => (90 74 2 72 183 83)
+;; (mapv byte-to-bin (get-seed-bytes (make-seed [0x5A4A 0x0248 0xB753])))
+;; ;; => [(0 1 0 0 1 0 1 0)
+;; ;;     (0 1 0 1 1 0 1 0)
+;; ;;     (0 1 0 0 1 0 0 0)
+;; ;;     (0 0 0 0 0 0 1 0)
+;; ;;     (0 1 0 1 0 0 1 1)
+;; ;;     (1 0 1 1 0 1 1 1)]
+
+
+;; (mapv byte-to-bin
+;;       (get-seed-bytes
+;;        (galaxy-twist (make-seed [0x5A4A 0x0248 0xB753]))))
+;; ;; => [(0 0 1 0 0 1 0 1)
+;; ;;     (0 0 1 0 1 1 0 1)
+;; ;;     (0 0 1 0 0 1 0 0)
+;; ;;     (0 0 0 0 0 0 0 1)
+;; ;;     (1 0 1 0 1 0 0 1)
+;; ;;     (1 1 0 1 1 0 1 1)]
+
 
 
 (defn hyperjump [old-seed]

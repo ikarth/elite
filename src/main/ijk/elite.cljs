@@ -7,7 +7,9 @@
    ;;[clojure.edn :as edn]
    [clojure.string :as cstring]
    [clojure.math]
+   [clojure.math.combinatorics :as combo]
    [cljs.pprint :as pprint]
+   [clojure.set :refer [union]]
    ;;["js-xxhash" :as xx :refer (xxHash32)]
   ))
 
@@ -25,10 +27,12 @@
                     utility/twist-seed))
 
 ;; test getting all of the planets
-(def planet-seed-list
-  (reduce (fn [current next-id] (concat current [(utility/twist-to-next-planet (last current))]))
-          [elite-seed]
-          (range 255)))
+(defn planet-seed-list
+  ([] (planet-seed-list elite-seed))
+  ([seed]
+   (reduce (fn [current next-id] (concat current [(utility/twist-to-next-planet (last current))]))
+           [seed]
+           (range 255))))
 
 
 (spec/def :seed/specifier
@@ -369,8 +373,8 @@
     (println "\n\n\n\n\n\n\n\n\n\n\n\n")
     (doseq [[r p] (map-indexed (fn [index item]
                                  [index item])
-                               planet-seed-list)]      
-      (let [planet-coord-list (map-indexed (fn [index p] [index [(galactic-x p) (galactic-y p)]]) planet-seed-list)
+                               (planet-seed-list))]      
+      (let [planet-coord-list (map-indexed (fn [index p] [index [(galactic-x p) (galactic-y p)]]) (planet-seed-list))
             jump-range 70
             gov (planet-government p)
             econ (planet-economy p (planet-government p))
@@ -432,9 +436,10 @@
 
 (defn export-galaxy [galaxy-seed]
   (let [jump-range 70
+        this-galaxy-planet-list (planet-seed-list galaxy-seed)
         indexed-planets
-        (map-indexed (fn [i p] [i p]) planet-seed-list)
-        planet-coord-list (map-indexed (fn [index p] [index [(galactic-x p) (galactic-y p)]]) planet-seed-list)
+        (map-indexed (fn [i p] [i p]) this-galaxy-planet-list)
+        planet-coord-list (map-indexed (fn [index p] [index [(galactic-x p) (galactic-y p)]]) (planet-seed-list galaxy-seed))
         planets-in-galaxy        
         (for [[index p] indexed-planets
               :let [name (last (take 7 (iterate generate-name (generate-name-start p))))
@@ -458,21 +463,901 @@
            :population pop
            :productivity prod
            :location   [galactic-x galactic-y]
-           ;;:neighbors  reachable-systems
+           :neighbors  reachable-systems
            :neighbor-count hub-count
            :description description     
            })]
     planets-in-galaxy))
+
+(defn export-planet-names [galaxy-seed]
+  (let [this-galaxy-planet-list (planet-seed-list galaxy-seed)]
+    (map (fn [p]
+           (last (take 7 (iterate generate-name (generate-name-start p)))))
+         this-galaxy-planet-list)))
+
+(count
+ (set
+  (export-planet-names elite-seed)))
+
+(export-planet-names elite-seed)
+
 
 (clj->js (first (export-galaxy elite-seed)))
 
 (comment
   (utility/write-to-file
    (export-galaxy elite-seed)
-   "elite-galaxy-01.edn"))
-(utility/write-to-file
- (.stringify js/JSON
-            (clj->js (export-galaxy elite-seed)))
- "elite-galaxy-01.json")
+   "elite-galaxy-01.edn")
+  (utility/write-to-file
+   (.stringify js/JSON
+               (clj->js (export-galaxy elite-seed)))
+   "elite-galaxy-01.json"))
 
 
+(def local-galaxy-seeds
+  (take 8
+        (iterate utility/galaxy-twist elite-seed)))
+
+;; (mapv utility/get-seed-bytes
+;;   local-galaxy-seeds)
+
+(comment
+  (for [ [i g] (map-indexed (fn [a b] [a b])
+                            local-galaxy-seeds)]
+    (let [gal-data (export-galaxy g)]
+      (println "Galaxy #" i " : " (utility/get-seed-bytes g))
+      (utility/write-to-file gal-data (str "elite-galaxy-0" i ".edn"))
+      (utility/write-to-file (.stringify js/JSON (clj->js gal-data)) (str "elite-galaxy-0" i ".json"))
+      )))
+      
+;; (count
+;;  (set
+;;   (export-planet-names elite-seed)))
+
+;;(range 65535)
+
+;;(make-seed )
+
+;; (union (set [3 4]) (set [3 6]))
+
+;; (combo/count-permutations [ 1 2 3])
+
+;; (range 10)
+(comment
+  (let [galaxies-count 1
+        planet-names-list
+        (take (* galaxies-count 256)
+              (let [galaxies            
+                    (map utility/make-seed (take 15000000000000000 (combo/cartesian-product (range 65536) (range 65536) (range 65536))))]
+                (map #(str (utility/get-seed-bytes %)) galaxies);;(map export-planet-names galaxies)        
+                ))
+        names-set (union (map set planet-names-list))
+        names-count (count names-set)
+        ]
+    (utility/write-to-file (.stringify js/JSON (clj->js planet-names-list)) "planet-seeds.txt")
+    
+    (utility/write-to-file (str names-count " / " (* 256 galaxies-count) "\n" planet-names-list) "planet-names-count.txt")
+    ))
+
+(defn seed-as-int [seed]
+  (apply + 
+         (map * (map (fn [n] (reduce * (repeat n 256))) (range))
+              (reverse
+               (utility/get-seed-bytes seed))))) 
+
+(defn write-random-galaxy []
+  (let [galaxy-seed-numbers [(rand-int 65536) (rand-int 65536) (rand-int 65536)]
+        galaxy-seeds (take 8 (iterate utility/galaxy-twist (utility/make-seed galaxy-seed-numbers)))
+        galaxy-data (map export-galaxy galaxy-seeds)
+        catalog (map (fn [data seeds index] [(str "Galaxy #" index " : " (seed-as-int seeds) " : " (utility/get-seed-bytes seeds)) data]) galaxy-data galaxy-seeds (range))
+        ]
+    (utility/write-to-file (.stringify js/JSON (clj->js catalog)) (str "galaxy_" (seed-as-int (first galaxy-seeds)) ".json"))
+    "Wrote Galaxy To Disk"))
+
+;; ()
+;; ;;(union #{5 6} #{ 5 7})
+;; (take 8 (map #(* 256 (* % %)) (range)))
+;; (take 8 (map (fn [n] (reduce * (repeat n 256))) (range)))
+
+;; (apply + [7 0 8])
+
+
+
+;;; 
+;; (apply concat (take 3 [[1 2 3] [4 5] [6 7]]))
+
+;; => ((""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      ""
+;;      "")
+;;     (""
+;;      ""
+;;      "LE"
+;;      "GEBIIN"
+;;      "ESININLE"
+;;      "QUUSZA"
+;;      "BEONQUDI"
+;;      "SOAZAAN"
+;;      "ERERTEIS"
+;;      "ARZADI"
+;;      "REEDGE"
+;;      "SOVEESSO"
+;;      "USORES"
+;;      "DILEORES"
+;;      "ZASOLAXE"
+;;      "ONEDQUEN"
+;;      "CEENAR"
+;;      "RIARMARA"
+;;      "ARESSO"
+;;      "INATIRA"
+;;      "ANSOTIQU"
+;;      "ORMABI"
+;;      "ENORENRI"
+;;      "ESORLE"
+;;      "ONCEUSDI"
+;;      "ANATQUBI"
+;;      "ENBEIN"
+;;      "ENATTI"
+;;      "ZAVEVE"
+;;      "ONSOTI"
+;;      "ISBEA"
+;;      "GERAOR"
+;;      "RIUSED"
+;;      "LEORQU"
+;;      "SOVEEN"
+;;      "ORTESO"
+;;      "LEBIBIA"
+;;      "ISBE"
+;;      "CETIDIAR"
+;;      "ASOLEOR"
+;;      "XEISOROR"
+;;      "AXEMA"
+;;      "ARENOR"
+;;      "LEERUSAN"
+;;      "RAEDSO"
+;;      "RAERORON"
+;;      "ARGEDIAN"
+;;      "MARAANAN"
+;;      "MAGEAR"
+;;      "SOMADI"
+;;      "ORSOLE"
+;;      "ARREQUBE"
+;;      "TEAROR"
+;;      "ZAONZAUS"
+;;      "INORDIEN"
+;;      "ORORBI"
+;;      "ORORDILE"
+;;      "USVEON"
+;;      "LALAAR"
+;;      "RARARI"
+;;      "EDISIS"
+;;      "RERION"
+;;      "MATIAAT"
+;;      "TIEDXE"
+;;      "DILELE"
+;;      "ENXEZA"
+;;      "ONTERA"
+;;      "ONGEEN"
+;;      "ARATATDI"
+;;      "ERREIN"
+;;      "BIRIATTI"
+;;      "SOERREBI"
+;;      "CEQUCEZA"
+;;      "ZAAOR"
+;;      "LATERI"
+;;      "MAANTIRI"
+;;      "ATBIVE"
+;;      "MAERESCE"
+;;      "ONARAGE"
+;;      "SOINLA"
+;;      "XEGEAN"
+;;      "ISONTE"
+;;      "ORRAAR"
+;;      "EDTEDIXE"
+;;      "INISINVE"
+;;      "ONXEEDQU"
+;;      "LAUSORTI"
+;;      "ORARAN"
+;;      "ZARILEZA"
+;;      "CEMAVESO"
+;;      "ESBITI"
+;;      "BIBILA"
+;;      "ISRABE"
+;;      "DICETI"
+;;      "USMARIEN"
+;;      "ANINAN"
+;;      "MAAROR"
+;;      "BEANRI"
+;;      "BIATCE"
+;;      "LAORDI"
+;;      "XEINMAAN"
+;;      "BEQUUS"
+;;      "EDVEZABE"
+;;      "AUSMAGE"
+;;      "TIBIXE"
+;;      "ESINTI"
+;;      "ATLARA"
+;;      "CELAVEAT"
+;;      "ISCERA"
+;;      "ENONESAN"
+;;      "CEMAINTE"
+;;      "BETEDIRI"
+;;      "USRAAN"
+;;      "ESRILEES"
+;;      "USENZA"
+;;      "VEQUERLE"
+;;      "DIONREAN"
+;;      "ARLATETE"
+;;      "AUSRAIN"
+;;      "ESAR"
+;;      "RIBEBIED"
+;;      "ENATTEON"
+;;      "INUSLA"
+;;      "USUSTE"
+;;      "ATANQU"
+;;      "TEISON"
+;;      "VERERIGE"
+;;      "AATZA"
+;;      "QUGEXE"
+;;      "ZACEUS"
+;;      "RITISO"
+;;      "ANONED"
+;;      "MATIVEED"
+;;      "BILARA"
+;;      "ORRIUS"
+;;      "SOEREDER"
+;;      "QUGEREIN"
+;;      "RIORCE"
+;;      "TEONOR"
+;;      "AONCERA"
+;;      "QURAGE"
+;;      "ESRIORXE"
+;;      "QUVEBECE"
+;;      "AESRITI"
+;;      "ONLAIN"
+;;      "XEABECE"
+;;      "USDI"
+;;      "ZAUSGEAT"
+;;      "ISENLEAT"
+;;      "CEEDERA"
+;;      "EDEDAT"
+;;      "ESQULA"
+;;      "ESEDQUTE"
+;;      "ABIENSO"
+;;      "QUXE"
+;;      "QUQUBE"
+;;      "VEATER"
+;;      "ANZATI"
+;;      "BEXEDIGE"
+;;      "BECEIS"
+;;      "EDMAQU"
+;;      "CERIXE"
+;;      "CEDIED"
+;;      "ATLABE"
+;;      "GEATERBI"
+;;      "ESER"
+;;      "MAVEANIS"
+;;      "AUSLARE"
+;;      "INERMAUS"
+;;      "GETIGE"
+;;      "EDORA"
+;;      "ESORZAUS"
+;;      "BIBELE"
+;;      "ERDIORED"
+;;      "ENMARI"
+;;      "ANCEON"
+;;      "CEBIIN"
+;;      "MAERLAAT"
+;;      "TIRISO"
+;;      "XESOBIER"
+;;      "RILAGETI"
+;;      "ERINRAAT"
+;;      "ENEDANCE"
+;;      "ORQUQU"
+;;      "GEINONER"
+;;      "TEMAED"
+;;      "GETE"
+;;      "TEISQU"
+;;      "AREDTI"
+;;      "ARANON"
+;;      "LEBIDIRA"
+;;      "SOESBI"
+;;      "SOZAGE"
+;;      "VESOIN"
+;;      "ISBEQU"
+;;      "TITERI"
+;;      "INTEANZA"
+;;      "TEANTE"
+;;      "INISONAR"
+;;      "SOATXEAN"
+;;      "ADITIBE"
+;;      "EDZAAT"
+;;      "GEGERA"
+;;      "BEZABEMA"
+;;      "GELEER"
+;;      "SODIESRI"
+;;      "LARIENBI"
+;;      "TIATERQU"
+;;      "TEBIIS"
+;;      "ZAXESODI"
+;;      "TIMAER"
+;;      "ERLAORON"
+;;      "REUSVEDI"
+;;      "MAAUSGE"
+;;      "ANSOSOAR"
+;;      "ORMAA"
+;;      "REATBEBE"
+;;      "ORREUS"
+;;      "TIDIDI"
+;;      "REAAT"
+;;      "AADI"
+;;      "ESXETI"
+;;      "RIQUTELA"
+;;      "MAISON"
+;;      "CEDIAN"
+;;      "TIBI"
+;;      "ZAUSMA"
+;;      "DIENOR"
+;;      "ZATILAEN"
+;;      "ONSOED"
+;;      "RILAENBI"
+;;      "AESONED"
+;;      "LEORRAA"
+;;      "ISLEA"
+;;      "ONTEAR"
+;;      "DIRIENRI"
+;;      "ARE"
+;;      "RETEESRA"
+;;      "ANQUARON"
+;;      "GEDIATGE"
+;;      "XETIIS"
+;;      "DIGEESQU"
+;;      "BIESAR"
+;;      "REBETERI"
+;;      "AAREDEN"
+;;      "VEXEINCE"
+;;      "LASOXEON"
+;;      "ESMARA"
+;;      "USBIEDSO"
+;;      "BIBIRA"
+;;      "QUAMA"
+;;      "ERATED"
+;;      "GEVERA"
+;;      "EDQUON"
+;;      "INISTEBI"
+;;      "ONXEUS")
+;;     (""
+;;      ""
+;;      "LEXE"
+;;      "SODIED"
+;;      "ENEDED"
+;;      "RAERUSRE"
+;;      "SORIRAAN"
+;;      "REONESTI"
+;;      "LEOR"
+;;      "LAESQUOR"
+;;      "ISATSO"
+;;      "ADIBEA"
+;;      "ERENEN"
+;;      "ANGEBE"
+;;      "ESAMAZA"
+;;      "ONERLA"
+;;      "ARZARA"
+;;      "ISLAVE"
+;;      "RAENA"
+;;      "ORONA"
+;;      "TIARE"
+;;      "BETIIN"
+;;      "CEENZATE"
+;;      "ENBEXEUS"
+;;      "RIARAT"
+;;      "VEXERADI"
+;;      "ZABIOR"
+;;      "CEGEREVE"
+;;      "USDIDI"
+;;      "RIREA"
+;;      "ANSOONLE"
+;;      "SOUSEN"
+;;      "ISATAT"
+;;      "XEENRA"
+;;      "AINCE"
+;;      "BEORRE"
+;;      "GEDIDI"
+;;      "QUSOXE"
+;;      "ARREANRA"
+;;      "RIAGEEN"
+;;      "CEQUEN"
+;;      "ONZAVEOR"
+;;      "RAZAEN"
+;;      "GELEATVE"
+;;      "ESERA"
+;;      "ESLEBE"
+;;      "RASOQUVE"
+;;      "TIUSTI"
+;;      "TIBILA"
+;;      "ATIQU"
+;;      "BEREXE"
+;;      "LATELA"
+;;      "EDRABE"
+;;      "ESRIUSER"
+;;      "EDENANCE"
+;;      "ENBEINBE"
+;;      "BEBEQU"
+;;      "ERDIRI"
+;;      "MAARRA"
+;;      "ESUSTEDI"
+;;      "ATANQU"
+;;      "TEISON"
+;;      "VERERIGE"
+;;      "AATZA"
+;;      "QUGEXE"
+;;      "ZACEUS"
+;;      "RIEDUS"
+;;      "ONBIZA"
+;;      "RAGEXE"
+;;      "ISEDTI"
+;;      "DIISXERE"
+;;      "REISIN"
+;;      "ARRAMA"
+;;      "ESRIENQU"
+;;      "MAEDIS"
+;;      "TIVEATE"
+;;      "XEDIIN"
+;;      "TIBE"
+;;      "ONRIESSO"
+;;      "ALEOR"
+;;      "ZASOVE"
+;;      "LEQURI"
+;;      "ENESLA"
+;;      "ATEDAN"
+;;      "ORQUED"
+;;      "ONZAERLA"
+;;      "MAATENA"
+;;      "ENRAVEIS"
+;;      "USISGE"
+;;      "ARTIINRE"
+;;      "ENDIA"
+;;      "DIINARGE"
+;;      "QUUSSO"
+;;      "QUMAA"
+;;      "ATVEISZA"
+;;      "TIORVE"
+;;      "TIRABE"
+;;      "BITITE"
+;;      "DIGEMA"
+;;      "MAENQU"
+;;      "CEEDTI"
+;;      "BIRAERMA"
+;;      "ERDIESSO"
+;;      "RIERTISO"
+;;      "ADIZA"
+;;      "BEORREQU"
+;;      "XEMAUS"
+;;      "MAARDIGE"
+;;      "ANMAES"
+;;      "CERIBE"
+;;      "ARVEEDOR"
+;;      "SOORAN"
+;;      "ATESTI"
+;;      "BETEXE"
+;;      "ATCEUS"
+;;      "DILALE"
+;;      "QUONIS"
+;;      "LAMAEDOR"
+;;      "RIATESED"
+;;      "ENRAUS"
+;;      "ISBIIN"
+;;      "ZAXEEDON"
+;;      "ORATAR"
+;;      "ATATEDQU"
+;;      "GEVERA"
+;;      "EDQUON"
+;;      "INISTEBI"
+;;      "ONXEUS"
+;;      "RABIZA"
+;;      "USARER"
+;;      "TEARE"
+;;      "TIONER"
+;;      "VEREIN"
+;;      "INARUS"
+;;      "BETEERLE"
+;;      "RELEATLE"
+;;      "RASOIS"
+;;      "ISBEARAN"
+;;      "ORONBE"
+;;      "ONONMAES"
+;;      "RAUSBI"
+;;      "BEISBE"
+;;      "LADISOAR"
+;;      "ONENIS"
+;;      "RIARED"
+;;      "CEONBI"
+;;      "ERAN"
+;;      "ESATSO"
+;;      "ANCEXE"
+;;      "MAATRI"
+;;      "ATERXE"
+;;      "ENLAAREN"
+;;      "ENERLA"
+;;      "RIINZAA"
+;;      "RACE"
+;;      "LALABIER"
+;;      "INGELE"
+;;      "VEUSA"
+;;      "SOCEANSO"
+;;      "SOARQU"
+;;      "ATTILA"
+;;      "ARTEZA"
+;;      "MAQUAT"
+;;      "GEMABI"
+;;      "SOGELE"
+;;      "ENLERA"
+;;      "VEINTIQU"
+;;      "RIATMATE"
+;;      "ORVE"
+;;      "SOREBIAN"
+;;      "ERENRI"
+;;      "BEBEESER"
+;;      "DIBIGE"
+;;      "LEANBE"
+;;      "CEVETE"
+;;      "TIARON"
+;;      "MAINOR"
+;;      "TILEAR"
+;;      "ATERE"
+;;      "CEREDI"
+;;      "TEARSO"
+;;      "LEEDUSXE"
+;;      "ZAERTIMA"
+;;      "ENLARAIS"
+;;      "SOORRI"
+;;      "EDTIER"
+;;      "SOED"
+;;      "ORQURASO"
+;;      "LAATRE"
+;;      "RATION"
+;;      "XEINQUES"
+;;      "ABEIN"
+;;      "REESBI"
+;;      "INAED"
+;;      "QUBIRA"
+;;      "AEDTE"
+;;      "EDORVE"
+;;      "EDTIEDES"
+;;      "ORANRIRA"
+;;      "REXECEVE"
+;;      "RIQUA"
+;;      "ATUSXETE"
+;;      "SOBIES"
+;;      "SOUSSOVE"
+;;      "BIGE"
+;;      "AQUBE"
+;;      "MATECEDI"
+;;      "AGELE"
+;;      "EDDIQU"
+;;      "ESZARE"
+;;      "RETILE"
+;;      "LEARBE"
+;;      "ISERIN"
+;;      "TIRIERSO"
+;;      "TIARELA"
+;;      "ENVERISO"
+;;      "TEGESO"
+;;      "ENLETEER"
+;;      "REANAN"
+;;      "ISRIXEIS"
+;;      "RIRIAN"
+;;      "ENCEA"
+;;      "ISRAORAR"
+;;      "TIANRI"
+;;      "MAQUTI"
+;;      "RELEIN"
+;;      "ESATTI"
+;;      "ANZAEN"
+;;      "ESREMA"
+;;      "RIREERIS"
+;;      "TEMACEDI"
+;;      "RIENONAT"
+;;      "GEBEUS"
+;;      "ANGERITE"
+;;      "RIORRA"
+;;      "ANTECEIS"
+;;      "ONLEIS"
+;;      "ISEDBE"
+;;      "VERARAON"
+;;      "SOANGE"
+;;      "CEAAN"
+;;      "ANBIEN"
+;;      "DIBERA"
+;;      "ISSOOR"
+;;      "RILAAT"
+;;      "DICEEDMA"
+;;      "ARACERI"
+;;      "ENVEUSEN"
+;;      "ATINER"
+;;      "ININUSLE"
+;;      "LAONVE"
+;;      "LEGEERRA"
+;;      "SOINUS"
+;;      "ERRAON"
+;;      "EDANEDIN"
+;;      "ONZAER"))
+
+
+;; (for [s (utility/galaxy-twist elite-seed (range 8))]
+;;   (str s)
+;;   )
+
+;; (reduce (fn [a b]
+;;           [b (map inc a)]) [0 0 0] [0 1 2])
+
+;; (let [] elite-seed)
+;; (planet-goat-soup elite-seed "TEST"
+;;                   )
+;; (utility/galaxy-twist)
+;; (planet-goat-soup
+;;  (utility/galaxy-twist
+;;   (utility/galaxy-twist elite-seed))
+;;  "test")
+
+;; (for [p
+;;       (take 9
+;;             (iterate utility/galaxy-twist elite-seed))]
+;;   (let []
+;;     (println "-0-0-0-")
+;;     (println (planet-goat-soup p "TEST"))
+;;     (println (utility/get-seed-bytes p))
+;;     )
+;;   ))

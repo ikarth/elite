@@ -611,7 +611,11 @@
 ;; (apply + [1 1 ])
 
 (defn capitalize-word [word]
-  (str (cstring/upper-case (first word)) (cstring/lower-case (apply str (rest word)))))
+  ;;(.log js/console [word (string? word)])
+  (if (and (string? word) (< 0 (count word)))
+    (str (cstring/upper-case (first word)) (cstring/lower-case (apply str (rest word))))
+    ""))
+
 
 (capitalize-word "udyidi")
 
